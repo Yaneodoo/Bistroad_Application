@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Customer.ShowCustomerBistroList">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,18 +26,28 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
         android:text="김민주 점주님"
+        android:textStyle="bold"
         android:textSize="25dp"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/menu_image"
+            android:paddingRight="10dp"
+            android:id="@+id/bistro_represent_image"
             android:src="@drawable/tteokbokki"
             android:layout_weight="1" />
 
@@ -46,42 +56,68 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="4">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="레드 175"
+                    android:textSize="24dp"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1" />
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    android:layout_width="61dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_launcher_foreground" />
+            </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="떡볶이"
-                android:textSize="24dp"
-                android:textColor="#000000"
-                android:gravity="center_vertical"
-                android:layout_weight="1" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="5000원"
-                android:textSize="16dp"
-                android:layout_weight="1" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="#TMI #순대 #오뎅"
-                android:textSize="10dp"
-                android:layout_weight="1" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="★4.5"
+                android:text="서울 강남구 남부순환로 2942"
                 android:textSize="16dp"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/menu_list_view"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:background="#000000"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_weight="1"
-        android:choiceMode="singleChoice" />
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="메뉴 리스트"
+            android:textSize="20dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fillViewport="true">
+            <ListView
+                android:id="@+id/menu_list_view_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:choiceMode="singleChoice" />
+        </ScrollView>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

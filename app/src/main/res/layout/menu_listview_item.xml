@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/menu_imgView"
+        android:src="@drawable/tteokbokki"
         android:layout_weight="1" />
 
     <LinearLayout
@@ -56,7 +57,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주문 횟수"
+                android:text="주문 횟수 : 50"
                 android:id="@+id/menu_orderCount_txtView"
                 android:layout_alignParentRight="true"
                 android:textSize="16dp"

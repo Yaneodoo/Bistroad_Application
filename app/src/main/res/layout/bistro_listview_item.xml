@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/bistro_imgView"
+        android:src="@drawable/tteokbokki"
         android:layout_weight="1" />
 
     <LinearLayout
@@ -19,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="레드 175"
             android:id="@+id/bistro_name_txtView"
             android:textSize="24dp"
             android:textColor="#000000"
@@ -29,8 +30,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="서울 강남구 남부순환로 2942"
             android:id="@+id/bistro_location_txtView"
+            android:textSize="20dp"
+            android:textColor="#666666"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="#떡볶이 #순대 #오뎅"
+            android:id="@+id/bistro_desc_txtView"
             android:textSize="16dp"
             android:textColor="#666666"
             android:layout_weight="1" />

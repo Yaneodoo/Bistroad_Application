@@ -26,83 +26,84 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/button1"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
+        android:text="김민주 점주님"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:background="#000000"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:text="김민주 점주님"
-            android:textStyle="bold"
+            android:text="매장 등록"
             android:textSize="25dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="레드 175"
-            android:textSize="25dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="서울 강남구 남부순환로 2942"
+            android:text="대표 이미지"
             android:textSize="20dp"/>
 
-        // TODO : 이미지 불러오는 view로
         <ImageButton
-            android:id="@+id/upload_btn"
-            android:layout_width="wrap_content"
+            android:id="@+id/menu_image"
+            android:layout_width="207dp"
+            android:layout_height="148dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_upload" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/img_upload"
-            android:layout_gravity="center"/>
+            android:text="매장 위치 : "
+            android:textSize="20dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:src="@drawable/ic_launcher_background" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름 : "
+                android:text="상호명 : "
                 android:textSize="15dp"/>
             <EditText
-                android:id="@+id/menu_name_txtView"
+                android:id="@+id/bistro_name_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가격 : "
+                android:text="전화번호 : "
                 android:textSize="15dp"/>
             <EditText
-                android:id="@+id/menu_price_txtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="설명 : "
-                android:textSize="15dp"/>
-            <EditText
-                android:id="@+id/menu_desc_txtView"
+                android:id="@+id/bistro_tel_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -112,5 +113,9 @@
         android:id="@+id/btn_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="등록"/>
+
+
 </LinearLayout>

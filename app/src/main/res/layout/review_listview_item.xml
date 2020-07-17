@@ -40,7 +40,7 @@
             android:text="★4.5"
             android:id="@+id/review_score_txtView"
             android:textSize="16dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:layout_weight="2" />
     </LinearLayout>
 
@@ -55,6 +55,7 @@
             android:id="@+id/review_imgView"
             android:src="@drawable/tteokbokki"
             android:layout_weight="2" />
+        //TODO : 텍스트박스 형식으로
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,22 +1,23 @@
-package com.example.yaneodoo;
+package com.example.yaneodoo.ListView;
 
-import android.content.Context;
+        import android.content.Context;
         import android.graphics.drawable.Drawable;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.BaseAdapter;
-        import android.widget.ImageView;
         import android.widget.TextView;
+
+        import com.example.yaneodoo.R;
 
         import java.util.ArrayList;
 
-public class BistroListViewAdapter extends BaseAdapter {
+public class MenuListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<BistroListViewItem> listViewItemList = new ArrayList<BistroListViewItem>() ;
+    private ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>() ;
 
     // ListViewAdapter의 생성자
-    public BistroListViewAdapter() {
+    public MenuListViewAdapter() {
 
     }
 
@@ -35,21 +36,25 @@ public class BistroListViewAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.bistro_listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.menu_listview_item, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.bistro_imgView) ;
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.bistro_name_txtView) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.bistro_location_txtView) ;
+        TextView menuTextView = (TextView) convertView.findViewById(R.id.menu_name_txtView);
+        TextView priceTextView = (TextView) convertView.findViewById(R.id.menu_price_txtView);
+        TextView descTextView = (TextView) convertView.findViewById(R.id.menu_desc_txtView);
+        TextView scoreTextView=(TextView) convertView.findViewById(R.id.menu_score_txtView);
+        TextView orderCountTextView=(TextView) convertView.findViewById(R.id.menu_orderCount_txtView);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        BistroListViewItem listViewItem = listViewItemList.get(position);
+        MenuListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getIcon());
-        titleTextView.setText(listViewItem.getTitle());
-        descTextView.setText(listViewItem.getDesc());
+        menuTextView.setText(listViewItem.getMenuStr());
+        priceTextView.setText(listViewItem.getPriceStr());
+        descTextView.setText(listViewItem.getDescStr());
+        scoreTextView.setText(listViewItem.getScoreStr());
+        orderCountTextView.setText(listViewItem.getOrderCountStr());
 
         return convertView;
     }
@@ -66,13 +71,16 @@ public class BistroListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position) ;
     }
 
-    // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable icon, String title, String desc) {
-        BistroListViewItem item = new BistroListViewItem();
+    // 아이템 데이터 추가를 위한 함수.
+    public void addItem(Drawable photo, String menuStr, String priceStr, String descStr, String scoreStr, String orderCountStr) {
+        MenuListViewItem item = new MenuListViewItem();
 
-        item.setIcon(icon);
-        item.setTitle(title);
-        item.setDesc(desc);
+        item.setIconDrawable(photo);
+        item.setMenuStr(menuStr);
+        item.setPriceStr(priceStr);
+        item.setDescStr(descStr);
+        item.setScore(scoreStr);
+        item.setOrderCountStr(orderCountStr);
 
         listViewItemList.add(item);
     }
