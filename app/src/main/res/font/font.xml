@@ -4,4 +4,6 @@
         android:fontStyle = "normal"
         android:fontWeight = "400"
         android:font = "@font/jalnan"/> //font는 소문자로
+    <font
+        android:font = "@font/rage"/> //font는 소문자로
 </font-family>

@@ -13,17 +13,20 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView1"
+            android:background="#C6D3FC"
+            android:fontFamily="@font/rage"
             android:text="Bistroad"
-            android:textSize="40dp"
-            android:background="@color/colorAccent"
-            android:fontFamily="@font/jalnan"/>
+            android:textAllCaps="false"
+            android:textColorLink="#FFFFFF"
+            android:paddingTop="10dp"
+            android:textSize="40dp" />
         <ImageButton
             android:id="@+id/mypage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/mypage"
-            android:layout_alignParentRight="true"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/mypage" />
     </RelativeLayout>
 
     <TextView

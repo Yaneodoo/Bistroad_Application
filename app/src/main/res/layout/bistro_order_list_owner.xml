@@ -29,16 +29,21 @@
             android:scaleType="centerInside"
             android:src="@drawable/mypage" />
     </RelativeLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:text="김민주 점주님"
+        android:text="김민주 점주님의\n레드 175 주문내역입니다."
         android:textStyle="bold"
         android:textSize="25dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:background="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,38 +56,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="매장 리스트"
-            android:textSize="20dp"/>
+            android:text="주문 리스트"
+            android:textSize="25dp"
+            android:textColor="#000000"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fillViewport="true">
             <ListView
-                android:id="@+id/bistro_list_view_owner"
+                android:id="@+id/menu_list_view_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:choiceMode="singleChoice" />
         </ScrollView>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_delete"
-            android:text="삭제"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_add"
-            android:text="추가"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
 </LinearLayout>

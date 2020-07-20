@@ -14,4 +14,6 @@ public class BistroInfo {
         this.location = location;
         this.tel = tel;
     }
+
+
 }
