@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="API키" />
+            android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
         <activity android:name=".Customer.ShowCustomerBistroList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

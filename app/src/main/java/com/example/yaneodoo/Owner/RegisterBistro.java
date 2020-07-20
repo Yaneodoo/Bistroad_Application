@@ -15,11 +15,34 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.R;
 
-public class RegisterBistro extends Activity {
+public class RegisterBistro extends Activity implements OnMapReadyCallback{
+
+    private GoogleMap mMap;
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_registration_owner);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        @Override
+        public void onMapReady(final GoogleMap googleMap) {
+            mMap = googleMap;
+
+            LatLng SEOUL = new LatLng(37.56, 126.97);
+
+            // 마커 예시 코드
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(SEOUL);
+            markerOptions.title("서울");
+            markerOptions.snippet("한국의 수도");
+            mMap.addMarker(markerOptions);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        }
 
         // 등록 버튼 클릭 리스너
         Button addbtn = (Button) findViewById(R.id.btn_complete);
@@ -27,13 +50,12 @@ public class RegisterBistro extends Activity {
             @Override
             public void onClick(View view) {
 
-                // TODO : 입력한 정보 DB에 추가
-
                 ImageButton imgBtn=(ImageButton) findViewById(R.id.menu_image);
                 // 지도
                 EditText nameEditTxt=(EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt=(EditText) findViewById(R.id.bistro_tel_txtView);
-                // TODO : 갤러리로부터 가게 대표 이미지, 지도로부터 매장 위치 가져와서 bistro 생성
+
+                // TODO : bistro 생성
                 Drawable photo=imgBtn.getDrawable();
                 // 지도
                 String name=nameEditTxt.getText().toString();
