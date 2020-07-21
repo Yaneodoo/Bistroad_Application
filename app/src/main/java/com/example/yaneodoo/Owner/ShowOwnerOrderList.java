@@ -15,6 +15,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_order_list_owner);
 
-        // TODO :
+        // TODO : 주문내역 리스트
     }
 }
