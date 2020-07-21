@@ -12,10 +12,13 @@ import android.widget.ListView;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
+import com.example.yaneodoo.Customer.ShowCustomerMenuList;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.R;
 
 public class RegisterBistro extends Activity implements OnMapReadyCallback{
+    private Intent intent;
 
     private GoogleMap mMap;
 
@@ -24,6 +27,15 @@ public class RegisterBistro extends Activity implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_registration_owner);
 
+        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
+        // 받을게 없으면 어떻게 되지??
+        intent = getIntent();
+        String bistroName=intent.getStringExtra("selectedBistro");
+        //받으면
+        // TODO : GET /stores/{storeId}로 이미지, 좌표 값 얻어서 화면에 표시
+
+        // TODO : Google Map으로 좌표값 얻어오기
+        // 수정하는 경우는 미리 입력된 좌표값 지도로 나타내기
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -44,38 +56,60 @@ public class RegisterBistro extends Activity implements OnMapReadyCallback{
             mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
 
+
+        ImageButton upload_btn = (ImageButton) findViewById(R.id.bistro_imagebtn);
+        upload_btn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO : 갤러리 또는 카메라 열어서 이미지 업로드
+            }
+        });
+
         // 등록 버튼 클릭 리스너
         Button addbtn = (Button) findViewById(R.id.btn_complete);
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                ImageButton imgBtn=(ImageButton) findViewById(R.id.menu_image);
+                // TODO : 지도에서 값 가져오기
+                ImageButton imgBtn=(ImageButton) findViewById(R.id.bistro_imagebtn);
                 // 지도
                 EditText nameEditTxt=(EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt=(EditText) findViewById(R.id.bistro_tel_txtView);
 
-                // TODO : bistro 생성
                 Drawable photo=imgBtn.getDrawable();
                 // 지도
                 String name=nameEditTxt.getText().toString();
                 String tel=telEditTxt.getText().toString();
 
                 //BistroInfo bistroInfo=new BistroInfo(photo,,name,tel);
+                // TODO : POST /stores로 생성한 bistro등록
 
 
                 // Adapter 생성
-                BistroListViewAdapter adapter = new BistroListViewAdapter() ;
+                BistroListViewAdapter adapter = new BistroListViewAdapter();
+
                 // 리스트뷰 참조 및 Adapter달기
                 ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
                 listview.setAdapter(adapter);
 
-                // 첫 번째 아이템 추가.
+                // 아이템 추가 예시
                 adapter.addItem(ContextCompat.getDrawable(RegisterBistro.this, R.drawable.tteokbokki),"레드 175", "서울시 동작구", "#짜장 #짬뽕") ;
 
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
         });
+
+        // 홈 버튼 클릭 리스너
+        Button btnHome = (Button) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
+                startActivity(intent);
+            }
+        }) ;
+
+        // TODO : mypagebtn 클릭 리스너
     }
 }

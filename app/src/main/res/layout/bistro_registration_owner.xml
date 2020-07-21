@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="right">
         <Button
+            android:id="@+id/homebtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
@@ -21,7 +22,7 @@
             android:paddingTop="10dp"
             android:textSize="40dp" />
         <ImageButton
-            android:id="@+id/mypage"
+            android:id="@+id/mypagebtn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentRight="true"
@@ -65,16 +66,18 @@
             android:textSize="20dp"/>
 
         <ImageButton
-            android:id="@+id/menu_image"
-            android:layout_width="207dp"
-            android:layout_height="148dp"
+            android:id="@+id/bistro_imagebtn"
+            android:layout_width="158dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:src="@drawable/img_upload" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="매장 위치 : "
+            android:text="매장 위치 : 서울시 용산구 새창로 70"
             android:textSize="20dp"/>
 
         <fragment
