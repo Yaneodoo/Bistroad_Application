@@ -24,11 +24,10 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_list_owner);
 
-        // TODO : db에서 선택된 매장의 메뉴데이터를 가져옴
-        // ShowBistroList 보낸 titleStr을 받기위해 getIntent()로 초기화
+        // ShowOwnerBistroList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        String bistroName=intent.getStringExtra("selectedBistro");
-
+        final String bistroName=intent.getStringExtra("selectedBistro");
+        // TODO : GET /stores/{storeId}/items 로 데이터 가져와서 listview에 아이템 추가
 
         // Adapter 생성
         MenuListViewAdapter adapter = new MenuListViewAdapter();
@@ -39,6 +38,17 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+
+        // 주문내역 버튼 클릭 리스너
+        Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist) ;
+        btn_orderlist.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerOrderList.class);
+                intent.putExtra("bistroStr",bistroName);
+                startActivity(intent);
+            }
+        });
 
         //메뉴 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,11 +69,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         editbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowOwnerMenuList.this, RegisterMenu.class);
-
-                // TODO : 기존 메뉴 정보 intent로 채워서 전달
-                //MenuInfo menuInfo=new MenuInfo(?);
-                //intent.putExtra("menuInfo",menuInfo);
+                Intent intent = new Intent(ShowOwnerMenuList.this, RegisterBistro.class);
+                intent.putExtra("bistroStr",bistroName);
                 startActivity(intent);
             }
         });
@@ -86,5 +93,17 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 // TODO : onchoice 이용?
             }
         });
+
+        // 홈 버튼 클릭 리스너
+        Button btnHome = (Button) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerBistroList.class);
+                startActivity(intent);
+            }
+        }) ;
+
+        // TODO : mypagebtn 클릭 리스너
     }
 }
