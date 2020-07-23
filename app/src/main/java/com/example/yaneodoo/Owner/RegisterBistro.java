@@ -1,6 +1,5 @@
 package com.example.yaneodoo.Owner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,17 +9,40 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Customer.ShowCustomerMenuList;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.R;
 
-public class RegisterBistro extends Activity implements OnMapReadyCallback{
+public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback{
     private Intent intent;
 
     private GoogleMap mMap;
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        LatLng SEOUL = new LatLng(37.56, 126.97);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(SEOUL);
+        markerOptions.title("서울");
+        markerOptions.snippet("한국의 수도");
+        mMap.addMarker(markerOptions);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+    }
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -38,23 +60,6 @@ public class RegisterBistro extends Activity implements OnMapReadyCallback{
         // 수정하는 경우는 미리 입력된 좌표값 지도로 나타내기
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        @Override
-        public void onMapReady(final GoogleMap googleMap) {
-            mMap = googleMap;
-
-            LatLng SEOUL = new LatLng(37.56, 126.97);
-
-            // 마커 예시 코드
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(SEOUL);
-            markerOptions.title("서울");
-            markerOptions.snippet("한국의 수도");
-            mMap.addMarker(markerOptions);
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
-        }
 
 
         ImageButton upload_btn = (ImageButton) findViewById(R.id.bistro_imagebtn);
