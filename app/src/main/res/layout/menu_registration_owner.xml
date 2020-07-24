@@ -9,22 +9,29 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right">
+        android:gravity="right"
+        android:background="#C6D3FC">
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/homebtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
             android:text="Bistroad"
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
-            android:paddingTop="10dp"
-            android:textSize="40dp" />
+            android:paddingTop="10sp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:textSize="50sp"/>
         <ImageButton
-            android:id="@+id/mypage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:id="@+id/mypagebtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="#C6D3FC"
+            android:paddingRight="10dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:scaleType="centerInside"
             android:src="@drawable/mypage" />
     </RelativeLayout>
@@ -32,7 +39,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/button1"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
@@ -57,7 +63,6 @@
             android:text="서울 강남구 남부순환로 2942"
             android:textSize="20dp"/>
 
-        // TODO : 이미지 불러오는 view로
         <ImageButton
             android:id="@+id/upload_btn"
             android:layout_width="wrap_content"
@@ -77,7 +82,9 @@
             <EditText
                 android:id="@+id/menu_name_txtView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="20자 이내 국문, 영문"
+                android:background="@drawable/border_edittxt_layout"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,7 +99,9 @@
             <EditText
                 android:id="@+id/menu_price_txtView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="숫자만 입력, (원)제외"
+                android:background="@drawable/border_edittxt_layout"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +116,9 @@
             <EditText
                 android:id="@+id/menu_desc_txtView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="100자 이내 국문, 영문"
+                android:background="@drawable/border_edittxt_layout"/>
         </LinearLayout>
     </LinearLayout>
 

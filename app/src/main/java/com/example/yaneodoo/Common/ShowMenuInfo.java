@@ -17,23 +17,43 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.Customer.ShowCustomerMenuList;
 import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
+import com.example.yaneodoo.ListView.ReviewListViewAdapter;
+import com.example.yaneodoo.ListView.ReviewListViewItem;
 import com.example.yaneodoo.Owner.RegisterBistro;
 import com.example.yaneodoo.Owner.RegisterMenu;
+import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.R;
 
 import java.security.acl.Owner;
 
 public class ShowMenuInfo extends AppCompatActivity {
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_info);
 
-        // TODO : owner면 동적으로 edit버튼 생성하고 받은 입력 처리
+        // ShowCustomerMenuList나 ShowOwnerMenuList에서 보낸 menuStr을 받기위해 getIntent()로 초기화
+        intent = getIntent();
+        final String menuName=intent.getStringExtra("selectedMenu");
+        // TODO : GET /stores/{storeId}/items/{itemId}/reviews 로 데이터 가져와서 listview에 아이템 추가
+
+
+        // Adapter 생성
+        ReviewListViewAdapter adapter = new ReviewListViewAdapter();
+
+        // 리스트뷰 참조 및 Adapter달기
+        ListView listview = (ListView) findViewById(R.id.review_list_view);
+        listview.setAdapter(adapter);
+
+        // 아이템 추가 예시
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+
+        // TODO : 동적으로 owner일 때만 메뉴 txtView옆에 edit버튼 생성(실행하여 확인 필요)
         RelativeLayout topLL = (RelativeLayout)findViewById(R.id.dynamicArea);
         TextView tv = new TextView(this);
-        tv.setText("떡볶이");
+        tv.setText(menuName);
         tv.setTextSize(26);
         tv.setId(R.id.menu_name_txtView);
         topLL.addView(tv);
@@ -41,20 +61,32 @@ public class ShowMenuInfo extends AppCompatActivity {
         RelativeLayout.LayoutParams buttonLayoutParams = new RelativeLayout.LayoutParams
                 (ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         buttonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        Button editbtn = new Button(this);
-        editbtn.setText("START");
+        Button btn_edit = new Button(this);
+        btn_edit.setText("edit");
         buttonLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        editbtn.setLayoutParams(buttonLayoutParams);
-        topLL.addView(editbtn);
+        btn_edit.setLayoutParams(buttonLayoutParams);
+        topLL.addView(btn_edit);
 
-        // edit 버튼 클릭 리스너
-        editbtn.setOnClickListener(new View.OnClickListener() {
+        // 수정 버튼 클릭 리스너
+        btn_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowMenuInfo.this, RegisterMenu.class);
-                // TODO : 알고 있는 Menu의 정보 전달
-                //intent.putExtra("selectedMenu", titleStr);
+                intent.putExtra("selectedMenu",menuName);
                 startActivity(intent);
             }
         });
+
+        // 홈 버튼 클릭 리스너
+        Button btnHome = (Button) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO : 손님이면 ShowCustomerBistroList로 이동
+                Intent intent = new Intent(ShowMenuInfo.this, ShowOwnerBistroList.class);
+                startActivity(intent);
+            }
+        }) ;
+
+        // TODO : mypagebtn 클릭 리스너
     }
 }

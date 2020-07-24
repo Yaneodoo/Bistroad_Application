@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="API키" />
+            android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
+
         <activity android:name=".Customer.ShowCustomerBistroList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +22,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".Common.ShowMenuInfo"/>
+        <activity android:name=".Customer.ShowCustomerMenuList"/>
         <activity android:name=".Owner.RegisterBistro"/>
         <activity android:name=".Owner.RegisterMenu"/>
+        <activity android:name=".Owner.ShowOwnerOrderList"/>
+        <activity android:name=".Owner.ShowOwnerBistroList"/>
+        <activity android:name=".Owner.ShowOwnerMenuList"/>
+
     </application>
 
 </manifest>
