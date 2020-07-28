@@ -36,7 +36,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
 
         // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
+        ListView listview = (ListView) findViewById(R.id.menu_list_view_customer);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
