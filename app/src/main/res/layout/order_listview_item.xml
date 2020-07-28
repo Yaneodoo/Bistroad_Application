@@ -37,8 +37,8 @@
         android:id="@+id/order_list"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:text="●품목과 개수 리스트..."
@@ -56,19 +56,19 @@
 
         <ImageButton
             android:id="@+id/btn_progress"
-            android:layout_width="99dp"
-            android:layout_height="91dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/edit" />
+            android:src="@drawable/requested" />
         <TextView
             android:id="@+id/order_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:text="주문 대기중\nor\n주문 접수완료"
-            android:textSize="16dp"
-            android:textColor="#666666"
+            android:text="접수 완료"
+            android:textSize="15dp"
+            android:textColor="#000000"
             android:gravity="center_vertical"
             android:layout_weight="2" />
     </LinearLayout>

@@ -2,6 +2,8 @@ package com.example.yaneodoo.Info;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
+
 public class MenuInfo {
     private Drawable represent_image;
     private String name, desc;
@@ -53,5 +55,11 @@ public class MenuInfo {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public static ArrayList getmenus() {
+        ArrayList menus = new ArrayList();
+        //menus.add(new MenuInfo(, "San Diego"));
+        return menus;
     }
 }

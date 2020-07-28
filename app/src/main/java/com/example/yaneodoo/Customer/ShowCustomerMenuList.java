@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -14,6 +14,8 @@ import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.Common.ShowMenuInfo;
+
+import java.util.ArrayList;
 
 public class ShowCustomerMenuList extends AppCompatActivity {
     private Intent intent;
@@ -27,15 +29,22 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         intent = getIntent();
         String bistroName=intent.getStringExtra("selectedBistro");
         // TODO : GET /stores/{storeId}/items 로 데이터 가져와서 listview에 아이템 추가
+        // 별점 높은 순
 
         // Adapter 생성
-        MenuListViewAdapter adapter = new MenuListViewAdapter();
+        final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
+        final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
 
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
 
         //메뉴 선택 리스너
@@ -53,8 +62,8 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        Button btnHome = (Button) findViewById(R.id.homebtn) ;
-        btnHome.setOnClickListener(new Button.OnClickListener() {
+        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerBistroList.class);

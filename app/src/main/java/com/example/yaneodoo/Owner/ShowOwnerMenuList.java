@@ -7,14 +7,18 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.Common.ShowMenuInfo;
+
+import java.util.ArrayList;
 
 public class ShowOwnerMenuList extends AppCompatActivity {
     private Intent intent;
@@ -28,15 +32,24 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         intent = getIntent();
         final String bistroName=intent.getStringExtra("selectedBistro");
         // TODO : GET /stores/{storeId}/items 로 데이터 가져와서 listview에 아이템 추가
+        // 별점 높은 순
 
         // Adapter 생성
-        MenuListViewAdapter adapter = new MenuListViewAdapter();
+        final ArrayList<MenuListViewItem>listViewItemList = new ArrayList<>();
+        final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
 
-        // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
+        // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
+        final ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
 
         // 주문내역 버튼 클릭 리스너
@@ -90,16 +103,31 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : onchoice 이용?
+                // TODO : onchoice 이용
+                int count, checked;
+                count = adapter.getCount();
+
+                if (count > 0) {
+                    // 현재 선택된 아이템의 position 획득
+                    checked = listview.getCheckedItemPosition();
+                    if (checked > -1 && checked < count) {
+                        // 아이템 삭제
+                        listViewItemList.remove(checked);
+                        // listview 선택 초기화
+                        listview.clearChoices();
+                        // listview 갱신
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
         });
 
         // 홈 버튼 클릭 리스너
-        Button btnHome = (Button) findViewById(R.id.homebtn) ;
-        btnHome.setOnClickListener(new Button.OnClickListener() {
+        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerBistroList.class);
+                Intent intent = new Intent(ShowOwnerMenuList.this, ShowCustomerBistroList.class);
                 startActivity(intent);
             }
         }) ;

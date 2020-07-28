@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.R;
 
 public class RegisterMenu extends AppCompatActivity {
@@ -56,8 +56,8 @@ public class RegisterMenu extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        Button btnHome = (Button) findViewById(R.id.homebtn) ;
-        btnHome.setOnClickListener(new Button.OnClickListener() {
+        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerBistroList.class);

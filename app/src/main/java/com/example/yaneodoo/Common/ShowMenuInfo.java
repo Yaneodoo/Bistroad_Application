@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,17 +12,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Customer.ShowCustomerMenuList;
-import com.example.yaneodoo.ListView.MenuListViewAdapter;
-import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
-import com.example.yaneodoo.ListView.ReviewListViewItem;
-import com.example.yaneodoo.Owner.RegisterBistro;
 import com.example.yaneodoo.Owner.RegisterMenu;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.R;
-
-import java.security.acl.Owner;
 
 public class ShowMenuInfo extends AppCompatActivity {
     private Intent intent;
@@ -48,6 +39,13 @@ public class ShowMenuInfo extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","4.3","맛있었다!");
 
         // TODO : 동적으로 owner일 때만 메뉴 txtView옆에 edit버튼 생성(실행하여 확인 필요)
@@ -77,8 +75,8 @@ public class ShowMenuInfo extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        Button btnHome = (Button) findViewById(R.id.homebtn) ;
-        btnHome.setOnClickListener(new Button.OnClickListener() {
+        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO : 손님이면 ShowCustomerBistroList로 이동
