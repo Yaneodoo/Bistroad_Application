@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 public class OrderListViewItem {
     private Drawable progress;
     private String dateStr, nameStr, orderStr;
+    private String orderNum;
 
     public Drawable getProgress() {
         return progress;
@@ -36,5 +37,13 @@ public class OrderListViewItem {
 
     public void setOrderStr(String orderStr) {
         this.orderStr = orderStr;
+    }
+
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
     }
 }

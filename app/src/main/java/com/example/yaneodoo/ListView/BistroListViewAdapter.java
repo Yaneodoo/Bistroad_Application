@@ -1,24 +1,25 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
-        import android.graphics.drawable.Drawable;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.BaseAdapter;
-        import android.widget.ImageView;
-        import android.widget.TextView;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
 
-public class BistroListViewAdapter extends BaseAdapter {
+public class BistroListViewAdapter extends ArrayAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<BistroListViewItem> listViewItemList = new ArrayList<BistroListViewItem>() ;
 
     // ListViewAdapter의 생성자
-    public BistroListViewAdapter() {
+    public BistroListViewAdapter(Context context, int resource, ArrayList<BistroListViewItem> listViewItemList) {
+        super(context, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
