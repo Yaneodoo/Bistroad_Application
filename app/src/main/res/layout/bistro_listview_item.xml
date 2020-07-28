@@ -6,10 +6,10 @@
     android:background="@drawable/list_item_border">
 
     <ImageView
+        android:layout_gravity="center"
         android:id="@+id/bistro_imgView"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="125dp"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

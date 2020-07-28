@@ -36,9 +36,9 @@ public class ShowCustomerBistroList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
