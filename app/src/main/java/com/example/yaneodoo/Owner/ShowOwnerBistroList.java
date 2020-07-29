@@ -25,7 +25,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_owner);
 
-        // TODO : owerId로 GET /stores하여 얻은 정보 아이템으로 추가
+        // TODO : owNerId로 GET /stores하여 얻은 정보 아이템으로 추가
 
         // Adapter 생성
         final ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
@@ -38,9 +38,9 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
@@ -74,15 +74,27 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 여러 뷰 선택 활성화
-                // onchoice 이용?
                 if(delbtn.getText()=="삭제"){
+                    // TODO : onchoice활성화
+                    // add버튼 삭제
+                    LinearLayout topLL = (LinearLayout)findViewById(R.id.dynamicArea);
+                    Button addbtn = (Button)findViewById(R.id.btn_add);
+                    topLL.removeView(addbtn);
+
                     delbtn.setText("확인");
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f));
                 }
                 else{
                     // TODO : (삭제)확인 버튼 클릭 리스너
                     // DELETE /stores/{storeId}로 선택한 매장들 삭제
+                    // add버튼 생성
+                    Button btn_order=new Button(ShowOwnerBistroList.this);
+                    btn_order.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+                    btn_order.setText("주문하기");
+                    btn_order.setTextSize(10);
+                    btn_order.setId(R.id.btn_add);
+                    LinearLayout topLL = (LinearLayout)findViewById(R.id.dynamicArea);
+                    topLL.addView(btn_order);
+
                     delbtn.setText("삭제");
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
                 }
