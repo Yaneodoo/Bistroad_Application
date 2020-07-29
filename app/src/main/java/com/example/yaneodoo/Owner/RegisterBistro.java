@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,6 +23,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.R;
+
+import java.util.ArrayList;
 
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback{
     private Intent intent;
@@ -61,7 +65,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        // 이미지 업로드 버튼 클릭 리스너
         ImageButton upload_btn = (ImageButton) findViewById(R.id.bistro_imagebtn);
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -89,9 +93,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 //BistroInfo bistroInfo=new BistroInfo(photo,,name,tel);
                 // TODO : POST /stores로 생성한 bistro등록
 
-
                 // Adapter 생성
-                BistroListViewAdapter adapter = new BistroListViewAdapter();
+                ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
+                BistroListViewAdapter adapter = new BistroListViewAdapter(RegisterBistro.this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
 
                 // 리스트뷰 참조 및 Adapter달기
                 ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
@@ -106,8 +110,8 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         });
 
         // 홈 버튼 클릭 리스너
-        Button btnHome = (Button) findViewById(R.id.homebtn) ;
-        btnHome.setOnClickListener(new Button.OnClickListener() {
+        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
