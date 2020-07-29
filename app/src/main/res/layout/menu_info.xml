@@ -68,8 +68,8 @@
 
         <ImageView
             android:id="@+id/menu_image"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:paddingRight="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tteokbokki" />
@@ -99,9 +99,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="★4.1"
-                android:textSize="12dp"
+                android:gravity="right"
+                android:text="★★★★★"
+                android:textSize="20dp"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>

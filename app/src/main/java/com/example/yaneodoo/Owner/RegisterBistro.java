@@ -65,7 +65,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
+        // 이미지 업로드 버튼 클릭 리스너
         ImageButton upload_btn = (ImageButton) findViewById(R.id.bistro_imagebtn);
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override

@@ -97,12 +97,11 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             }
         });
 
-        // 삭제 버튼 클릭 리스너
+        // TODO : 삭제 버튼 클릭 리스너
         Button delbtn = (Button) findViewById(R.id.btn_delete) ;
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : onchoice 이용
                 int count, checked;
                 count = adapter.getCount();
 
