@@ -12,11 +12,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Common.ShowMenuInfo;
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.Common.ShowMenuInfo;
 
 import java.util.ArrayList;
 
@@ -44,13 +44,12 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕","4.3","33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능","★4.3","주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "떡볶이", "2000", "#짜장 #짬뽕","★4.3","주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "떡볶이", "10000", "#짜장 #짬뽕","★4.3","주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "떡볶이", "10000", "#짜장 #짬뽕","★4.3","주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕","★4.3","주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕","★4.3","주문횟수 : 33");
 
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist) ;
