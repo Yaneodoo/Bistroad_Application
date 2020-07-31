@@ -34,8 +34,7 @@
             android:id="@+id/bistro_name_txtView"
             android:textSize="24dp"
             android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:layout_weight="1" />
+            android:gravity="center_vertical" />
 
         <TextView
             android:layout_width="match_parent"
@@ -43,12 +42,11 @@
             android:text="서울 강남구 남부순환로 2942"
             android:id="@+id/bistro_location_txtView"
             android:textSize="20dp"
-            android:textColor="#666666"
-            android:layout_weight="1" />
+            android:textColor="#666666" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="#떡볶이 #순대 #오뎅"
+            android:text="#떡볶이 #순대 #오뎅(100자 이내)"
             android:id="@+id/bistro_desc_txtView"
             android:textSize="16dp"
             android:textColor="#666666"

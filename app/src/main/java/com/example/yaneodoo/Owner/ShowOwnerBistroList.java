@@ -29,7 +29,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         // Adapter 생성
         final ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
-        final BistroListViewAdapter adapter = new BistroListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
+        final BistroListViewAdapter adapter = new BistroListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         final ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
@@ -38,12 +38,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "윤스쿡", "서울시 용산구 새창로 70", "식전빵이 매우 맛있는곳\n" +
+                "테스트 문장입니다. 테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "아웃백", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "동대문엽기떡볶이", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,8 +76,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 if(delbtn.getText()=="삭제"){
                     // TODO : onchoice활성화
                     // add버튼 삭제
-                    LinearLayout topLL = (LinearLayout)findViewById(R.id.dynamicArea);
-                    Button addbtn = (Button)findViewById(R.id.btn_add);
+                    LinearLayout topLL = (LinearLayout) findViewById(R.id.bistro_delete_dynamic_area);
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
                     topLL.removeView(addbtn);
 
                     delbtn.setText("확인");
@@ -92,7 +91,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     btn_order.setText("주문하기");
                     btn_order.setTextSize(10);
                     btn_order.setId(R.id.btn_add);
-                    LinearLayout topLL = (LinearLayout)findViewById(R.id.dynamicArea);
+                    LinearLayout topLL = (LinearLayout) findViewById(R.id.bistro_delete_dynamic_area);
                     topLL.addView(btn_order);
 
                     delbtn.setText("삭제");

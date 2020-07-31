@@ -29,7 +29,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
 
         // Adapter 생성
         ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
-        BistroListViewAdapter adapter = new BistroListViewAdapter(ShowCustomerBistroList.this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
+        BistroListViewAdapter adapter = new BistroListViewAdapter(ShowCustomerBistroList.this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
 
         // 리스트뷰 참조 및 Adapter달기
@@ -39,11 +39,9 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "#짜장 #짬뽕 3AEFEA\neawfwagrbgnrthegawgsvzdffeklsfnkzdnㅋㄴㅍㅍ\nㅁㅈㅋㅌ프");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "#짜장 #짬뽕 테스트문장입니다" +
+                "\n테스트문장입니다테스트문장입니다테스트문장입니다테스트문장입니다\n테스트문장입니다");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");

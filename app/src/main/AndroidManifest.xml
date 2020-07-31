@@ -19,7 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
 
-        <activity android:name=".Customer.ShowCustomerBistroList">
+        <activity android:name=".SelectUser">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Common.ShowMenuInfo"/>
+        <activity android:name=".Customer.ShowCustomerBistroList" />
         <activity android:name=".Customer.ShowCustomerMenuList"/>
         <activity android:name=".Owner.RegisterBistro"/>
         <activity android:name=".Owner.RegisterMenu"/>
