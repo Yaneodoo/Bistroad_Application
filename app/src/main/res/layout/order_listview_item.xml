@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/review_item_border"
-    android:layout_weight="5">
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/review_item_border">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +22,8 @@
             android:textSize="20dp"
             android:textColor="#000000"
             android:gravity="center"
-            android:layout_weight="2" />
+            android:layout_weight="1" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +32,7 @@
             android:textSize="16dp"
             android:textColor="#666666"
             android:gravity="center"
-            android:layout_weight="2" />
+            android:layout_weight="1" />
     </LinearLayout>
 
     <TextView
@@ -43,7 +45,7 @@
         android:paddingBottom="10dp"
         android:text="●품목과 개수 리스트..."
         android:textColor="#666666"
-        android:layout_weight="3"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -61,6 +63,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/requested" />
+
         <TextView
             android:id="@+id/order_progress"
             android:layout_width="match_parent"
@@ -69,8 +72,7 @@
             android:text="접수 완료"
             android:textSize="15dp"
             android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:layout_weight="2" />
+            android:gravity="center_vertical" />
     </LinearLayout>
 
 

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.R;
 
@@ -63,13 +62,11 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020-02-09", "지나찡지나찡지나찡지나찡지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,14 +74,14 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // 주문 아이템 하나 선택해도 일단은 아무것도 안함.
             }
-        }) ;
+        });
 
         // 홈 버튼 클릭 리스너
         TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowOwnerOrderList.this, ShowCustomerBistroList.class);
+                Intent intent = new Intent(ShowOwnerOrderList.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
         }) ;

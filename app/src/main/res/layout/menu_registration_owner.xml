@@ -89,7 +89,9 @@
                 android:maxLength="20"
                 android:paddingLeft="10dp"
                 android:textSize="20dp"
-                android:hint="20자 이내"/>
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="20자 이내" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="가격 : "
                 android:textSize="20dp"/>
+
             <EditText
                 android:id="@+id/menu_price_txtView"
                 android:layout_width="match_parent"
@@ -108,7 +111,9 @@
                 android:inputType="number"
                 android:textSize="20dp"
                 android:paddingLeft="10dp"
-                android:hint="숫자만 입력"/>
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="숫자만 입력" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:text="설명 : "
                 android:textSize="20dp"/>
+
             <EditText
                 android:id="@+id/menu_desc_txtView"
                 android:layout_width="match_parent"
@@ -127,7 +133,9 @@
                 android:paddingLeft="10dp"
                 android:maxLength="100"
                 android:textSize="20dp"
-                android:hint="100자 이내"/>
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="100자 이내" />
         </LinearLayout>
     </LinearLayout>
 
