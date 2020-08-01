@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/list_item_border">
 
     <ImageView
         android:id="@+id/menu_imgView"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -25,7 +24,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        android:layout_weight="4">
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="match_parent"
@@ -34,8 +33,7 @@
             android:id="@+id/menu_name_txtView"
             android:textSize="24dp"
             android:textColor="#000000"
-            android:gravity="center_vertical"
-            android:layout_weight="1" />
+            android:gravity="center_vertical" />
 
         <TextView
             android:layout_width="match_parent"
@@ -43,8 +41,8 @@
             android:text="5000원"
             android:id="@+id/menu_price_txtView"
             android:textSize="16dp"
-            android:textColor="#666666"
-            android:layout_weight="1" />
+            android:textColor="#666666" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,14 +54,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="★4.5"
                 android:id="@+id/menu_score_txtView"
                 android:textSize="16dp"
-                android:gravity="center_vertical"
-                android:layout_weight="1" />
+                android:gravity="center_vertical" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,11 +70,10 @@
                 android:id="@+id/menu_orderCount_txtView"
                 android:layout_alignParentRight="true"
                 android:textSize="16dp"
-                android:textColor="#666666"
-                android:layout_weight="1" />
+                android:textColor="#666666" />
 
         </RelativeLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

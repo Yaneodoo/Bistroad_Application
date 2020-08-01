@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Common.ShowMenuInfo">
+    android:orientation="vertical"
+    tools:context=".Customer.ShowCustomerMenuInfo">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:background="#C6D3FC">
+        android:background="#C6D3FC"
+        android:gravity="right">
         <TextView
             android:id="@+id/homebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
+            android:paddingTop="10sp"
+            android:scaleType="centerInside"
             android:text="Bistroad"
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
-            android:paddingTop="10sp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerInside"
             android:textSize="50sp"/>
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#C6D3FC"
-            android:paddingRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="#C6D3FC"
+            android:paddingRight="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/mypage" />
     </RelativeLayout>
@@ -38,31 +38,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="현재 위치"
-            android:textStyle="bold"
-            android:textSize="25dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="서울특별시 마포구"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
-    </LinearLayout>
-
-    <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
         android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp">
 
@@ -74,56 +52,72 @@
             android:scaleType="fitCenter"
             android:src="@drawable/tteokbokki" />
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_weight="1"
+            android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dynamicArea"
                 android:gravity="right">
+                <TextView
+                    android:id="@+id/menu_name_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="떡볶이"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
+                <Button
+                    android:id="@+id/btn_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="주문하기"
+                    android:textSize="10dp"/>
             </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="5000원"
-                android:textSize="12dp"
-                android:layout_weight="1" />
+                android:textSize="12dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="#JMT #순대 #오뎅"
-                android:textSize="12dp"
-                android:layout_weight="1" />
+                android:textSize="12dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:text="★★★★★"
-                android:textSize="20dp"
-                android:layout_weight="1" />
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:paddingTop="10dp"
         android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:text="후기"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
     <ListView
         android:id="@+id/review_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
+        android:divider="#00000000"
         android:dividerHeight="10dp"
-        android:divider="#00000000"/>
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"/>
 </LinearLayout>
