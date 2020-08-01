@@ -65,6 +65,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerBistroList.this, RegisterBistro.class);
                 startActivity(intent);
+
             }
         });
 
