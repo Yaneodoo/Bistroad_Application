@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Common.ShowMenuInfo;
 import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
@@ -70,7 +69,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 String titleStr = item.getMenuStr();
                 String owner = "";
 
-                Intent intent = new Intent(ShowOwnerMenuList.this, ShowMenuInfo.class);
+                Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                 intent.putExtra("selectedMenu", titleStr);
                 intent.putExtra("owner", owner);
                 startActivity(intent);

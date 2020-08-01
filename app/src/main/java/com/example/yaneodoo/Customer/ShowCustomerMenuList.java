@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Common.ShowMenuInfo;
 import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
@@ -57,7 +56,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 String menuStr = item.getMenuStr();
                 String customer = "";
 
-                Intent intent = new Intent(ShowCustomerMenuList.this, ShowMenuInfo.class);
+                Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
                 intent.putExtra("selectedMenu", menuStr);
                 intent.putExtra("customer", customer);
                 startActivity(intent);

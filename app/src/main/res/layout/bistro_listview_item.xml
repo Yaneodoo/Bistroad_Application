@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/list_item_border">
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="@drawable/list_item_border"
+android:orientation="horizontal">
 
     <ImageView
-        android:layout_gravity="center"
         android:id="@+id/bistro_imgView"
-        android:layout_width="150dp"
-        android:layout_height="125dp"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -19,18 +19,18 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        android:layout_weight="4">
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="레드 175"
+            android:text="떡볶이"
             android:id="@+id/bistro_name_txtView"
             android:textSize="24dp"
             android:textColor="#000000"
@@ -39,18 +39,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="서울 강남구 남부순환로 2942"
+            android:text="5000원"
             android:id="@+id/bistro_location_txtView"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:textColor="#666666" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="#떡볶이 #순대 #오뎅(100자 이내)"
             android:id="@+id/bistro_desc_txtView"
             android:textSize="16dp"
-            android:textColor="#666666"
-            android:layout_weight="1" />
+            android:textColor="#666666"/>
+
     </LinearLayout>
 
 </LinearLayout>
