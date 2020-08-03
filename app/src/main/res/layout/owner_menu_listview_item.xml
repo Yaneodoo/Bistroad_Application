@@ -9,7 +9,6 @@
         android:id="@+id/menu_imgView"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -25,7 +24,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
-        android:layout_weight="4">
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="match_parent"

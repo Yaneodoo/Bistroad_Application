@@ -57,7 +57,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 String menuStr = item.getMenuStr();
                 String customer = "";
 
-                Intent intent = new Intent(ShowCustomerMenuList.this, ShowMenuInfo.class);
+                Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
                 intent.putExtra("selectedMenu", menuStr);
                 intent.putExtra("customer", customer);
                 startActivity(intent);

@@ -67,6 +67,7 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
