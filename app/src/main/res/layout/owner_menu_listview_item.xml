@@ -52,6 +52,7 @@
             android:textSize="16dp"
             android:textColor="#666666"
             android:layout_weight="1" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -75,6 +76,6 @@
 
         </RelativeLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

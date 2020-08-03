@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Common.ShowMenuInfo;
-import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
+import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         // Adapter 생성
         final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
-        final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final MenuListViewOwnerAdapter adapter = new MenuListViewOwnerAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         final ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);

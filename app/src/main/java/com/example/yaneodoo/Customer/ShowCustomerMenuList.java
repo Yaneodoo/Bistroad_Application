@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Common.ShowMenuInfo;
-import com.example.yaneodoo.ListView.MenuListViewAdapter;
+import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
 
@@ -33,7 +33,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
 
         // Adapter 생성
         final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
-        final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final MenuListViewCustomerAdapter adapter = new MenuListViewCustomerAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.menu_list_view_customer);
