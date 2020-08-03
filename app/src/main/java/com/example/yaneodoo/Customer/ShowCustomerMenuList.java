@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Common.ShowMenuInfo;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
@@ -41,12 +40,11 @@ public class ShowCustomerMenuList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "어묵탕", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
                 "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "떡볶이", "100000", "#짜장 #짬뽕", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "떡볶이", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", "");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
 
         //메뉴 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

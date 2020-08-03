@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -69,7 +69,7 @@
                 android:src="@drawable/tteokbokki" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="10dp">
                 <TextView
@@ -79,10 +79,17 @@
                     android:text="레드 175"
                     android:textColor="#000000"
                     android:textSize="24dp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="서울 강남구 남부순환로 2942"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="가게에 대한 설명입니다 가게에 대한 설명입니다"
                     android:textSize="16dp" />
             </LinearLayout>
         </LinearLayout>

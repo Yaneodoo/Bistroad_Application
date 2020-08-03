@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE LinearLayout [<!ELEMENT LinearLayout (RelativeLayout|TextView|View|LinearLayout|ImageButton|fragment|EditText|Button)*><!ATTLIST LinearLayoutandroid:layout_height CDATA #REQUIREDandroid:layout_weight CDATA #IMPLIEDandroid:layout_width CDATA #REQUIREDandroid:orientation CDATA #REQUIREDandroid:paddingLeft CDATA #IMPLIEDandroid:paddingRight CDATA #IMPLIEDandroid:paddingTop CDATA #IMPLIEDtools:context CDATA #IMPLIEDxmlns:android CDATA #IMPLIEDxmlns:tools CDATA #IMPLIED><!ELEMENT RelativeLayout (TextView|ImageButton)*><!ATTLIST RelativeLayoutandroid:layout_width CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:gravity CDATA #REQUIREDandroid:background CDATA #REQUIRED><!ELEMENT TextView (#PCDATA)><!ATTLIST TextViewandroid:background CDATA #IMPLIEDandroid:fontFamily CDATA #IMPLIEDandroid:id CDATA #IMPLIEDandroid:layout_centerInParent CDATA #IMPLIEDandroid:layout_height CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:paddingBottom CDATA #IMPLIEDandroid:paddingLeft CDATA #IMPLIEDandroid:paddingTop CDATA #IMPLIEDandroid:scaleType CDATA #IMPLIEDandroid:text CDATA #REQUIREDandroid:textAllCaps CDATA #IMPLIEDandroid:textColorLink CDATA #IMPLIEDandroid:textSize CDATA #REQUIREDandroid:textStyle CDATA #IMPLIED><!ELEMENT ImageButton (#PCDATA)><!ATTLIST ImageButtonandroid:adjustViewBounds CDATA #IMPLIEDandroid:background CDATA #IMPLIEDandroid:id CDATA #REQUIREDandroid:layout_alignParentRight CDATA #IMPLIEDandroid:layout_centerVertical CDATA #IMPLIEDandroid:layout_gravity CDATA #IMPLIEDandroid:layout_height CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:paddingRight CDATA #IMPLIEDandroid:scaleType CDATA #REQUIREDandroid:src CDATA #REQUIRED><!ELEMENT View (#PCDATA)><!ATTLIST Viewandroid:layout_width CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:layout_centerInParent CDATA #REQUIREDandroid:background CDATA #REQUIRED><!ELEMENT fragment (#PCDATA)><!ATTLIST fragmentandroid:id CDATA #REQUIREDandroid:name CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDtools:context CDATA #REQUIRED><!ELEMENT EditText (#PCDATA)><!ATTLIST EditTextandroid:backgroundTint CDATA #REQUIREDandroid:hint CDATA #REQUIREDandroid:id CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:maxLength CDATA #IMPLIEDandroid:textCursorDrawable CDATA #REQUIREDandroid:textSize CDATA #REQUIRED><!ELEMENT Button (#PCDATA)><!ATTLIST Buttonandroid:id CDATA #REQUIREDandroid:layout_width CDATA #REQUIREDandroid:layout_height CDATA #REQUIREDandroid:paddingLeft CDATA #REQUIREDandroid:paddingRight CDATA #REQUIREDandroid:text CDATA #REQUIRED>]>
 <LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -89,46 +89,91 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             tools:context=".Owner.RegisterBistro" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="상호명 : "
-                android:textSize="15dp"/>
-            <EditText
-                android:id="@+id/bistro_name_txtView"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전화번호 : "
-                android:textSize="15dp"/>
-            <EditText
-                android:id="@+id/bistro_tel_txtView"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상호명 : "
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/bistro_name_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:maxLength="10"
+                    android:textSize="20dp"
+                    android:hint="10자 이내"
+                    android:backgroundTint="#FF6181E8" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전화번호 : "
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/bistro_tel_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textSize="20dp"
+                    android:hint="숫자만 입력"
+                    android:backgroundTint="#FF6181E8" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="설명 : "
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/bistro_desc_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textCursorDrawable="@drawable/cursor"
+                    android:textSize="20dp"
+                    android:maxLength="30"
+                    android:hint="30자 이내"
+                    android:backgroundTint="#FF6181E8" />
+            </LinearLayout>
         </LinearLayout>
+
+
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FEA6A4"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="등록"/>
+        android:text="등록" />
 
 
 </LinearLayout>

@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -77,7 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="#00000000"
-                android:dividerHeight="10dp"/>
+                android:dividerHeight="10dp"></ListView>
+
         </ScrollView>
     </LinearLayout>
 </LinearLayout>

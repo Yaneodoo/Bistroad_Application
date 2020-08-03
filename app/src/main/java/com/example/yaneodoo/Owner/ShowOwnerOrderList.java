@@ -3,7 +3,6 @@ package com.example.yaneodoo.Owner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,30 +61,22 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-
-        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // 주문 아이템 하나 선택해도 일단은 아무것도 안함.
-            }
-        });
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "minju", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "youbin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "elsif", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "trump", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "rilakkuma", "짜장 x 1\n짬뽕 x 2");
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerOrderList.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
     }
