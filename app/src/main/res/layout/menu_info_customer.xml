@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#C6D3FC"
-        android:gravity="right">
+        android:gravity="end">
+
         <TextView
             android:id="@+id/homebtn"
             android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
             android:text="Bistroad"
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -51,10 +52,11 @@
             android:paddingRight="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/tteokbokki" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -69,36 +71,59 @@
                     android:text="떡볶이"
                     android:textColor="#000000"
                     android:textSize="20dp" />
+
+                // TODO : 둥근 테두리
+
                 <Button
                     android:id="@+id/btn_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:text="주문하기"
-                    android:textSize="10dp"/>
+                    android:textSize="14sp" />
             </RelativeLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="5000원"
-                android:textSize="12dp" />
+                android:gravity="center_vertical"
+                android:textSize="12dp"
+                android:layout_weight="1" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="#JMT #순대 #오뎅"
                 android:textSize="12dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="right|center"
                 android:text="★★★★★"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:paddingRight="100dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="#00000000"
-        android:dividerHeight="10dp"
+        android:dividerHeight="0dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"

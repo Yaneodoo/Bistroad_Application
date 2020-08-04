@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -78,20 +78,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/bistro_delete_dynamic_area"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:background="#FEA6A4"
+            android:gravity="center"
             android:text="삭제" />
+
         <Button
+            android:id="@+id/btn_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_add"
+            android:layout_weight="1"
+            android:background="#FEA6A4"
             android:gravity="center"
-            android:text="추가"
-            android:layout_weight="1"/>
+            android:text="추가" />
     </LinearLayout>
 
 </LinearLayout>

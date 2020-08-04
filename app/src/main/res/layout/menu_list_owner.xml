@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -52,21 +52,25 @@
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
+
         <ImageView
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
+            android:scaleType="fitCenter"
             android:id="@+id/bistro_represent_image"
             android:src="@drawable/tteokbokki"/>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingLeft="10dp">
+
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,30 +79,48 @@
                     android:textColor="#000000"
                     android:gravity="center_vertical"
                     android:layout_weight="1" />
-                <ImageButton
+
+                <Button
                     android:id="@+id/btn_edit"
-                    android:layout_width="61dp"
-                    android:layout_height="30dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/edit"/>
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/edit"
+                    android:text="매장 수정" />
             </RelativeLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="서울 강남구 남부순환로 2942"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가게에 대한 설명입니다. 가게에 대한 설명입니다"
                 android:textSize="16dp"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#000000"/>
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:paddingRight="100dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,6 +130,7 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,14 +142,16 @@
                 android:textSize="25dp"
                 android:textColor="#000000"
                 android:layout_weight="1" />
+
             <Button
                 android:id="@+id/btn_orderlist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="주문 내역 보기"/>
+                android:background="#C6D3FC"
+                android:text="주문 내역 보기"
+                android:textSize="16dp" />
         </RelativeLayout>
 
         <ScrollView
@@ -149,18 +174,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        // TODO : 둥근 테두리
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/btn_delete"
-            android:text="삭제"
-            android:layout_weight="1"/>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FEA6A4"
+            android:text="삭제" />
+
+        <Button
             android:id="@+id/btn_add"
-            android:text="추가"
-            android:layout_weight="1"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FEA6A4"
+            android:text="추가" />
     </LinearLayout>
 
 </LinearLayout>

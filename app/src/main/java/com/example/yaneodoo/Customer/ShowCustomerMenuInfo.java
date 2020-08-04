@@ -34,15 +34,15 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!맛있었다!맛있었다!맛있었다!" +
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "horseesroh", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "2020.07.09", "elsiff", "떡볶이", "★4.3", "맛있었다!맛있었다!맛있었다!맛있었다!" +
                 "\n맛있었다!\n맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "2020.07.09", "minju", "떡볶이떡볶이떡볶이떡", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "vomin", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "yalru", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "hello", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "idkmyname", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "officialll", "떡볶이", "★4.3", "맛있었다!");
 
 
         TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);

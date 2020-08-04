@@ -19,7 +19,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -46,11 +46,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="#JMT #순대 #오뎅"
+            android:text="#JMT #순대 #오뎅과 함께 먹는 것을 추천하는"
             android:id="@+id/menu_desc_txtView"
             android:textSize="16dp"
-            android:textColor="#666666"
-            android:layout_weight="1" />
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#666666" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
