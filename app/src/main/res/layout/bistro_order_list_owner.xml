@@ -35,6 +35,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/mypage" />
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,13 +44,23 @@
         android:paddingLeft="10dp"
         android:text="김민주 점주님의\n레드 175 주문내역입니다."
         android:textStyle="bold"
-        android:textSize="25dp"/>
+        android:textSize="25dp" />
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#000000"/>
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:paddingRight="100dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,6 +70,7 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

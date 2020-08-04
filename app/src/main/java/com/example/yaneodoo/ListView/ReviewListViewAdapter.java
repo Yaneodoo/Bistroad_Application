@@ -43,7 +43,6 @@ public class ReviewListViewAdapter extends BaseAdapter {
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
         TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
         TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
-        TextView menuTextView = (TextView) convertView.findViewById(R.id.review_menu_txtView);
         TextView scoreTextView=(TextView) convertView.findViewById(R.id.review_score_txtView);
         TextView reviewTextView=(TextView) convertView.findViewById(R.id.review_text_txtView);
 
@@ -55,7 +54,6 @@ public class ReviewListViewAdapter extends BaseAdapter {
         dateTextView.setText(listViewItem.getDateStr());
         writerTextView.setText(listViewItem.getWriterStr());
         scoreTextView.setText(listViewItem.getScoreStr());
-        menuTextView.setText(listViewItem.getMenuStr());
         reviewTextView.setText(listViewItem.getReviewStr());
 
         return convertView;

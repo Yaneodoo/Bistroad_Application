@@ -106,11 +106,21 @@
         </LinearLayout>
     </LinearLayout>
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#000000"/>
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:paddingRight="100dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -120,6 +130,7 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
