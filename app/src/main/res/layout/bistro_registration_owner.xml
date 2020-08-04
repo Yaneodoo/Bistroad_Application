@@ -154,6 +154,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:background="#FEA6A4"
         android:text="등록"/>
 
 

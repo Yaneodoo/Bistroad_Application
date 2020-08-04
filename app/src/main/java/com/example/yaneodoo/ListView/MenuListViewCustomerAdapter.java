@@ -54,7 +54,6 @@ public class MenuListViewCustomerAdapter extends ArrayAdapter {
         priceTextView.setText(listViewItem.getPriceStr());
         descTextView.setText(listViewItem.getDescStr());
         scoreTextView.setText(listViewItem.getScoreStr());
-        orderCountTextView.setText(listViewItem.getOrderCountStr());
 
         return convertView;
     }

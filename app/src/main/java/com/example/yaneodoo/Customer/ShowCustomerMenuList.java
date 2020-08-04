@@ -39,12 +39,12 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", "");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", " ");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "어묵탕", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
-                "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", "");
+                "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
 
         //메뉴 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

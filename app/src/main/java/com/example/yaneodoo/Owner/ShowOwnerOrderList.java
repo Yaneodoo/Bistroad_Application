@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,16 +26,13 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         listview.setAdapter(adapter);
 
         // TODO : 해당 position의 progress를 반전
-        TextView order_progress=(TextView) findViewById(R.id.order_progress);
-        ImageButton progressbtn=(ImageButton) findViewById(R.id.btn_progress);
-        if(order_progress.getText()=="접수 완료"){
-            progressbtn.setImageResource(R.drawable.requested);
-            order_progress.setText("접수중");
+        final ToggleButton tb2 = (ToggleButton) this.findViewById(R.id.btn_progress);
+        if (tb2.isChecked()) {
+            tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
+        } else {
+            tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
         }
-        else{
-            progressbtn.setImageResource(R.drawable.accepted);
-            order_progress.setText("접수 완료");
-        }
+
         adapter.notifyDataSetChanged();
 
         // TODO : 선택한 아이템의 상태정보 update
