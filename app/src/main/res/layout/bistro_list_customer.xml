@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp" />
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -37,33 +37,36 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:fillViewport="true"
+        android:layout_marginTop="0dp"
+        android:id="@+id/scrollView">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="10dp"
             android:paddingLeft="10dp"
+            android:paddingTop="10dp"
             android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            android:layout_weight="1">
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="현재 위치"
-                android:textStyle="bold"
-                android:textSize="25dp" />
+                android:textSize="25dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="서울특별시 마포구"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,20 +75,22 @@
                 android:text="주변 가게 리스트"
                 android:textSize="20dp" />
 
-            <ScrollView
+            <ListView
+                android:id="@+id/bistro_list_view_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fillViewport="true">
+                android:divider="#00000000"
+                android:dividerHeight="10dp"></ListView>
 
-                <ListView
-                    android:id="@+id/bistro_list_view_customer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dividerHeight="10dp"
-                    android:divider="#00000000"
-                    android:layout_weight="1" />
-            </ScrollView>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/shoppping_basket"
+                android:layout_margin="16dp" />
+
+            //implementation 'com.android.support:design:27.1.1'
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

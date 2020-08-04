@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_border">
+
+    <ImageView
+        android:id="@+id/menu_imgView"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/tteokbokki" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:layout_weight="4">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="떡볶이"
+                android:id="@+id/menu_name_txtView"
+                android:textSize="24dp"
+                android:textColor="#000000"
+                android:gravity="center_vertical" />
+
+            // TODO : 둥근 테두리
+
+            <Button
+                android:id="@+id/btn_order"
+                android:text="주문하기"
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5000원"
+            android:id="@+id/menu_price_txtView"
+            android:textSize="16dp"
+            android:textColor="#666666" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="#JMT #순대 #오뎅과 함께 먹으면 더 맛있다!!"
+            android:id="@+id/menu_desc_txtView"
+            android:textSize="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#666666" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="★4.5"
+                android:id="@+id/menu_score_txtView"
+                android:textSize="16dp"
+                android:gravity="center_vertical" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

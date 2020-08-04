@@ -3,10 +3,9 @@ package com.example.yaneodoo.Owner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,16 +25,13 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         listview.setAdapter(adapter);
 
         // TODO : 해당 position의 progress를 반전
-        TextView order_progress=(TextView) findViewById(R.id.order_progress);
-        ImageButton progressbtn=(ImageButton) findViewById(R.id.btn_progress);
-        if(order_progress.getText()=="접수 완료"){
-            progressbtn.setImageResource(R.drawable.requested);
-            order_progress.setText("접수중");
+        final ToggleButton tb2 = (ToggleButton) this.findViewById(R.id.btn_progress);
+        if (tb2.isChecked()) {
+            tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
+        } else {
+            tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
         }
-        else{
-            progressbtn.setImageResource(R.drawable.accepted);
-            order_progress.setText("접수 완료");
-        }
+
         adapter.notifyDataSetChanged();
 
         // TODO : 선택한 아이템의 상태정보 update
@@ -62,29 +58,22 @@ public class ShowOwnerOrderList extends AppCompatActivity implements OrderListVi
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "지나찡", "짜장 x 1\n짬뽕 x 2");
-
-        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // 주문 아이템 하나 선택해도 일단은 아무것도 안함.
-            }
-        });
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "minju", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "youbin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "elsif", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "trump", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "rilakkuma", "짜장 x 1\n짬뽕 x 2");
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerOrderList.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
     }

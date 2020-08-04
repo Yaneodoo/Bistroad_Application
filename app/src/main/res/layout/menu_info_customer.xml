@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Customer.ShowCustomerMenuInfo">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#C6D3FC"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/homebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#C6D3FC"
+            android:fontFamily="@font/rage"
+            android:paddingTop="10sp"
+            android:scaleType="centerInside"
+            android:text="Bistroad"
+            android:textAllCaps="false"
+            android:textColorLink="#FFFFFF"
+            android:textSize="40sp" />
+        <ImageButton
+            android:id="@+id/mypagebtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#C6D3FC"
+            android:paddingRight="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/mypage" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/menu_image"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:paddingRight="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/tteokbokki" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <TextView
+                    android:id="@+id/menu_name_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="떡볶이"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
+
+                // TODO : 둥근 테두리
+
+                <Button
+                    android:id="@+id/btn_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="주문하기"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5000원"
+                android:gravity="center_vertical"
+                android:textSize="12dp"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="#JMT #순대 #오뎅"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center"
+                android:text="★★★★★"
+                android:textSize="20dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <View
+            android:paddingRight="100dp"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="후기"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <ListView
+        android:id="@+id/review_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#00000000"
+        android:dividerHeight="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"/>
+</LinearLayout>

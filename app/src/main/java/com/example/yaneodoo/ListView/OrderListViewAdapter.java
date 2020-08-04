@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.yaneodoo.R;
 
@@ -50,7 +49,7 @@ public class OrderListViewAdapter extends BaseAdapter implements View.OnClickLis
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.btn_progress) ;
+        ToggleButton iconImageView = (ToggleButton) convertView.findViewById(R.id.btn_progress);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.order_date_txtView);
         TextView customerTextView = (TextView) convertView.findViewById(R.id.order_customer_txtView);
         TextView orderListView = (TextView) convertView.findViewById(R.id.order_list);
@@ -59,13 +58,13 @@ public class OrderListViewAdapter extends BaseAdapter implements View.OnClickLis
         OrderListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getProgress());
+        iconImageView.setBackgroundDrawable(listViewItem.getProgress());
         dateTextView.setText(listViewItem.getDateStr());
         customerTextView.setText(listViewItem.getNameStr());
         orderListView.setText(listViewItem.getOrderStr());
 
         // progress버튼의 TAG에 position값 지정. Adapter를 click listener로 지정.
-        final ImageButton progressbtn = (ImageButton) convertView.findViewById(R.id.btn_progress);
+        final ToggleButton progressbtn = (ToggleButton) convertView.findViewById(R.id.btn_progress);
         progressbtn.setTag(position);
         progressbtn.setOnClickListener(this);
 
