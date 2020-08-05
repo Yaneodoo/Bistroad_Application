@@ -30,19 +30,19 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.review_list_view);
+        ListView listview = (ListView) findViewById(R.id.review_list_view_owner);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!맛있었다!맛있었다!맛있었다!" +
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!맛있었다!맛있었다!맛있었다!" +
                 "\n맛있었다!\n맛있었다!");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
 
         TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
         menu_name_txtview.setText(menuName);
@@ -50,19 +50,11 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         // TODO : owner일 때 edit버튼 생성
         Button editbutton = (Button) findViewById(R.id.btn_edit);
 
-        Button orderlistbtn = (Button) findViewById(R.id.btn_orderlist);
-        orderlistbtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowOwnerMenuInfo.this, ShowOwnerOrderList.class);
-                startActivity(intent);
-            }
-        });
-
         // 수정 버튼 클릭 리스너
         editbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
-                intent.putExtra("selectedMenu", menuName);
+                intent.putExtra("selectedMenu",menuName);
                 startActivity(intent);
             }
         });

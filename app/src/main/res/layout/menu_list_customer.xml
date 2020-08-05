@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="40sp" />
+            android:textSize="40sp"/>
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -79,37 +79,25 @@
                     android:text="레드 175"
                     android:textColor="#000000"
                     android:textSize="24dp" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="서울 강남구 남부순환로 2942"
                     android:textSize="16dp" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="가게에 대한 설명입니다 가게에 대한 설명입니다"
+                    android:text="매장 설명입니다 매장 설명입니다 매장 설명입니다"
                     android:textSize="16dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:orientation="vertical">
-
-        <View
-            android:paddingRight="100dp"
-            android:paddingLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true"
-            android:background="#000000" />
-    </LinearLayout>
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:background="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,7 +107,6 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,8 +122,8 @@
                 android:id="@+id/menu_list_view_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="10dp"
                 android:divider="#00000000"
+                android:dividerHeight="10dp"
                 android:layout_weight="1"
                 android:choiceMode="singleChoice" />
         </ScrollView>

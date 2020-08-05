@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="40sp" />
+            android:textSize="40sp"/>
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -72,85 +72,71 @@
             android:paddingRight="10dp"
             android:src="@drawable/img_upload"
             android:scaleType="fitCenter"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이름 : "
+                android:textSize="20dp"/>
+            <EditText
+                android:id="@+id/menu_name_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이름 : "
-                    android:textSize="20dp" />
-
-                <EditText
-                    android:id="@+id/menu_name_txtView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="20"
-                    android:paddingLeft="10dp"
-                    android:textSize="20dp"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="20자 이내" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가격 : "
-                    android:textSize="20dp" />
-
-                <EditText
-                    android:id="@+id/menu_price_txtView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="20dp"
-                    android:paddingLeft="10dp"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="숫자만 입력" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="설명 : "
-                    android:textSize="20dp" />
-
-                <EditText
-                    android:id="@+id/menu_desc_txtView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:maxLength="100"
-                    android:textSize="20dp"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="100자 이내" />
-            </LinearLayout>
+                android:maxLength="20"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="20자 이내" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격 : "
+                android:textSize="20dp"/>
 
+            <EditText
+                android:id="@+id/menu_price_txtView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="숫자만 입력" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="설명 : "
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/menu_desc_txtView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:maxLength="100"
+                android:textSize="20dp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:backgroundTint="#FF6181E8"
+                android:hint="100자 이내" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -158,5 +144,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FEA6A4"
-        android:text="등록" />
+        android:text="등록"/>
 </LinearLayout>

@@ -42,10 +42,10 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "순대", "2000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "오뎅", "10000", "#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이", "10000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "순대", "2000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "오뎅", "10000", "#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이", "10000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
 
         // 주문내역 버튼 클릭 리스너
@@ -66,17 +66,15 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
                 String titleStr = item.getMenuStr();
-                String owner = "";
 
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                 intent.putExtra("selectedMenu", titleStr);
-                intent.putExtra("owner", owner);
                 startActivity(intent);
             }
         });
 
         // 수정 버튼 클릭 리스너
-        Button editbtn = (Button) findViewById(R.id.btn_edit);
+        Button editbtn = (Button) findViewById(R.id.btn_edit) ;
         editbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {

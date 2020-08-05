@@ -35,18 +35,10 @@
             android:src="@drawable/mypage" />
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:fillViewport="true"
-        android:layout_marginTop="0dp"
-        android:id="@+id/scrollView">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="10dp"
@@ -80,17 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="#00000000"
-                android:dividerHeight="10dp"></ListView>
+                android:dividerHeight="10dp">
+            </ListView>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/shoppping_basket"
-                android:layout_margin="16dp" />
-
-            //implementation 'com.android.support:design:27.1.1'
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
 </LinearLayout>
