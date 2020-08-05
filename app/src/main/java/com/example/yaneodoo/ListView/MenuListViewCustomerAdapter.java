@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yaneodoo.R;
@@ -40,6 +41,7 @@ public class MenuListViewCustomerAdapter extends ArrayAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
+        ImageView menuImageView= (ImageView) convertView.findViewById(R.id.menu_imgView);
         TextView menuTextView = (TextView) convertView.findViewById(R.id.menu_name_txtView);
         TextView priceTextView = (TextView) convertView.findViewById(R.id.menu_price_txtView);
         TextView descTextView = (TextView) convertView.findViewById(R.id.menu_desc_txtView);
@@ -50,6 +52,7 @@ public class MenuListViewCustomerAdapter extends ArrayAdapter {
         MenuListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
+        menuImageView.setImageDrawable(listViewItem.getIconDrawable());
         menuTextView.setText(listViewItem.getMenuStr());
         priceTextView.setText(listViewItem.getPriceStr());
         descTextView.setText(listViewItem.getDescStr());

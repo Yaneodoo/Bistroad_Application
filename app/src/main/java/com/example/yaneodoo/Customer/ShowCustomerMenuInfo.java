@@ -30,7 +30,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.review_list_view);
+        ListView listview = (ListView) findViewById(R.id.review_list_view_customer);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시

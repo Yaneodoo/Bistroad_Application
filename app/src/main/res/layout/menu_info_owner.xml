@@ -129,7 +129,7 @@
                 android:textStyle="bold"/>
 
             <ListView
-                android:id="@+id/review_list_view"
+                android:id="@+id/review_list_view_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="#00000000"

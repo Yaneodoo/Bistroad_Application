@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="★4.5"
                 android:id="@+id/menu_score_txtView"
+                android:layout_alignParentRight="true"
                 android:textSize="16dp"
                 android:gravity="center_vertical" />
 

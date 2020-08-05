@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +30,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.review_list_view);
+        ListView listview = (ListView) findViewById(R.id.review_list_view_owner);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
