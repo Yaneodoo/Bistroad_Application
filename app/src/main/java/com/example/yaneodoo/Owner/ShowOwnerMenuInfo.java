@@ -47,7 +47,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
         menu_name_txtview.setText(menuName);
 
-        // TODO : owner일 때 edit버튼 생성
         Button editbutton = (Button) findViewById(R.id.btn_edit);
 
         // 수정 버튼 클릭 리스너
