@@ -44,7 +44,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "idkmyname", "떡볶이", "★4.3", "맛있었다!");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "officialll", "떡볶이", "★4.3", "맛있었다!");
 
-
         TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
         menu_name_txtview.setText(menuName);
 

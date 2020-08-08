@@ -2,6 +2,7 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -36,6 +37,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
 
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.menu_list_view_customer);
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
@@ -46,6 +48,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
 
+        Log.d("a", "b");
         //메뉴 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -58,6 +61,10 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
                 intent.putExtra("selectedMenu", menuStr);
                 intent.putExtra("customer", customer);
+
+                String TAG = "MainActivity";
+                Log.i(TAG, item.getMenuStr());
+
                 startActivity(intent);
             }
         });

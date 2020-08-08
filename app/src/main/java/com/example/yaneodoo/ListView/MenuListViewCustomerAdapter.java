@@ -46,7 +46,6 @@ public class MenuListViewCustomerAdapter extends ArrayAdapter {
         TextView priceTextView = (TextView) convertView.findViewById(R.id.menu_price_txtView);
         TextView descTextView = (TextView) convertView.findViewById(R.id.menu_desc_txtView);
         TextView scoreTextView = (TextView) convertView.findViewById(R.id.menu_score_txtView);
-        TextView orderCountTextView = (TextView) convertView.findViewById(R.id.menu_orderCount_txtView);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         MenuListViewItem listViewItem = listViewItemList.get(position);
@@ -82,7 +81,6 @@ public class MenuListViewCustomerAdapter extends ArrayAdapter {
         item.setPriceStr(priceStr);
         item.setDescStr(descStr);
         item.setScore(scoreStr);
-        item.setOrderCountStr(orderCountStr);
 
         listViewItemList.add(item);
     }

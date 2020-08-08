@@ -31,7 +31,6 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
         BistroListViewAdapter adapter = new BistroListViewAdapter(ShowCustomerBistroList.this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
-
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.bistro_list_view_customer);
         listview.setAdapter(adapter);

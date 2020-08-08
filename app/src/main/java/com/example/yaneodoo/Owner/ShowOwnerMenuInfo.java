@@ -34,15 +34,14 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!맛있었다!맛있었다!맛있었다!" +
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!맛있었다!맛있었다!맛있었다!" +
                 "\n맛있었다!\n맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
 
         TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
         menu_name_txtview.setText(menuName);
@@ -63,7 +62,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = intent.getStringExtra("customer");
                     Intent intent = new Intent(ShowOwnerMenuInfo.this, ShowOwnerBistroList.class);
                     startActivity(intent);
             }
