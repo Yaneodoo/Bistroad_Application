@@ -60,7 +60,8 @@
             android:id="@+id/btn_progress"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:text="ToggleButton"
+            android:textOff=""
+            android:textOn=""
             android:background="@drawable/requested" />
 
         <TextView
