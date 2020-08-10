@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -87,10 +88,20 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerShoppingBasket.class);
+                startActivity(intent);
             }
         });
+    }
 
+    // 주문하기 버튼 클릭 리스너
+    public void orderMenu(View v) {
+        LinearLayout parentRow = (LinearLayout) v.getParent();
+        TextView menuName = (TextView) parentRow.findViewById(R.id.menu_name_txtView);
+        String mname = menuName.getText().toString();
+        Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+        intent.putExtra("mname", mname);
+        startActivity(intent);
     }
 
 }
