@@ -70,7 +70,7 @@
             android:text="대표 이미지"
             android:textSize="20dp"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/bistro_imagebtn"
             android:layout_width="match_parent"
             android:layout_height="150dp"

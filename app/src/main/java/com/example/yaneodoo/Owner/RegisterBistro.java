@@ -1,14 +1,17 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -23,11 +26,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
-public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback{
+public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
     private Intent intent;
-
+    private static final int REQUEST_CODE = 0;
+    private ImageView upload_btn;
     private GoogleMap mMap;
 
     @Override
@@ -65,11 +70,15 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
         // 이미지 업로드 버튼 클릭 리스너
-        ImageButton upload_btn = (ImageButton) findViewById(R.id.bistro_imagebtn);
+        upload_btn = findViewById(R.id.bistro_imagebtn);
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO : 갤러리 또는 카메라 열어서 이미지 업로드
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -79,7 +88,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view) {
                 // TODO : 지도에서 값 가져오기
-                ImageButton imgBtn=(ImageButton) findViewById(R.id.bistro_imagebtn);
+                ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
                 // 지도
                 EditText nameEditTxt=(EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt=(EditText) findViewById(R.id.bistro_tel_txtView);
@@ -116,8 +125,28 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+                    upload_btn.setImageBitmap(img);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
