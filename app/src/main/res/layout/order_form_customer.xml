@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:background="#C6D3FC">
+
+        <TextView
+            android:id="@+id/homebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#C6D3FC"
+            android:fontFamily="@font/rage"
+            android:text="Bistroad"
+            android:textAllCaps="false"
+            android:textColorLink="#FFFFFF"
+            android:paddingTop="10sp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:textSize="40sp" />
+
+        <ImageButton
+            android:id="@+id/mypagebtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="#C6D3FC"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/mypage" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:text="주문 페이지"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bistro_delete_dynamic_area"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FEA6A4"
+                android:gravity="center"
+                android:text="1개 담기" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
