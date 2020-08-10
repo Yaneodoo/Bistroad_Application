@@ -37,22 +37,21 @@ public class ShowCustomerBistroList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "레드 175", "서울시 동작구", "테스트문장입니다" +
-                "\n테스트문장입니다테스트문장입니다테스트문장입니다테스트문장입니다\n테스트문장입니다");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "윤스쿡", "서울시 용산구 새창로 70", "식전빵이 매우 맛있는곳\n" +
+                "테스트 문장입니다. 테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "아웃백", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "동대문엽기떡볶이", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
-                BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position) ;
+                BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
 
-                String titleStr = item.getTitle() ;
+                String titleStr = item.getTitle();
 
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerMenuList.class);
                 intent.putExtra("selectedBistro",titleStr);

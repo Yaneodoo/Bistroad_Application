@@ -41,12 +41,12 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "순대", "2000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "오뎅", "10000", "#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이", "10000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "어묵탕", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
+                "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
 
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist);
