@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -77,9 +78,19 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
 
+        // FAB 클릭 리스너
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
+
 }

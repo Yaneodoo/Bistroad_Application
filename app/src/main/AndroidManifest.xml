@@ -29,6 +29,7 @@
         <activity android:name=".Customer.ShowCustomerBistroList" />
         <activity android:name=".Customer.ShowCustomerMenuList" />
         <activity android:name=".Customer.ShowCustomerMenuInfo" />
+        <activity android:name=".Customer.ShowCustomerShoppingBasket" />
         <activity android:name=".Owner.RegisterBistro" />
         <activity android:name=".Owner.RegisterMenu" />
         <activity android:name=".Owner.ShowOwnerOrderList" />
