@@ -50,6 +50,7 @@
                 android:adjustViewBounds="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:focusable="false"
                 android:onClick="orderMenu" />
         </RelativeLayout>
 
