@@ -20,7 +20,7 @@ import java.io.InputStream;
 public class RegisterMenu extends AppCompatActivity {
     private Intent intent;
     private static final int REQUEST_CODE = 0;
-    private ImageView upload_btn;
+    private ImageView uploadbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class RegisterMenu extends AppCompatActivity {
         });
 
         // 이미지 업로드 버튼 클릭 리스너
-        upload_btn = findViewById(R.id.bistro_imagebtn);
-        upload_btn.setOnClickListener(new Button.OnClickListener() {
+        uploadbtn = findViewById(R.id.upload_btn);
+        uploadbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -87,7 +87,7 @@ public class RegisterMenu extends AppCompatActivity {
                     InputStream in = getContentResolver().openInputStream(data.getData());
                     Bitmap img = BitmapFactory.decodeStream(in);
                     in.close();
-                    upload_btn.setImageBitmap(img);
+                    uploadbtn.setImageBitmap(img);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
