@@ -71,23 +71,37 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             }
         });
 
-        // TODO : 삭제 버튼 클릭 리스너
-        final Button delbtn = (Button) findViewById(R.id.btn_delete) ;
+        // 삭제 추가 레이아웃 초기화
+        final Button delbtn = (Button) findViewById(R.id.btn_delete);
+        delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        delbtn.setTextSize(14);
+        delbtn.setText("삭제");
+        Button abtn = (Button) findViewById(R.id.btn_add);
+        abtn.setTextSize(14);
+        ;
+        abtn.setText("추가");
+
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(delbtn.getText()=="삭제") {
+                if (delbtn.getText().toString() == "삭제") {
                     // TODO : onchoice활성화
-                    //삭제버튼 너비최대로
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    delbtn.setTextSize(14);
                     delbtn.setText("확인");
-
-                }
-                else {
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
+                    addbtn.setTextSize(14);
+                    ;
+                    addbtn.setText("");
+                } else {
                     // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
-                    //삭제버튼 원상복구
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f));
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    delbtn.setTextSize(14);
                     delbtn.setText("삭제");
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
+                    addbtn.setTextSize(14);
+                    ;
+                    addbtn.setText("추가");
                 }
             }
         });
