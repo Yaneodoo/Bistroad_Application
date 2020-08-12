@@ -39,11 +39,11 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         // 아이템 추가 예시
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "elsiff", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "elsiff", "짜장 x 1\n짬뽕 x 2");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "himinju", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "vomin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "Yalru", "짜장 x 1\n짬뽕 x 2");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "vomin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "Yalru", "짜장 x 1\n짬뽕 x 2");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2");
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,7 +79,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         ToggleButton tb2 = (ToggleButton) v.findViewById(R.id.btn_progress);
         if (tb2.isChecked()) {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
-            orderState.setText("접수완료");
+            orderState.setText("접수 완료");
         } else {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
             orderState.setText("접수중");
