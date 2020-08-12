@@ -13,18 +13,17 @@ import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
 
-public class OrderListViewAdapter extends BaseAdapter implements View.OnClickListener  {
+public class OrderListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<OrderListViewItem> listViewItemList = new ArrayList<>() ;
+    private ArrayList<OrderListViewItem> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
-    public OrderListViewAdapter(ListBtnClickListener clickListener) {
-        this.listBtnClickListener = clickListener;
+    public OrderListViewAdapter() {
     }
 
     // 버튼 클릭 이벤트를 위한 Listener 인터페이스 정의.
     public interface ListBtnClickListener {
-        void onListBtnClick(int position) ;
+        void onListBtnClick(int position);
     }
 
     // 생성자로부터 전달된 ListBtnClickListener  저장.
@@ -63,20 +62,7 @@ public class OrderListViewAdapter extends BaseAdapter implements View.OnClickLis
         customerTextView.setText(listViewItem.getNameStr());
         orderListView.setText(listViewItem.getOrderStr());
 
-        // progress버튼의 TAG에 position값 지정. Adapter를 click listener로 지정.
-        final ToggleButton progressbtn = (ToggleButton) convertView.findViewById(R.id.btn_progress);
-        progressbtn.setTag(position);
-        progressbtn.setOnClickListener(this);
-
         return convertView;
-    }
-
-    // progress버튼이 눌려졌을 때 실행되는 onClick함수.
-    public void onClick(View v) {
-        // ListBtnClickListener(MainActivity)의 onListBtnClick() 함수 호출.
-        if (this.listBtnClickListener != null) {
-            this.listBtnClickListener.onListBtnClick((int)v.getTag()) ;
-        }
     }
 
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
