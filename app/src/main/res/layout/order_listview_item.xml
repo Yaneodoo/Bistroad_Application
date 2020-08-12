@@ -38,7 +38,7 @@
     <TextView
         android:id="@+id/order_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
@@ -62,6 +62,7 @@
             android:layout_height="60dp"
             android:textOff=""
             android:textOn=""
+            android:onClick="progressToggle"
             android:background="@drawable/requested" />
 
         <TextView
