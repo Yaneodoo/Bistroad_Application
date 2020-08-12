@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ShowCustomerMenuInfo extends AppCompatActivity {
     private Intent intent;
@@ -58,15 +59,25 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+
+        // FAB 클릭 리스너
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerShoppingBasket.class);
+                startActivity(intent);
+            }
+        });
     }
 }
