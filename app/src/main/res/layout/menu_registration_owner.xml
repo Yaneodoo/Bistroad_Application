@@ -62,7 +62,7 @@
             android:text="서울 강남구 남부순환로 2942"
             android:textSize="20dp"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/upload_btn"
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -71,7 +71,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/img_upload"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

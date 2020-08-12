@@ -50,15 +50,16 @@
 
                 <ImageView
                     android:id="@+id/menu_image"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
                     android:paddingRight="10dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/tteokbokki" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -68,11 +69,11 @@
 
                         <TextView
                             android:id="@+id/menu_name_txtView"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="떡볶이"
+                            android:layout_weight="1"
+                            android:text="메뉴 이름"
                             android:textColor="#000000"
                             android:textSize="20dp" />
 
@@ -80,10 +81,7 @@
                             android:id="@+id/btn_edit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
+                            android:layout_gravity="right"
                             android:text="메뉴 수정" />
                     </LinearLayout>
 
@@ -91,21 +89,36 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="5000원"
+                        android:text="메뉴 가격"
                         android:textSize="12dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="#JMT #순대 #오뎅"
+                        android:text="메뉴 description"
                         android:textSize="12dp" />
-                    <TextView
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:text="★★★★★"
-                        android:textSize="20dp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="★★★★★"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="주문횟수: 0"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
             <TextView
