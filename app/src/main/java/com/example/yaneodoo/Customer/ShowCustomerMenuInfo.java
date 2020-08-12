@@ -44,14 +44,16 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "idkmyname", "떡볶이", "★4.3", "맛있었다!");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "officialll", "떡볶이", "★4.3", "맛있었다!");
 
-        TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
-        menu_name_txtview.setText(menuName);
 
-        // TODO : 주문 버튼 클릭 리스너
+
         Button btn_order = (Button) findViewById(R.id.btn_order);
         btn_order.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO : 주문 페이지로
+                TextView menuName = (TextView) findViewById(R.id.menu_name_txtView);
+                String mname = menuName.getText().toString();
+                Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerOrderForm.class);
+                intent.putExtra("mname", mname);
+                startActivity(intent);
             }
         });
 
