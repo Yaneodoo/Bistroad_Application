@@ -3,21 +3,15 @@ package com.example.yaneodoo.Owner;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.ListView.BistroListViewAdapter;
-import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
     private Intent intent;
@@ -87,6 +80,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view) {
                 // TODO : 지도에서 값 가져오기
+                /*
                 ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
                 // 지도
                 EditText nameEditTxt=(EditText) findViewById(R.id.bistro_name_txtView);
@@ -110,6 +104,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
                 // 아이템 추가 예시
                 adapter.addItem(ContextCompat.getDrawable(RegisterBistro.this, R.drawable.tteokbokki),"레드 175", "서울시 동작구", "#짜장 #짬뽕") ;
+                */
 
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                 startActivity(intent);
