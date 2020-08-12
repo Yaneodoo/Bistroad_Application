@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Owner.ShowOwnerOrderList">
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:background="#C6D3FC">
+
         <TextView
             android:id="@+id/homebtn"
             android:layout_width="wrap_content"
@@ -24,7 +22,8 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="40sp"/>
+            android:textSize="40sp" />
+
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -36,49 +35,37 @@
             android:scaleType="centerInside"
             android:src="@drawable/mypage" />
     </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:text="김민주 점주님의\n레드 175 주문내역입니다."
-        android:textStyle="bold"
-        android:textSize="25dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="주문 리스트"
-            android:textSize="25dp"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:textColor="#000000"/>
-        <ScrollView
+            android:paddingLeft="10dp"
+            android:text="주문 페이지"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fillViewport="true">
-            <ListView
-                android:id="@+id/order_list_view_owner"
+            android:id="@+id/bistro_delete_dynamic_area"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="10dp"
-                android:divider="#00000000"
-                android:choiceMode="multipleChoice" />
-        </ScrollView>
+                android:background="#FEA6A4"
+                android:gravity="center"
+                android:text="1개 담기" />
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

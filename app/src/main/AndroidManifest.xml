@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.yaneodoo">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
@@ -27,15 +27,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".Customer.ShowCustomerBistroList" />
-        <activity android:name=".Customer.ShowCustomerMenuList"/>
-        <activity android:name=".Customer.ShowCustomerMenuInfo"/>
-        <activity android:name=".Owner.RegisterBistro"/>
-        <activity android:name=".Owner.RegisterMenu"/>
-        <activity android:name=".Owner.ShowOwnerOrderList"/>
-        <activity android:name=".Owner.ShowOwnerBistroList"/>
-        <activity android:name=".Owner.ShowOwnerMenuList"/>
-        <activity android:name=".Owner.ShowOwnerMenuInfo"/>
-
+        <activity android:name=".Customer.ShowCustomerMenuList" />
+        <activity android:name=".Customer.ShowCustomerMenuInfo" />
+        <activity android:name=".Customer.ShowCustomerOrderForm" />
+        <activity android:name=".Customer.ShowCustomerShoppingBasket" />
+        <activity android:name=".Owner.RegisterBistro" />
+        <activity android:name=".Owner.RegisterMenu" />
+        <activity android:name=".Owner.ShowOwnerOrderList" />
+        <activity android:name=".Owner.ShowOwnerBistroList" />
+        <activity android:name=".Owner.ShowOwnerMenuList" />
+        <activity android:name=".Owner.ShowOwnerMenuInfo" />
     </application>
 
 </manifest>

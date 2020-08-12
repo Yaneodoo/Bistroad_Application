@@ -6,26 +6,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
 
-public class OrderListViewAdapter extends BaseAdapter implements View.OnClickListener  {
+public class OrderListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<OrderListViewItem> listViewItemList = new ArrayList<>() ;
+    private ArrayList<OrderListViewItem> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
-    public OrderListViewAdapter(ListBtnClickListener clickListener) {
-        this.listBtnClickListener = clickListener;
+    public OrderListViewAdapter() {
     }
 
     // 버튼 클릭 이벤트를 위한 Listener 인터페이스 정의.
     public interface ListBtnClickListener {
-        void onListBtnClick(int position) ;
+        void onListBtnClick(int position);
     }
 
     // 생성자로부터 전달된 ListBtnClickListener  저장.
@@ -50,7 +48,7 @@ public class OrderListViewAdapter extends BaseAdapter implements View.OnClickLis
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.btn_progress) ;
+        ToggleButton iconImageView = (ToggleButton) convertView.findViewById(R.id.btn_progress);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.order_date_txtView);
         TextView customerTextView = (TextView) convertView.findViewById(R.id.order_customer_txtView);
         TextView orderListView = (TextView) convertView.findViewById(R.id.order_list);
@@ -59,25 +57,12 @@ public class OrderListViewAdapter extends BaseAdapter implements View.OnClickLis
         OrderListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getProgress());
+        iconImageView.setBackgroundDrawable(listViewItem.getProgress());
         dateTextView.setText(listViewItem.getDateStr());
         customerTextView.setText(listViewItem.getNameStr());
         orderListView.setText(listViewItem.getOrderStr());
 
-        // progress버튼의 TAG에 position값 지정. Adapter를 click listener로 지정.
-        final ImageButton progressbtn = (ImageButton) convertView.findViewById(R.id.btn_progress);
-        progressbtn.setTag(position);
-        progressbtn.setOnClickListener(this);
-
         return convertView;
-    }
-
-    // progress버튼이 눌려졌을 때 실행되는 onClick함수.
-    public void onClick(View v) {
-        // ListBtnClickListener(MainActivity)의 onListBtnClick() 함수 호출.
-        if (this.listBtnClickListener != null) {
-            this.listBtnClickListener.onListBtnClick((int)v.getTag()) ;
-        }
     }
 
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현

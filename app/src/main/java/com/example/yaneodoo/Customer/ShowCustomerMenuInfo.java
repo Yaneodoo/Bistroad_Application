@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ShowCustomerMenuInfo extends AppCompatActivity {
     private Intent intent;
@@ -30,42 +31,53 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.review_list_view);
+        ListView listview = (ListView) findViewById(R.id.review_list_view_customer);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!맛있었다!맛있었다!맛있었다!" +
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "horseesroh", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "2020.07.09", "elsiff", "떡볶이", "★4.3", "맛있었다!맛있었다!맛있었다!맛있었다!" +
                 "\n맛있었다!\n맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이","★4.3","맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "2020.07.09", "minju", "떡볶이떡볶이떡볶이떡", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "vomin", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "yalru", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "hello", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "idkmyname", "떡볶이", "★4.3", "맛있었다!");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "officialll", "떡볶이", "★4.3", "맛있었다!");
 
 
-        TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
-        menu_name_txtview.setText(menuName);
 
-        // TODO : 주문 버튼 클릭 리스너
         Button btn_order = (Button) findViewById(R.id.btn_order);
         btn_order.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO : 주문 페이지로
+                TextView menuName = (TextView) findViewById(R.id.menu_name_txtView);
+                String mname = menuName.getText().toString();
+                Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerOrderForm.class);
+                intent.putExtra("mname", mname);
+                startActivity(intent);
             }
         });
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+
+        // FAB 클릭 리스너
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerShoppingBasket.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,18 +13,19 @@ import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
 
-public class ReviewListViewAdapter extends BaseAdapter {
+public class MenuListViewCustomerAdapter extends ArrayAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ReviewListViewItem> listViewItemList = new ArrayList<>() ;
+    private ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
-    public ReviewListViewAdapter() {
+    public MenuListViewCustomerAdapter(Context context, int resource, ArrayList<MenuListViewItem> listViewItemList) {
+        super(context, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return listViewItemList.size() ;
+        return listViewItemList.size();
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
@@ -36,25 +37,25 @@ public class ReviewListViewAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.review_listview_item, parent, false);
+            convertView = inflater.inflate(R.layout.menu_listview_item_customer, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
-        TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
-        TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
-        TextView scoreTextView=(TextView) convertView.findViewById(R.id.review_score_txtView);
-        TextView reviewTextView=(TextView) convertView.findViewById(R.id.review_text_txtView);
+        ImageView menuImageView= (ImageView) convertView.findViewById(R.id.menu_imgView);
+        TextView menuTextView = (TextView) convertView.findViewById(R.id.menu_name_txtView);
+        TextView priceTextView = (TextView) convertView.findViewById(R.id.menu_price_txtView);
+        TextView descTextView = (TextView) convertView.findViewById(R.id.menu_desc_txtView);
+        TextView scoreTextView = (TextView) convertView.findViewById(R.id.menu_score_txtView);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ReviewListViewItem listViewItem = listViewItemList.get(position);
+        MenuListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getIconDrawable());
-        dateTextView.setText(listViewItem.getDateStr());
-        writerTextView.setText(listViewItem.getWriterStr());
+        menuImageView.setImageDrawable(listViewItem.getIconDrawable());
+        menuTextView.setText(listViewItem.getMenuStr());
+        priceTextView.setText(listViewItem.getPriceStr());
+        descTextView.setText(listViewItem.getDescStr());
         scoreTextView.setText(listViewItem.getScoreStr());
-        reviewTextView.setText(listViewItem.getReviewStr());
 
         return convertView;
     }
@@ -62,25 +63,24 @@ public class ReviewListViewAdapter extends BaseAdapter {
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
-        return position ;
+        return position;
     }
 
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
-        return listViewItemList.get(position) ;
+        return listViewItemList.get(position);
     }
 
-    // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String writer, String menu, String score, String review) {
-        ReviewListViewItem item = new ReviewListViewItem();
+    // 아이템 데이터 추가를 위한 함수.
+    public void addItem(Drawable photo, String menuStr, String priceStr, String descStr, String scoreStr, String orderCountStr) {
+        MenuListViewItem item = new MenuListViewItem();
 
         item.setIconDrawable(photo);
-        item.setDateStr(date);
-        item.setWriterStr(writer);
-        item.setMenuStr(menu);
-        item.setScoreStr(score);
-        item.setReviewStr(review);
+        item.setMenuStr(menuStr);
+        item.setPriceStr(priceStr);
+        item.setDescStr(descStr);
+        item.setScore(scoreStr);
 
         listViewItemList.add(item);
     }

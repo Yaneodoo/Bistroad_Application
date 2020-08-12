@@ -1,19 +1,26 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.R;
 
+import java.io.InputStream;
+
 public class RegisterMenu extends AppCompatActivity {
     private Intent intent;
+    private static final int REQUEST_CODE = 0;
+    private ImageView uploadbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +29,7 @@ public class RegisterMenu extends AppCompatActivity {
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        String bistroName=intent.getStringExtra("selectedBistro");
+        String bistroName = intent.getStringExtra("selectedBistro");
 
         // TODO : GET /stores/{storeId}/items/{itemId}로 가져온 정보를 화면에 표시
         EditText mname_txtView =(EditText) findViewById(R.id.menu_name_txtView);
@@ -46,12 +53,15 @@ public class RegisterMenu extends AppCompatActivity {
             }
         });
 
-        // 업로드 버튼 클릭 리스너
-        ImageButton upload_btn = (ImageButton) findViewById(R.id.upload_btn);
-        upload_btn.setOnClickListener(new Button.OnClickListener() {
+        // 이미지 업로드 버튼 클릭 리스너
+        uploadbtn = findViewById(R.id.upload_btn);
+        uploadbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 갤러리 또는 카메라 열어서 이미지 업로드
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -63,9 +73,28 @@ public class RegisterMenu extends AppCompatActivity {
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+                    uploadbtn.setImageBitmap(img);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }

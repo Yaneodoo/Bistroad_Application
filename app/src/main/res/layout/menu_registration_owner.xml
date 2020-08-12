@@ -22,7 +22,7 @@
             android:paddingTop="10sp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
-            android:textSize="50sp"/>
+            android:textSize="40sp"/>
         <ImageButton
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
@@ -62,7 +62,7 @@
             android:text="서울 강남구 남부순환로 2942"
             android:textSize="20dp"/>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/upload_btn"
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -71,7 +71,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/img_upload"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -143,5 +143,6 @@
         android:id="@+id/btn_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FEA6A4"
         android:text="등록"/>
 </LinearLayout>

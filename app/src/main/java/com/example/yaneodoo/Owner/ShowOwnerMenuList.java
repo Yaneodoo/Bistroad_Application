@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.ListView.MenuListViewAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
+import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         // Adapter 생성
         final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
-        final MenuListViewAdapter adapter = new MenuListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final MenuListViewOwnerAdapter adapter = new MenuListViewOwnerAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         final ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
@@ -42,12 +41,12 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "순대", "2000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "오뎅", "10000", "#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이떡볶이", "10000", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "9999", "#짜장 #짬뽕", "★4.3", "주문횟수 : 33");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "어묵탕", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
+                "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
 
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist);
@@ -67,17 +66,15 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
                 String titleStr = item.getMenuStr();
-                String owner = "";
 
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                 intent.putExtra("selectedMenu", titleStr);
-                intent.putExtra("owner", owner);
                 startActivity(intent);
             }
         });
 
         // 수정 버튼 클릭 리스너
-        ImageButton editbtn = (ImageButton) findViewById(R.id.btn_edit) ;
+        Button editbtn = (Button) findViewById(R.id.btn_edit) ;
         editbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
