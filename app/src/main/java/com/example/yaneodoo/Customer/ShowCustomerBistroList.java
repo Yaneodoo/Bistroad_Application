@@ -23,8 +23,6 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_customer);
 
-        // TODO : GPS, 파일, 카메라 권한 요청
-
         // TODO : GET /nearby-stores하여 받아온 정보 아이템으로 추가
 
         // Adapter 생성
@@ -42,7 +40,8 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "아웃백", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "동대문엽기떡볶이", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shopping_basket), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "계이득", "서울시 동작구", "#짜장 #짬뽕");
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

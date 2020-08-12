@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,7 +43,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "아웃백", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "동대문엽기떡볶이", "서울시 동작구", "#짜장 #짬뽕");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shopping_basket), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "계이득", "서울시 동작구", "#짜장 #짬뽕");
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,37 +71,23 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             }
         });
 
-        // 삭제 버튼 클릭 리스너
+        // TODO : 삭제 버튼 클릭 리스너
         final Button delbtn = (Button) findViewById(R.id.btn_delete) ;
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(delbtn.getText()=="삭제"){
+                if(delbtn.getText()=="삭제") {
                     // TODO : onchoice활성화
-                    // add버튼 삭제
-                    /*
-                    LinearLayout topLL = (LinearLayout) findViewById(R.id.bistro_delete_dynamic_area);
-                    Button addbtn = (Button) findViewById(R.id.btn_add);
-                    topLL.removeView(addbtn);
-
+                    //삭제버튼 너비최대로
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                     delbtn.setText("확인");
-                    */
+
                 }
-                else{
-                    // TODO : (삭제)확인 버튼 클릭 리스너
-                    // DELETE /stores/{storeId}로 선택한 매장들 삭제
-                    // add버튼 생성
-                    /*
-                    Button btn_order=new Button(ShowOwnerBistroList.this);
-                    btn_order.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
-                    btn_order.setText("추가");
-                    btn_order.setTextSize(10);
-                    btn_order.setId(R.id.btn_add);
-                    LinearLayout topLL = (LinearLayout) findViewById(R.id.bistro_delete_dynamic_area);
-                    topLL.addView(btn_order);
+                else {
+                    // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
+                    //삭제버튼 원상복구
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f));
                     delbtn.setText("삭제");
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
-                    */
                 }
             }
         });

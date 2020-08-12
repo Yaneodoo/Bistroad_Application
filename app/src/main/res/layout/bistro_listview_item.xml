@@ -29,7 +29,7 @@ android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="레드175"
+            android:text="매장 이름"
             android:id="@+id/bistro_name_txtView"
             android:textSize="24dp"
             android:textColor="#000000"
@@ -38,7 +38,7 @@ android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="5000원"
+            android:text="매장 주소"
             android:id="@+id/bistro_location_txtView"
             android:textSize="16dp"
             android:textColor="#666666" />
@@ -46,7 +46,7 @@ android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="#떡볶이 #순대 #오뎅이 맛있는 가게로 소문이 난"
+            android:text="매장 description"
             android:ellipsize="end"
             android:singleLine="true"
             android:id="@+id/bistro_desc_txtView"

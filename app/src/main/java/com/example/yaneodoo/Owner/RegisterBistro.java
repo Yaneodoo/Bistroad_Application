@@ -74,7 +74,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 갤러리 또는 카메라 열어서 이미지 업로드
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);

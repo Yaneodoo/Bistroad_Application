@@ -89,20 +89,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="레드 175"
+                        android:text="매장 이름"
                         android:textColor="#000000"
                         android:textSize="24dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="서울 강남구 남부순환로 2942"
+                        android:text="매장 주소"
                         android:textSize="16dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="매장 설명입니다 매장 설명입니다 매장 설명입니다"
+                        android:text="매장 description"
                         android:textSize="16dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -147,8 +147,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:clickable="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#C6D3FC"
         android:src="@drawable/shopping_basket" />
 
 </RelativeLayout>
