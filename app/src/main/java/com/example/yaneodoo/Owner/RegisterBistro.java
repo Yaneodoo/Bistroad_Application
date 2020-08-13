@@ -39,11 +39,10 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     private ImageView upload_btn;
     private GoogleMap mMap;
 
-    private static final int MY_PERMISSION_CAMERA = 1;
-    private static final int REQUEST_TAKE_PHOTO = 2;
-    private static final int REQUEST_TAKE_ALBUM = 3;
-    private static final int REQUEST_IMAGE_CROP = 4;
-    private static final int REQUEST_CODE = 101;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_TAKE_ALBUM = 2;
+    private static final int REQUEST_IMAGE_CROP = 3;
+    private static final int REQUEST_CODE = 0;
     String mCurrentPhotoPath;
     Uri imageURI;
     Uri photoURI, albumURI;
