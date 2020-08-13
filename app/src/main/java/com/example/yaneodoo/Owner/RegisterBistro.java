@@ -3,14 +3,22 @@ package com.example.yaneodoo.Owner;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.example.yaneodoo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,17 +28,28 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
     private Intent intent;
-    private static final int REQUEST_CODE = 0;
     private ImageView upload_btn;
     private GoogleMap mMap;
 
+    private static final int MY_PERMISSION_CAMERA = 1;
+    private static final int REQUEST_TAKE_PHOTO = 2;
+    private static final int REQUEST_TAKE_ALBUM = 3;
+    private static final int REQUEST_IMAGE_CROP = 4;
+    private static final int REQUEST_CODE = 101;
+    String mCurrentPhotoPath;
+    Uri imageURI;
+    Uri photoURI, albumURI;
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-
         mMap = googleMap;
 
         LatLng SEOUL = new LatLng(37.56, 126.97);
@@ -45,15 +64,99 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
     }
 
-    public void onCreate(Bundle savedInstanceState)
-    {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == 1) return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    //TAKE PHOTO
+    private void captureCamera() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (photoFile != null) {
+                    Uri providerUri = FileProvider.getUriForFile(this, getPackageName(), photoFile);
+                    imageURI = providerUri;
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerUri);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+            } else {
+                Toast.makeText(this, "접근 불가능", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File imageFile = null;
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures");
+
+        if (!storageDir.exists()) storageDir.mkdirs();
+
+        imageFile = new File(storageDir, imageFileName);
+        mCurrentPhotoPath = imageFile.getAbsolutePath();
+
+        return imageFile;
+    }
+
+    //TAKE ALBUM
+    private void getAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+    }
+
+    //IMAGE CROP
+    private void cropImage() {
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.setDataAndType(photoURI, "image/*");
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("output", albumURI);
+        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
+    }
+
+    //갤러리에 사진 추가
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(mCurrentPhotoPath);
+        Uri contentURI = Uri.fromFile(file);
+        mediaScanIntent.setData(contentURI);
+        sendBroadcast(mediaScanIntent);
+        Toast.makeText(this, "앨범에 저장되었습니다", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_registration_owner);
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         // 받을게 없으면 어떻게 되지??
         intent = getIntent();
-        String bistroName=intent.getStringExtra("selectedBistro");
+        String bistroName = intent.getStringExtra("selectedBistro");
         //받으면
         // TODO : GET /stores/{storeId}로 이미지, 좌표 값 얻어서 화면에 표시
 
@@ -67,10 +170,24 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE);
+                PopupMenu pop = new PopupMenu(getApplicationContext(), view);
+                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
+
+                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.camera:
+                                captureCamera();
+                                break;
+                            case R.id.gallery:
+                                getAlbum();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                pop.show();
             }
         });
 
