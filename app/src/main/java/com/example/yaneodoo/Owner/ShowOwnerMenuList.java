@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -85,7 +86,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         });
 
         // 추가 버튼 클릭 리스너
-        Button addbtn = (Button) findViewById(R.id.btn_add) ;
+        Button addbtn = (Button) findViewById(R.id.btn_add);
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,25 +95,53 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             }
         });
 
-        // TODO : 삭제 버튼 클릭 리스너
-        Button delbtn = (Button) findViewById(R.id.btn_delete) ;
+        // 삭제 추가 레이아웃 초기화
+        final Button delbtn = (Button) findViewById(R.id.btn_delete);
+        delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        delbtn.setTextSize(14);
+        delbtn.setText("삭제");
+        Button abtn = (Button) findViewById(R.id.btn_add);
+        abtn.setTextSize(14);
+        abtn.setText("추가");
+
         delbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count, checked;
-                count = adapter.getCount();
+                if (delbtn.getText().toString() == "삭제") {
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    delbtn.setTextSize(14);
+                    delbtn.setText("확인");
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
+                    addbtn.setTextSize(14);
+                    addbtn.setText("");
+                    // TODO : onchoice활성화
 
-                if (count > 0) {
-                    // 현재 선택된 아이템의 position 획득
-                    checked = listview.getCheckedItemPosition();
-                    if (checked > -1 && checked < count) {
-                        // 아이템 삭제
-                        listViewItemList.remove(checked);
-                        // listview 선택 초기화
-                        listview.clearChoices();
-                        // listview 갱신
-                        adapter.notifyDataSetChanged();
+                } else {
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    delbtn.setTextSize(14);
+                    delbtn.setText("삭제");
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
+                    addbtn.setTextSize(14);
+                    addbtn.setText("추가");
+
+                    /*
+                    //다중 삭제 처리 동작
+                    int count, checked;
+                    count = adapter.getCount();
+                    if (count > 0) {
+                        // 현재 선택된 아이템의 position 획득
+                        checked = listview.getCheckedItemPosition();
+                        if (checked > -1 && checked < count) {
+                            // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
+                            // 아이템 삭제
+                            listViewItemList.remove(checked);
+                            // listview 선택 초기화
+                            listview.clearChoices();
+                            // listview 갱신
+                            adapter.notifyDataSetChanged();
+                        }
                     }
+                    */
                 }
             }
         });
