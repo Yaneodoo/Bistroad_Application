@@ -21,7 +21,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.yaneodoo"
             android:exported="false"
             android:grantUriPermissions="true">
