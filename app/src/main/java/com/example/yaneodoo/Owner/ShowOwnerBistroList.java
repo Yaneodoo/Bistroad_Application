@@ -78,7 +78,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         delbtn.setText("삭제");
         Button abtn = (Button) findViewById(R.id.btn_add);
         abtn.setTextSize(14);
-        ;
         abtn.setText("추가");
 
         delbtn.setOnClickListener(new Button.OnClickListener() {
