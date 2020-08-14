@@ -19,16 +19,39 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class SelectUser extends AppCompatActivity {
     // FOR ACTIVITY SWITCH. ACCORDING TO USER.
     private Intent intent;
     static final int SMS_RECEIVE_PERMISSON = 1;
+    private Retrofit mRetrofit;
+    private RetrofitService mRetrofitAPI;
+    private String baseUrl = "https://api.bistroad.kr/v1";
+    private Callback<String> mRetrofitCallback = new Callback<String>() {
+        @Override
+        public void onResponse(Call<String> call, Response<String> response) {
+            String result = response.body();
+            Log.d("TAG", result);
+        }
+
+        @Override
+        public void onFailure(Call<String> call, Throwable t) {
+            t.printStackTrace();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_select);
         checkSelfPermission();
+        setRetrofitInit();
+        //not complete. so comment out.
+        //callBistroList();
 
         // 손님 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.customerbtn);
@@ -49,6 +72,19 @@ public class SelectUser extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    //retrofit 초기화
+    private void setRetrofitInit() {
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .build();
+        RetrofitService service = mRetrofit.create(RetrofitService.class);
+    }
+
+    private void callBistroList() {
+        Call<String> mCallBistroList = mRetrofitAPI.getBistroList();
+        mCallBistroList.enqueue(mRetrofitCallback);
     }
 
     @Override
