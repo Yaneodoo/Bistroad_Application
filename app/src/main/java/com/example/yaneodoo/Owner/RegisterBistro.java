@@ -1,12 +1,17 @@
 package com.example.yaneodoo.Owner;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.yaneodoo.R;
@@ -30,7 +38,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,9 +46,10 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     private ImageView upload_btn;
     private GoogleMap mMap;
 
-    private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int REQUEST_TAKE_ALBUM = 2;
-    private static final int REQUEST_IMAGE_CROP = 3;
+    private static final int MY_PERMISSION_CAMERA = 1111;
+    private static final int REQUEST_TAKE_PHOTO = 2222;
+    private static final int REQUEST_TAKE_ALBUM = 3333;
+    private static final int REQUEST_IMAGE_CROP = 4444;
     private static final int REQUEST_CODE = 0;
     String mCurrentPhotoPath;
     Uri imageURI;
@@ -77,7 +85,29 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         return super.onOptionsItemSelected(item);
     }
 
-    //TAKE PHOTO
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + ".jpg";
+        File imageFile = null;
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures");
+
+        if (!storageDir.exists())
+            storageDir.mkdirs();
+
+        imageFile = new File(storageDir, imageFileName);
+        mCurrentPhotoPath = imageFile.getAbsolutePath();
+
+        return imageFile;
+    }
+
+    //TAKE ALBUM
+    private void getAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+    }
+
     private void captureCamera() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -97,36 +127,14 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
             } else {
-                Toast.makeText(this, "접근 불가능", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "접근 불가능 합니다", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
     }
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + ".jpg";
-        File imageFile = null;
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures");
-
-        if (!storageDir.exists()) storageDir.mkdirs();
-
-        imageFile = new File(storageDir, imageFileName);
-        mCurrentPhotoPath = imageFile.getAbsolutePath();
-
-        return imageFile;
-    }
-
-    //TAKE ALBUM
-    private void getAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_TAKE_ALBUM);
-    }
-
     //IMAGE CROP
-    private void cropImage() {
+    public void cropImage() {
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
         cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -138,14 +146,14 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
     }
 
-    //갤러리에 사진 추가
+    // 갤러리에 사진 추가 함수
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(mCurrentPhotoPath);
         Uri contentURI = Uri.fromFile(file);
         mediaScanIntent.setData(contentURI);
         sendBroadcast(mediaScanIntent);
-        Toast.makeText(this, "앨범에 저장되었습니다", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -177,9 +185,11 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.camera:
+                                // 실제 카메라 구동 코드는 함수로 처리
                                 captureCamera();
                                 break;
                             case R.id.gallery:
+                                //갤러리에 관한 권한을 받아오는 코드
                                 getAlbum();
                                 break;
                         }
@@ -187,6 +197,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
                 pop.show();
+                checkPermission();
             }
         });
 
@@ -241,22 +252,80 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Bitmap img = BitmapFactory.decodeStream(in);
-                    in.close();
-                    upload_btn.setImageBitmap(img);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
+                    (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))) {
+                new AlertDialog.Builder(this).setTitle("알림").setMessage("저장소 권한이 거부되었습니다.").setNeutralButton("설정", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package: " + getPackageName()));
+                        startActivity(intent);
+                    }
+                }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }).setCancelable(false).create().show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Toast.makeText(this, "카메라 권한 승인완료", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "카메라 권한 승인 거절", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        Log.i("REQUEST_TAKE_PHOTO", "OK!!!!!!");
+                        galleryAddPic();
+
+                        upload_btn.setImageURI(imageURI);
+                    } catch (Exception e) {
+                        Log.e("REQUEST_TAKE_PHOTO", e.toString());
+                    }
+                } else {
+                    Toast.makeText(RegisterBistro.this, "저장공간에 접근할 수 없는 기기 입니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_TAKE_ALBUM:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.getData() != null) {
+                        try {
+                            File albumFile = null;
+                            albumFile = createImageFile();
+                            photoURI = data.getData();
+                            albumURI = Uri.fromFile(albumFile);
+                            cropImage();
+                        } catch (IOException e) {
+                            Log.e("TAKE_ALBUM_SINLE_ERROR", e.toString());
+                        }
+                    }
+                }
+                break;
+            case REQUEST_IMAGE_CROP:
+                if (resultCode == Activity.RESULT_OK) {
+                    galleryAddPic();
+                    //사진 변환 error
+                    upload_btn.setImageURI(albumURI);
+                }
+                break;
         }
     }
 }
