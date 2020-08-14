@@ -16,8 +16,6 @@ import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 
-import java.util.ArrayList;
-
 public class ShowOwnerBistroList extends AppCompatActivity {
 
     @Override
@@ -28,12 +26,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         // TODO : owNerId로 GET /stores하여 얻은 정보 아이템으로 추가
 
         // Adapter 생성
-        final ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
-        final BistroListViewAdapter adapter = new BistroListViewAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final BistroListViewAdapter adapter = new BistroListViewAdapter();
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         final ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시

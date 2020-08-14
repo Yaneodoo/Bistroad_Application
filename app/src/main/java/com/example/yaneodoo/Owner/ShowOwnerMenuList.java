@@ -16,8 +16,6 @@ import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
 
-import java.util.ArrayList;
-
 public class ShowOwnerMenuList extends AppCompatActivity {
     private Intent intent;
 
@@ -33,12 +31,10 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         // 별점 높은 순
 
         // Adapter 생성
-        final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
-        final MenuListViewOwnerAdapter adapter = new MenuListViewOwnerAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final MenuListViewOwnerAdapter adapter = new MenuListViewOwnerAdapter();
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         final ListView listview = (ListView) findViewById(R.id.menu_list_view_owner);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시

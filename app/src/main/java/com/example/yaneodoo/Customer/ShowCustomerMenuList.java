@@ -17,8 +17,6 @@ import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-
 public class ShowCustomerMenuList extends AppCompatActivity {
     private Intent intent;
 
@@ -34,12 +32,10 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         // 별점 높은 순
 
         // Adapter 생성
-        final ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
-        final MenuListViewCustomerAdapter adapter = new MenuListViewCustomerAdapter(this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        final MenuListViewCustomerAdapter adapter = new MenuListViewCustomerAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.menu_list_view_customer);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
 
         // 아이템 추가 예시

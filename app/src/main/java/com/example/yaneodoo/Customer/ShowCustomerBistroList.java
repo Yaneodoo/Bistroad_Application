@@ -15,8 +15,6 @@ import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-
 public class ShowCustomerBistroList extends AppCompatActivity {
 
     @Override
@@ -27,8 +25,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         // TODO : GET /nearby-stores하여 받아온 정보 아이템으로 추가
 
         // Adapter 생성
-        ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
-        BistroListViewAdapter adapter = new BistroListViewAdapter(ShowCustomerBistroList.this, android.R.layout.simple_list_item_multiple_choice, listViewItemList);
+        BistroListViewAdapter adapter = new BistroListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
         ListView listview = (ListView) findViewById(R.id.bistro_list_view_customer);
