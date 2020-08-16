@@ -100,4 +100,8 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, ShowCustomerBistroList.class));
+    }
 }

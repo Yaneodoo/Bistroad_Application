@@ -78,5 +78,10 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        //
+    }
 }
 

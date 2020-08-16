@@ -150,8 +150,13 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerBistroList.class);
                 startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, ShowOwnerBistroList.class));
     }
 }

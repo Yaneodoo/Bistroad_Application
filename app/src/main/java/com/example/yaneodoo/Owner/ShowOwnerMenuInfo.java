@@ -62,11 +62,16 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(ShowOwnerMenuInfo.this, ShowOwnerBistroList.class);
-                    startActivity(intent);
+                Intent intent = new Intent(ShowOwnerMenuInfo.this, ShowOwnerBistroList.class);
+                startActivity(intent);
             }
-        }) ;
+        });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, ShowOwnerMenuList.class));
     }
 }

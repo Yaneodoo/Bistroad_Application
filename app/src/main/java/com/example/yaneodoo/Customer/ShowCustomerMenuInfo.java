@@ -80,4 +80,9 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, ShowCustomerMenuList.class));
+    }
 }
