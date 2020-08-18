@@ -62,6 +62,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerBistroList.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });

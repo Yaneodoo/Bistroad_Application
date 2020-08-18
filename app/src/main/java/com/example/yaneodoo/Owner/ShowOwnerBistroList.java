@@ -16,7 +16,11 @@ import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 
+import java.util.ArrayList;
+
 public class ShowOwnerBistroList extends AppCompatActivity {
+    boolean onChoice = false;
+    ArrayList<BistroListViewItem> selectedBistroList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +50,19 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
-                String titleStr = item.getTitle();
+                if (onChoice) {
+                    //TODO : 선택한 아이템 리스트에 추가
+                    //selectedBistroList.add(position에 해당하는 bistro);
+                    //선택했다는 표시
+                } else {
+                    // get item
+                    BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
+                    String titleStr = item.getTitle();
 
-                Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
-                intent.putExtra("selectedBistro", titleStr);
-                startActivity(intent);
+                    Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
+                    intent.putExtra("selectedBistro", titleStr);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -63,7 +73,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerBistroList.this, RegisterBistro.class);
                 startActivity(intent);
-
             }
         });
 
@@ -81,22 +90,35 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             public void onClick(View view) {
                 if (delbtn.getText().toString() == "삭제") {
                     // TODO : onchoice활성화
+                    onChoice = true;
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     delbtn.setTextSize(14);
                     delbtn.setText("확인");
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
-                    ;
                     addbtn.setText("");
                 } else {
-                    // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
+                    onChoice = false;
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                     delbtn.setTextSize(14);
                     delbtn.setText("삭제");
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
-                    ;
                     addbtn.setText("추가");
+                    //다중 삭제 처리 동작
+                    if (selectedBistroList.size() > 0) {
+                        // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
+                        /*
+                        // 선택한 아이템들의 position 획득
+                        checked = listview.getCheckedItemPosition();
+                        if (checked > -1 && checked < count) {
+                            // listview 선택 초기화
+                            listview.clearChoices();
+                            // listview 갱신
+                            adapter.notifyDataSetChanged();
+                        }
+                        */
+                    }
                 }
             }
         });

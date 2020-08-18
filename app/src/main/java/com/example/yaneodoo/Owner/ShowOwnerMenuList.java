@@ -111,7 +111,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                     addbtn.setTextSize(14);
                     addbtn.setText("");
                     // TODO : onchoice활성화
-
                 } else {
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                     delbtn.setTextSize(14);
