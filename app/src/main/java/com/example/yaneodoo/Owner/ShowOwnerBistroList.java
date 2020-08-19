@@ -1,5 +1,6 @@
 package com.example.yaneodoo.Owner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -10,7 +11,9 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -20,6 +23,7 @@ import com.example.yaneodoo.R;
 
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
+    boolean removeItems = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,17 +110,21 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     addbtn.setTextSize(14);
                     addbtn.setText("추가");
 
-                    //다중 삭제 처리 동작
-                    SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //삭제할 매장 배열
-                    int count = adapter.getCount();
-                    for (int i = count - 1; i >= 0; i--) {
-                        if (checkedItems.get(i)) { //i position의 상태가 Checked이면
-                            // TODO : DELETE /stores/{storeId}로 해당 매장 삭제
-                            BistroListViewItem bistro = (BistroListViewItem) adapter.getItem(i);
-                            //bistro.getTitle(); //Id로
+                    //삭제 확인 AlertDialog
+                    showAlertDialog();
+
+                    if (removeItems) {
+                        //다중 삭제 처리 동작
+                        SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //삭제할 매장 배열
+                        int count = adapter.getCount();
+                        for (int i = count - 1; i >= 0; i--) {
+                            if (checkedItems.get(i)) { //i position의 상태가 Checked이면
+                                // TODO : DELETE /stores/{storeId}로 해당 매장 삭제
+                                BistroListViewItem bistro = (BistroListViewItem) adapter.getItem(i);
+                                //bistro.getTitle(); //Id로
+                            }
                         }
                     }
-
                     // 모든 선택 상태 초기화.
                     listview.clearChoices();
                     // TODO : 다시 GET /stores
@@ -136,6 +144,26 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("삭제 확인");
+        builder.setMessage("선택한 항목(들)을 삭제합니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        removeItems = true;
+                        Toast.makeText(getApplicationContext(), "삭제 완료.", Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "삭제 취소.", Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
     }
 
     @Override
