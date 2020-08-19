@@ -102,20 +102,12 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
                     checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
                 } else {
-                    onChoice = false;
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                    delbtn.setTextSize(14);
-                    delbtn.setText("삭제");
-                    Button addbtn = (Button) findViewById(R.id.btn_add);
-                    addbtn.setTextSize(14);
-                    addbtn.setText("추가");
+                    SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
 
-                    //삭제 확인 AlertDialog
-                    showAlertDialog();
+                    if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
 
-                    if (removeItems) {
-                        //다중 삭제 처리 동작
-                        SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //삭제할 매장 배열
+                    //다중 삭제 처리 동작
+                    if (remove) {
                         int count = adapter.getCount();
                         for (int i = count - 1; i >= 0; i--) {
                             if (checkedItems.get(i)) { //i position의 상태가 Checked이면
@@ -129,6 +121,15 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     listview.clearChoices();
                     // TODO : 다시 GET /stores
                     adapter.notifyDataSetChanged();
+
+                    onChoice = false;
+                    remove = false;
+                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    delbtn.setTextSize(14);
+                    delbtn.setText("삭제");
+                    Button addbtn = (Button) findViewById(R.id.btn_add);
+                    addbtn.setTextSize(14);
+                    addbtn.setText("추가");
                 }
             }
         });
@@ -153,7 +154,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        removeItems = true;
+                        remove = true;
                         Toast.makeText(getApplicationContext(), "삭제 완료.", Toast.LENGTH_LONG).show();
                     }
                 });
