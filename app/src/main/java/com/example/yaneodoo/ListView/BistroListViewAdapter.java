@@ -33,7 +33,6 @@ public class BistroListViewAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.bistro_listview_item, parent, false);

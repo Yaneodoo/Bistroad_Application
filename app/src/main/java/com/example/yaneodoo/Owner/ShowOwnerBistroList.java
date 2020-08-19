@@ -18,8 +18,6 @@ import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 
-import java.util.ArrayList;
-
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
 
@@ -88,7 +86,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (delbtn.getText().toString() == "삭제") {
-                    // TODO : onchoice활성화
                     onChoice = true;
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     delbtn.setTextSize(14);
