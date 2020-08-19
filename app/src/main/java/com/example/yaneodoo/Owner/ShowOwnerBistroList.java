@@ -2,9 +2,11 @@ package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,14 +22,13 @@ import java.util.ArrayList;
 
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
-    ArrayList<BistroListViewItem> selectedBistroList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_owner);
 
-        // TODO : owNerId로 GET /stores하여 얻은 정보 아이템으로 추가
+        // TODO : ownerId로 GET /stores하여 얻은 정보 아이템으로 추가
 
         // Adapter 생성
         final BistroListViewAdapter adapter = new BistroListViewAdapter();
@@ -51,9 +52,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 if (onChoice) {
-                    //TODO : 선택한 아이템 리스트에 추가
-                    //selectedBistroList.add(position에 해당하는 bistro);
-                    //선택했다는 표시
+                    //
                 } else {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
@@ -97,6 +96,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("");
+
+                    //Check whether it works
+                    CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
+                    checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
                 } else {
                     onChoice = false;
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
@@ -105,20 +108,22 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("추가");
+
                     //다중 삭제 처리 동작
-                    if (selectedBistroList.size() > 0) {
-                        // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
-                        /*
-                        // 선택한 아이템들의 position 획득
-                        checked = listview.getCheckedItemPosition();
-                        if (checked > -1 && checked < count) {
-                            // listview 선택 초기화
-                            listview.clearChoices();
-                            // listview 갱신
-                            adapter.notifyDataSetChanged();
+                    SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //삭제할 매장 배열
+                    int count = adapter.getCount();
+                    for (int i = count - 1; i >= 0; i--) {
+                        if (checkedItems.get(i)) { //i position의 상태가 Checked이면
+                            // TODO : DELETE /stores/{storeId}로 해당 매장 삭제
+                            BistroListViewItem bistro = (BistroListViewItem) adapter.getItem(i);
+                            //bistro.getTitle(); //Id로
                         }
-                        */
                     }
+
+                    // 모든 선택 상태 초기화.
+                    listview.clearChoices();
+                    // TODO : 다시 GET /stores
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
