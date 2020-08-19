@@ -26,13 +26,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SelectUser extends AppCompatActivity {
     // FOR ACTIVITY SWITCH. ACCORDING TO USER.
     static final int SMS_RECEIVE_PERMISSON = 1;
     private Retrofit mRetrofit;
-    private RetrofitService mRetrofitAPI;
-    private String baseUrl = "https://api.bistroad.kr/v1";
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,8 @@ public class SelectUser extends AppCompatActivity {
         //Check Log
         getUserList();
         getUser("admin");
-        postUser(new User("jinha", "awefvdnrhges", "관리자", "010-4916-6570", "ROLE_ADMIN"));
+        User user = new User("jinha", "awefvdnrhges", "관리자", "010-4916-6570", "ROLE_ADMIN");
+        postUser(user);
 
         // 손님 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.customerbtn);
@@ -71,12 +73,13 @@ public class SelectUser extends AppCompatActivity {
     private void setRetrofitInit() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        RetrofitService service = mRetrofit.create(RetrofitService.class);
+        service = mRetrofit.create(RetrofitService.class);
     }
 
     private void getUser(String uid) {
-        mRetrofitAPI.getUser(uid).enqueue(new Callback<User>() {
+        service.getUser(uid).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
@@ -100,7 +103,7 @@ public class SelectUser extends AppCompatActivity {
     }
 
     private void getUserList() {
-        mRetrofitAPI.getUserList().enqueue(new Callback<List<User>>() {
+        service.getUserList().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
@@ -127,7 +130,7 @@ public class SelectUser extends AppCompatActivity {
     }
 
     private void postUser(User user) {
-        mRetrofitAPI.postUser(user).enqueue(new Callback<User>() {
+        service.postUser(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {

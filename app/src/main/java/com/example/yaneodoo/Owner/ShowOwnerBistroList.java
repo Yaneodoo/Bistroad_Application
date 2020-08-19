@@ -23,7 +23,7 @@ import com.example.yaneodoo.R;
 
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
-    boolean removeItems = false;
+    boolean remove = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
