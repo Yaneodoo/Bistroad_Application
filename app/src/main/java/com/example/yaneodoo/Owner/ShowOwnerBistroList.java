@@ -68,7 +68,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
 
         // 추가 버튼 클릭 리스너
-        Button addbtn = (Button) findViewById(R.id.btn_add) ;
+        Button addbtn = (Button) findViewById(R.id.btn_add);
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +135,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

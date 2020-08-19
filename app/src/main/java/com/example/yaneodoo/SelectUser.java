@@ -17,7 +17,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,23 +29,10 @@ import retrofit2.Retrofit;
 
 public class SelectUser extends AppCompatActivity {
     // FOR ACTIVITY SWITCH. ACCORDING TO USER.
-    private Intent intent;
     static final int SMS_RECEIVE_PERMISSON = 1;
     private Retrofit mRetrofit;
     private RetrofitService mRetrofitAPI;
-    private String baseUrl = "https://api.bistroad.kr/v1/";
-    private Callback<String> mRetrofitCallback = new Callback<String>() {
-        @Override
-        public void onResponse(Call<String> call, Response<String> response) {
-            String result = response.body();
-            Log.d("TAG", result);
-        }
-
-        @Override
-        public void onFailure(Call<String> call, Throwable t) {
-            t.printStackTrace();
-        }
-    };
+    private String baseUrl = "https://api.bistroad.kr/v1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +40,11 @@ public class SelectUser extends AppCompatActivity {
         setContentView(R.layout.user_select);
         checkSelfPermission();
         setRetrofitInit();
-        //not complete. so comment out.
-        //callBistroList();
+
+        //Check Log
+        getUserList();
+        getUser("admin");
+        postUser(new User("jinha", "awefvdnrhges", "관리자", "010-4916-6570", "ROLE_ADMIN"));
 
         // 손님 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.customerbtn);
@@ -82,9 +75,79 @@ public class SelectUser extends AppCompatActivity {
         RetrofitService service = mRetrofit.create(RetrofitService.class);
     }
 
-    private void callBistroList() {
-        Call<String> mCallBistroList = mRetrofitAPI.getBistroList();
-        mCallBistroList.enqueue(mRetrofitCallback);
+    private void getUser(String uid) {
+        mRetrofitAPI.getUser(uid).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User body = response.body();
+                    if (body != null) {
+                        Log.d("data.getid()", body.getId());
+                        Log.d("data.getusername()", body.getUsername());
+                        Log.d("data.getfullName()", body.getFullName());
+                        Log.d("data.getphone()", body.getPhone());
+                        Log.d("data.getrole()", body.getRole());
+                        Log.d("getUser end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getUserList() {
+        mRetrofitAPI.getUserList().enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    List<User> body = response.body();
+                    if (body != null) {
+                        for (int i = 0; i < body.size(); i++) {
+                            Log.d("data" + i + "getid()", body.get(i).getId());
+                            Log.d("data" + i + "getusername()", body.get(i).getUsername());
+                            Log.d("data" + i + "getfullName()", body.get(i).getFullName());
+                            Log.d("data" + i + "getphone()", body.get(i).getPhone());
+                            Log.d("data" + i + "getrole()", body.get(i).getRole());
+                            Log.d("user data", "--------------------------------------");
+                        }
+                        Log.d("getUserList end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void postUser(User user) {
+        mRetrofitAPI.postUser(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User body = response.body();
+                    if (body != null) {
+                        Log.d("data.getid()", body.getId());
+                        Log.d("data.getusername()", body.getUsername());
+                        Log.d("data.getfullName()", body.getFullName());
+                        Log.d("data.getphone()", body.getPhone());
+                        Log.d("data.getrole()", body.getRole());
+                        Log.d("postUser end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
