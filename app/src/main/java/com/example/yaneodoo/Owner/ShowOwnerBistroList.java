@@ -100,7 +100,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
                     //Check whether it works
                     CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
-                    checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
+                    checkBox.setVisibility(View.VISIBLE);
+                    //checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
                 } else {
                     SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
 
@@ -130,6 +131,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("추가");
+
+                    //Check whether it works
+                    CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
+                    checkBox.setVisibility(View.INVISIBLE);
                 }
             }
         });
