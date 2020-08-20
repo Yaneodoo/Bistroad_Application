@@ -45,8 +45,7 @@ public class SelectUser extends AppCompatActivity {
         //Check Log
         getUserList();
         getUser("admin");
-        User user = new User("jinha", "awefvdnrhges", "관리자", "010-4916-6570", "ROLE_ADMIN");
-        postUser(user);
+        postUser(new User("jinha", "awefvdnrhges", "관리자", "010-4916-6570", "ROLE_ADMIN"));
 
         // 손님 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.customerbtn);

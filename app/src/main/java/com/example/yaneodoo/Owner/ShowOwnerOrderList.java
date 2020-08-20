@@ -70,14 +70,12 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
     // 주문접수 토글 버튼 클릭 리스너
     public void progressToggle(View v) {
-        // TODO : 해당 position의 progress를 반전
         LinearLayout parentRow = (LinearLayout) v.getParent();
         TextView orderState = (TextView) parentRow.findViewById(R.id.order_progress);
 
         LinearLayout pparentRow = (LinearLayout) parentRow.getParent();
         TextView orderDate = (TextView) pparentRow.findViewById(R.id.order_date_txtView);
         TextView orderCustomerId = (TextView) pparentRow.findViewById(R.id.order_customer_txtView);
-
 
         ToggleButton tb2 = (ToggleButton) v.findViewById(R.id.btn_progress);
         Log.d("tag", orderState.getText().toString());

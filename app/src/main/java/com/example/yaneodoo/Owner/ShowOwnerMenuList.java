@@ -110,7 +110,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("");
-                    // TODO : onchoice활성화
                 } else {
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                     delbtn.setTextSize(14);
@@ -118,25 +117,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("추가");
-
-                    /*
-                    //다중 삭제 처리 동작
-                    int count, checked;
-                    count = adapter.getCount();
-                    if (count > 0) {
-                        // 현재 선택된 아이템의 position 획득
-                        checked = listview.getCheckedItemPosition();
-                        if (checked > -1 && checked < count) {
-                            // TODO : DELETE /stores/{storeId}로 선택한 매장들 삭제
-                            // 아이템 삭제
-                            listViewItemList.remove(checked);
-                            // listview 선택 초기화
-                            listview.clearChoices();
-                            // listview 갱신
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                    */
                 }
             }
         });
