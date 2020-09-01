@@ -3,11 +3,11 @@ package com.example.yaneodoo.Owner;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +54,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 if (onChoice) {
-                    //
+                    v.setBackgroundColor(R.id.dark);
                 } else {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
@@ -97,14 +97,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("");
-
-                    //Check whether it works
-                    CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
-                    checkBox.setVisibility(View.VISIBLE);
-                    //checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
                 } else {
                     SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
 
+                    Log.d("selected", checkedItems.toString());
                     if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
 
                     //다중 삭제 처리 동작
@@ -118,6 +114,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                             }
                         }
                     }
+
+                    /*
                     // 모든 선택 상태 초기화.
                     listview.clearChoices();
                     // TODO : 다시 GET /stores
@@ -131,10 +129,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
                     addbtn.setText("추가");
-
-                    //Check whether it works
-                    CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox1);
-                    checkBox.setVisibility(View.INVISIBLE);
+                    */
                 }
             }
         });
@@ -161,12 +156,18 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         remove = true;
                         Toast.makeText(getApplicationContext(), "삭제 완료.", Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
                     }
                 });
         builder.setNegativeButton("아니오",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(), "삭제 취소.", Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
                     }
                 });
         builder.show();
