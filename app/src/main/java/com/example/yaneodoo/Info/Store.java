@@ -7,6 +7,15 @@ public class Store {
     private Location location;
     private String id;
     private String ownerId;
+    private String photoUri;
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
+    }
 
     public String getPhone() {
         return phone;

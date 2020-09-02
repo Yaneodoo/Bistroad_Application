@@ -1,5 +1,6 @@
 package com.example.yaneodoo;
 
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface RetrofitService {
+
+    //---------------user----------------//
     //사용자 목록을 조회합니다.
     @GET("users")
     Call<List<User>> getUserList();
@@ -35,4 +38,10 @@ public interface RetrofitService {
     //사용자 계정을 삭제합니다.
     @DELETE("users/{userId}")
     Call<ResponseBody> deleteUser();
+
+    //---------------store----------------//
+    //Search stores
+    @GET("stores")
+    Call<List<Store>> getStoreList();
+
 }

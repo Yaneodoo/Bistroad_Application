@@ -17,20 +17,40 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.RetrofitService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
     boolean remove = false;
 
+    private Retrofit mRetrofit;
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_owner);
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = mRetrofit.create(RetrofitService.class);
 
         // TODO : ownerId로 GET /stores하여 얻은 정보 아이템으로 추가
+        getStoreList();
 
         // Adapter 생성
         final BistroListViewAdapter adapter = new BistroListViewAdapter();
@@ -114,22 +134,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                             }
                         }
                     }
-
-                    /*
-                    // 모든 선택 상태 초기화.
-                    listview.clearChoices();
-                    // TODO : 다시 GET /stores
-                    adapter.notifyDataSetChanged();
-
-                    onChoice = false;
-                    remove = false;
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                    delbtn.setTextSize(14);
-                    delbtn.setText("삭제");
-                    Button addbtn = (Button) findViewById(R.id.btn_add);
-                    addbtn.setTextSize(14);
-                    addbtn.setText("추가");
-                    */
                 }
             }
         });
@@ -145,6 +149,32 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    private void getStoreList() {
+        service.getStoreList().enqueue(new Callback<List<Store>>() {
+            @Override
+            public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
+                if (response.isSuccessful()) {
+                    List<Store> body = response.body();
+                    if (body != null) {
+                        for (int i = 0; i < body.size(); i++) {
+                            Log.d("data" + i + "g()", body.get(i).getDescription());
+                            Log.d("data" + i + "g()", body.get(i).getId());
+                            Log.d("data" + i + "g()", body.get(i).getName());
+                            Log.d("data" + i + "g()", body.get(i).getPhotoUri());
+                            Log.d("store data", "--------------------------------------");
+                        }
+                        Log.d("getStoreList end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Store>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     void showAlertDialog() {
