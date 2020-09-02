@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,22 +30,25 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
     private Intent intent;
     private GoogleMap mMap;
-
     private static final int REQUEST_TAKE_ALBUM = 1111;
     private ImageView upload_btn;
-    // 카메라로 사진을 찍어 image 추출
     private PhImageCapture mCamera;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +56,10 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.bistro_registration_owner);
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
-        // 받을게 없으면 어떻게 되지??
         intent = getIntent();
         String bistroName = intent.getStringExtra("selectedBistro");
         //받으면
         // TODO : GET /stores/{storeId}로 이미지, 좌표 값 얻어서 화면에 표시
-
-        // TODO : Google Map으로 좌표값 얻어오기
-        // 수정하는 경우는 미리 입력된 좌표값 지도로 나타내기
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         // 이미지 업로드 버튼 클릭 리스너
         upload_btn = findViewById(R.id.bistro_imagebtn);
@@ -144,8 +142,33 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
+            }
+        });
+
+        // TODO : mypagebtn 클릭 리스너
     }
 
     @Override
