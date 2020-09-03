@@ -11,9 +11,11 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitService {
 
@@ -42,6 +44,11 @@ public interface RetrofitService {
     //---------------store----------------//
     //Search stores
     @GET("stores")
-    Call<List<Store>> getStoreList();
+    Call<List<Store>> getStoreList(@Header("Authorization") String token, @Query("ownerId") String ownerId);
+
+    //----------------user---------------//
+    //Get an user profile from given token
+    @GET("users/me")
+    Call<User> getUserMe(@Header("Authorization") String token);
 
 }

@@ -18,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,6 +41,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
+    private BistroListViewAdapter adapter = new BistroListViewAdapter();
+    private ListView listview;
+
+    private List<Store> storeList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,25 +56,15 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // TODO : ownerId로 GET /stores하여 얻은 정보 아이템으로 추가
-        getStoreList();
+        getUserMe(token);
+        getStoreList(token, ownerId);//소유한 가게 불러오기
+
+        // TODO : list만 화면에 add item
 
         // Adapter 생성
-        final BistroListViewAdapter adapter = new BistroListViewAdapter();
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
-        final ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
-        listview.setAdapter(adapter);
-
-        // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "레드 175", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "윤스쿡", "서울시 용산구 새창로 70", "식전빵이 매우 맛있는곳\n" +
-                "테스트 문장입니다. 테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.테스트 문장입니다.");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.mypage), "아웃백", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.img_upload), "동대문엽기떡볶이", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.edit), "계이득", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.shopping_basket), "계이득", "서울시 동작구", "#짜장 #짬뽕");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "계이득", "서울시 동작구", "#짜장 #짬뽕");
+        listview = (ListView) findViewById(R.id.bistro_list_view_owner);
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -122,6 +119,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
                     Log.d("selected", checkedItems.toString());
                     if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
+                    else {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
 
                     //다중 삭제 처리 동작
                     if (remove) {
@@ -151,21 +153,50 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         // TODO : mypagebtn 클릭 리스너
     }
 
-    private void getStoreList() {
-        service.getStoreList().enqueue(new Callback<List<Store>>() {
+    private void getUserMe(String token) {
+        service.getUserMe("Bearer" + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User body = response.body();
+                    if (body != null) {
+                        ownerId = body.getId();
+                        Log.d("user.getId()", body.getId());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getStoreList(String token, String ownerId) {
+        service.getStoreList("Bearer" + token, ownerId).enqueue(new Callback<List<Store>>() {
             @Override
             public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
                 if (response.isSuccessful()) {
                     List<Store> body = response.body();
                     if (body != null) {
                         for (int i = 0; i < body.size(); i++) {
-                            Log.d("data" + i + "g()", body.get(i).getDescription());
-                            Log.d("data" + i + "g()", body.get(i).getId());
-                            Log.d("data" + i + "g()", body.get(i).getName());
-                            Log.d("data" + i + "g()", body.get(i).getPhotoUri());
+                            Store store = new Store();
+                            store.setName(body.get(i).getName());
+                            store.setLocation(body.get(i).getLocation());
+                            store.setDescription(body.get(i).getDescription());
+                            storeList.add(store);
+
+                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+
+                            Log.d("data" + i, body.get(i).getDescription());
+                            Log.d("data" + i, body.get(i).getId());
+                            Log.d("data" + i, body.get(i).getName());
+                            //Log.d("data" + i, body.get(i).getPhotoUri());
                             Log.d("store data", "--------------------------------------");
                         }
                         Log.d("getStoreList end", "======================================");
+                        listview.setAdapter(adapter);
                     }
                 }
             }
