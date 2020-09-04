@@ -1,19 +1,26 @@
 package com.example.yaneodoo;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 
@@ -26,8 +33,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Login extends AppCompatActivity {
-    // FOR ACTIVITY SWITCH. ACCORDING TO USER.
-    private Intent intent;
     private String userInfo;
     private String loginInfo;
 
@@ -36,19 +41,20 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        checkSelfPermission();
+
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         final String NOTIFICATION_ID = "10001";
         String NOTIFICATION_NAME = "리뷰남기기";
         int IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
-        final Intent intent = new Intent(Login.this.getApplicationContext(),LoginConfirmed.class);
+        final Intent intent = new Intent(Login.this.getApplicationContext(), LoginConfirmed.class);
 
         //채널 생성
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_ID, NOTIFICATION_NAME, IMPORTANCE);
             notificationManager.createNotificationChannel(channel);
         }
-
 
         // 회원가입 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.login_signup_button);
@@ -119,6 +125,7 @@ public class Login extends AppCompatActivity {
                     }
                 });
             }
+
             private String convertStreamToString(InputStream is)
             {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -167,5 +174,44 @@ public class Login extends AppCompatActivity {
 //                notificationManager.notify(0, builder.build());
 //            }
         });
+    }
+
+    public void checkSelfPermission() {
+        String temp = "";
+
+        //카메라 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.CAMERA + " ";
+        }
+
+        //파일 쓰기 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+        }
+
+        //파일 읽기 권한 확인
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
+        }
+
+        //권한 요청
+        if (TextUtils.isEmpty(temp) == false)
+            ActivityCompat.requestPermissions(this, temp.trim().split(" "), 1);
+        else
+            Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            int length = permissions.length;
+            for (int i = 0; i < length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    Log.d("Login", "권한 허용 : " + permissions[i]);
+            }
+        }
     }
 }
