@@ -54,6 +54,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                 String mname = menuName.getText().toString();
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerOrderForm.class);
                 intent.putExtra("mname", mname);
+                ShowCustomerMenuInfo.this.finish();
                 startActivity(intent);
             }
         });
@@ -64,6 +65,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerBistroList.class);
+                ShowCustomerMenuInfo.this.finish();
                 startActivity(intent);
             }
         });
@@ -76,6 +78,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerShoppingBasket.class);
+                ShowCustomerMenuInfo.this.finish();
                 startActivity(intent);
             }
         });
@@ -83,6 +86,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        ShowCustomerMenuInfo.this.finish();
         startActivity(new Intent(this, ShowCustomerMenuList.class));
     }
 }

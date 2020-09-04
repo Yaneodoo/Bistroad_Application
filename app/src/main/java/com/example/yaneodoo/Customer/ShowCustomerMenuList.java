@@ -63,6 +63,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 String TAG = "MainActivity";
                 Log.i(TAG, item.getMenuStr());
 
+                ShowCustomerMenuList.this.finish();
                 startActivity(intent);
             }
         });
@@ -73,6 +74,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerBistroList.class);
+                ShowCustomerMenuList.this.finish();
                 startActivity(intent);
             }
         });
@@ -85,6 +87,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerShoppingBasket.class);
+                ShowCustomerMenuList.this.finish();
                 startActivity(intent);
             }
         });
@@ -97,11 +100,13 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         String mname = menuName.getText().toString();
         Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
         intent.putExtra("mname", mname);
+        ShowCustomerMenuList.this.finish();
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
+        ShowCustomerMenuList.this.finish();
         startActivity(new Intent(this, ShowCustomerBistroList.class));
     }
 }
