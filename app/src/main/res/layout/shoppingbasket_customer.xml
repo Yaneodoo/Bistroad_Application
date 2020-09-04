@@ -92,6 +92,17 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="장바구니"
+                android:textColor="#000000"
+                android:textSize="25dp" />
+
             <ListView
                 android:id="@+id/shoppingbasket_list_view_customer"
                 android:layout_width="match_parent"
@@ -99,7 +110,25 @@
                 android:divider="#00000000"
                 android:dividerHeight="10dp"></ListView>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_centerInParent="true"
+                android:background="#FF948B8B"
+                android:paddingTop="2dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="backToMenuList"
+                android:paddingTop="20dp"
+                android:text="+ 더 담으러 가기"
+                android:textColor="@color/colorAccent"
+                android:textSize="20dp" />
+
             <LinearLayout
+                android:paddingTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -109,12 +138,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textSize="25dp"
                     android:text="총 주문 금액" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="25dp"
                     android:gravity="center"
                     android:text="000000원" />
             </LinearLayout>
@@ -127,7 +158,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_delete"
+                android:id="@+id/shoppingbasket_order_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FDDFDB"
