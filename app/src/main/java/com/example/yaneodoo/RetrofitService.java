@@ -46,6 +46,10 @@ public interface RetrofitService {
     @GET("stores")
     Call<List<Store>> getStoreList(@Header("Authorization") String token, @Query("ownerId") String ownerId);
 
+    @FormUrlEncoded
+    @POST("stores")
+    Call<Store> postStore(@Header("Authorization") String token, @Field("store") Store store);
+
     //----------------user---------------//
     //Get an user profile from given token
     @GET("users/me")

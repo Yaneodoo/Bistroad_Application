@@ -9,8 +9,19 @@ public class Store {
     private String ownerId;
     private String photoUri;
 
+    public Store() {
+    }
+
     public String getPhotoUri() {
         return photoUri;
+    }
+
+    public Store(String description, Location location, String name, String ownerId, String phone) {
+        this.phone = phone;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.ownerId = ownerId;
     }
 
     public void setPhotoUri(String photoUri) {

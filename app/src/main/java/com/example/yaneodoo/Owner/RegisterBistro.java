@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -28,8 +30,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Location;
+import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.RetrofitService;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,22 +50,35 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import java.io.InputStream;
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
-    private Intent intent;
     private GoogleMap mMap;
     private static final int REQUEST_TAKE_ALBUM = 1111;
     private ImageView upload_btn;
     private PhImageCapture mCamera;
 
+    private String ownerId;
+    private String token;
+    private Retrofit mRetrofit;
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_registration_owner);
 
-        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
-        intent = getIntent();
-        String bistroName = intent.getStringExtra("selectedBistro");
-        //받으면
-        // TODO : GET /stores/{storeId}로 이미지, 좌표 값 얻어서 화면에 표시
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = mRetrofit.create(RetrofitService.class);
 
         // 이미지 업로드 버튼 클릭 리스너
         upload_btn = findViewById(R.id.bistro_imagebtn);
@@ -100,32 +119,22 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 지도에서 값 가져오기
-                /*
                 ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
-                // 지도
-                EditText nameEditTxt=(EditText) findViewById(R.id.bistro_name_txtView);
-                EditText telEditTxt=(EditText) findViewById(R.id.bistro_tel_txtView);
+                EditText nameEditTxt = (EditText) findViewById(R.id.bistro_name_txtView);
+                EditText telEditTxt = (EditText) findViewById(R.id.bistro_tel_txtView);
+                EditText descEditTxt = (EditText) findViewById(R.id.bistro_desc_txtView);
 
-                Drawable photo=imgBtn.getDrawable();
-                // 지도
-                String name=nameEditTxt.getText().toString();
-                String tel=telEditTxt.getText().toString();
+                Drawable uploadedImg = imgBtn.getDrawable();
+                String name = nameEditTxt.getText().toString();
+                String tel = telEditTxt.getText().toString();
+                String desc = descEditTxt.getText().toString();
 
-                //BistroInfo bistroInfo=new BistroInfo(photo,,name,tel);
+                //store.setPhotoUri(photo);
+                // TODO : 지도에서 값 가져오기
+
                 // TODO : POST /stores로 생성한 bistro등록
-
-                // Adapter 생성
-                ArrayList<BistroListViewItem> listViewItemList = new ArrayList<>();
-                BistroListViewAdapter adapter = new BistroListViewAdapter(RegisterBistro.this, android.R.layout.simple_list_item_multiple_choice,listViewItemList);
-
-                // 리스트뷰 참조 및 Adapter달기
-                ListView listview = (ListView) findViewById(R.id.bistro_list_view_owner);
-                listview.setAdapter(adapter);
-
-                // 아이템 추가 예시
-                adapter.addItem(ContextCompat.getDrawable(RegisterBistro.this, R.drawable.tteokbokki),"레드 175", "서울시 동작구", "#짜장 #짬뽕") ;
-                */
+                getUserMe(token);
+                postStore(token, new Store(desc, new Location("12", "12"), name, ownerId, tel));
 
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                 startActivity(intent);
@@ -145,7 +154,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -157,18 +165,63 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
+                // TODO : Get info about the selected place.
                 Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
+                // TODO : Handle the error.
                 Log.i("TAG", "An error occurred: " + status);
             }
         });
 
         // TODO : mypagebtn 클릭 리스너
+    }
+
+    private void getUserMe(String token) {
+        service.getUserMe("Bearer" + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User body = response.body();
+                    if (body != null) {
+                        ownerId = body.getId();
+                        Log.d("user.getId()", body.getId());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void postStore(String token, Store store) {
+        service.postStore("Bearer" + token, store).enqueue(new Callback<Store>() {
+            @Override
+            public void onResponse(Call<Store> call, Response<Store> response) {
+                if (response.isSuccessful()) {
+                    Store body = response.body();
+                    if (body != null) {
+                        Log.d("data.getId()", body.getId());
+                        Log.d("data.getOwnerId()", body.getOwnerId());
+                        Log.d("data.getName()", body.getName());
+                        Log.d("data.getPhone()", body.getPhone());
+                        Log.d("data.getDescription()", body.getDescription());
+                        Log.d("data.getLocation()", body.getLocation().getLat() + body.getLocation().getLng());
+                        Log.d("postStore end", "======================================");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Store> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
