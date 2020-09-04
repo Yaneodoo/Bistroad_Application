@@ -62,7 +62,7 @@
                 android:id="@+id/btn_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FEA6A4"
+                android:background="#FDDFDB"
                 android:gravity="center"
                 android:text="1개 담기" />
         </LinearLayout>

@@ -143,6 +143,6 @@
         android:id="@+id/btn_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FEA6A4"
+        android:background="#FDDFDB"
         android:text="등록"/>
 </LinearLayout>
