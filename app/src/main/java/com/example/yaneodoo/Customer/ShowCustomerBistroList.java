@@ -10,17 +10,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ShowCustomerBistroList extends AppCompatActivity {
+    private BackPressedForFinish backPressedForFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_customer);
+        backPressedForFinish = new BackPressedForFinish(this);
 
         // TODO : GET /nearby-stores하여 받아온 정보 아이템으로 추가
 
@@ -85,7 +88,8 @@ public class ShowCustomerBistroList extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //
+        // BackPressedForFinish 클래시의 onBackPressed() 함수를 호출한다.
+        backPressedForFinish.onBackPressed();
     }
 }
 

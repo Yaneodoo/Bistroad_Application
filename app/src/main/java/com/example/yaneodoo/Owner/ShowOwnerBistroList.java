@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
@@ -37,6 +38,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
     boolean remove = false;
 
+    private BackPressedForFinish backPressedForFinish;
+
+    private String ownerId;
+    private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -50,6 +55,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_list_owner);
+        backPressedForFinish = new BackPressedForFinish(this);
+
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -236,6 +245,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        // BackPressedForFinish 클래시의 onBackPressed() 함수를 호출한다.
+        backPressedForFinish.onBackPressed();
     }
 }

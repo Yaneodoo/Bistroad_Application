@@ -112,6 +112,7 @@ public class Login extends AppCompatActivity {
 
                                 Intent intent = new Intent(Login.this, LoginConfirmed.class);
                                 startActivity(intent);
+                                Login.this.finish(); // 로딩페이지 Activity stack에서 제거
                             }
                             else{
                                 Log.e("POST", "Failed.");
