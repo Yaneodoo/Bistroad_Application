@@ -12,8 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.yaneodoo.REST.RestGetAuth;
+import com.example.yaneodoo.REST.RestGetUserInfo;
 
 import org.json.JSONObject;
 
@@ -24,17 +28,21 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
     // FOR ACTIVITY SWITCH. ACCORDING TO USER.
     private Intent intent;
     private String userInfo;
     private String loginInfo;
+    private int rc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
 
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -67,105 +75,37 @@ public class Login extends AppCompatActivity {
         btnOwner.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            // Open the connection
-                            URL url = new URL("https://api.bistroad.kr/v1/auth/token");
-                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                            JSONObject jsonInfo = new JSONObject();
-                            jsonInfo.accumulate("username", id.getText().toString());
-                            jsonInfo.accumulate("password", password.getText().toString());
-
-                            userInfo = jsonInfo.toString();
-                            conn.setRequestProperty("Accept", "application/json");
-                            conn.setRequestProperty("Content-type", "application/json");
-
-                            conn.setRequestMethod("POST");
-                            conn.setDefaultUseCaches(false);
-                            conn.setDoInput(true);
-                            conn.setDoOutput(true);
-
-                            OutputStream os = conn.getOutputStream();
-
-                            os.write(userInfo.getBytes("euc-kr"));
-
-                            os.flush();
-                            if(conn.getResponseCode() == 200){
-                                InputStream is = conn.getInputStream();
-                                loginInfo = convertStreamToString(is);
-                                JSONObject jsonLogin = new JSONObject(loginInfo);
-                                String token = jsonLogin.getString("access_token");//
-                                SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = tk.edit();
-                                editor.putString("bistrotk", token); //
-                                editor.commit();
-                                Log.e("TOKEN", token);
-
-                                Intent intent = new Intent(Login.this, LoginConfirmed.class);
-                                startActivity(intent);
-                            }
-                            else{
-                                Log.e("POST", "Failed.");
-                            }
-                        }
-                        catch (Exception e) {
-                            // Error calling the rest api
-                            Log.e("REST_API", "POST method failed: " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-            private String convertStreamToString(InputStream is)
-            {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-
-                String line = null;
-
-                try
-                {
-                    while ((line = reader.readLine()) != null)
-                    {
-                        sb.append(line + "\n");
-                    }
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                finally
-                {
-                    try
-                    {
-                        is.close();
-                    }
-                    catch (IOException e)
-                    {
+                try {
+                    RestGetAuth restGetAuth = new RestGetAuth(id.getText().toString(), password.getText().toString(), tk);
+                    try {
+                        rc = restGetAuth.execute().get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    Log.d("Login rc", String.valueOf(rc));
+                    if(rc == 200){
+                        Intent intent = new Intent(Login.this, LoginConfirmed.class);
+                        startActivity(intent);
+                    }
+                    else if(rc == 404){
+                        Toast noIdToast = Toast.makeText(getApplicationContext(), "계정이 존재하지 않습니다.", Toast.LENGTH_LONG);
+                        noIdToast.show();
+                    } else if (rc == 401) {
+                        Toast diffPwToast = Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다.", Toast.LENGTH_LONG);
+                        diffPwToast.show();
+                    } else {
+                        Log.e("POST", "Failed.");
+                    }
                 }
-                return sb.toString();
+                catch (Exception e) {
+                    // Error calling the rest api
+                    Log.e("REST_API", "POST method failed: " + e.getMessage());
+                    e.printStackTrace();
+                }
+
             }
-//            @Override
-//            public void onClick(View view) {
-//
-//                userId = id.getText().toString();
-//                userPassword = password.getText().toString();
-//
-//                PendingIntent pendnoti = PendingIntent.getActivity(Login.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(Login.this,NOTIFICATION_ID)
-//                        .setContentTitle("맛있는 시간 되셨나요?") //타이틀 TEXT
-//                        .setContentText("바쁘시겠지만 리뷰 부탁드려요!") //세부내용 TEXT
-//                        .setSmallIcon (R.drawable.logo)
-//                        .setContentIntent(pendnoti);
-//
-//                notificationManager.notify(0, builder.build());
-//            }
         });
     }
 }
