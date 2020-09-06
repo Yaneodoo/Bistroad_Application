@@ -1,4 +1,4 @@
-package com.example.yaneodoo;
+package com.example.yaneodoo.REST;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,14 +20,14 @@ import java.net.URL;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class RESTApi extends AsyncTask<Integer, Void, String> {
+public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
     // Variable to store url
     protected String mURL, mToken, name, role, loginInfo;
     SharedPreferences tk;
     int rc;
 
     // Constructor
-    public RESTApi(String url, String token, SharedPreferences tk) {
+    public RestGetUserInfo(String url, String token, SharedPreferences tk) {
         mURL = url;
         mToken = token;
         this.tk = tk;
@@ -44,7 +44,7 @@ public class RESTApi extends AsyncTask<Integer, Void, String> {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Authorization", "Bearer " + mToken);
             rc = conn.getResponseCode();
-            Log.e("RC", String.valueOf(rc));
+            Log.d("RC", String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
+import com.example.yaneodoo.REST.RestGetUserInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,48 +36,10 @@ public class LoginConfirmed extends AppCompatActivity {
         SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         token = tk.getString("bistrotk", "");
         Log.d("TOKEN", token);
-        final TextView loginText = (TextView) findViewById(R.id.login_profile_text);
-//        AsyncTask.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    // Open the connection
-//                    URL url = new URL("https://api.bistroad.kr/v1/users/me");
-//                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                    conn.setRequestMethod("GET");
-//                    conn.setRequestProperty("Authorization", "Bearer " + token);
-//                    rc = conn.getResponseCode();
-//                    Log.e("RC", String.valueOf(rc));
-//
-//                    if(rc == 200){
-//                        InputStream is = conn.getInputStream();
-//                        loginInfo = convertStreamToString(is);
-//                        //Log.d("POST", loginInfo);
-//                        JSONObject jsonLogin = new JSONObject(loginInfo);
-//                        name = jsonLogin.getString("fullName");
-//                        role = jsonLogin.getString("role");
-//                        SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = tk.edit();
-//                        editor.putString("fullName", name); //
-//                        editor.putString("role", role); //
-//                        editor.commit();
-//                        Log.d("name", name);
-//                        Log.d("role", role);
-//                    }
-//                    else{
-//                        Log.e("POST", "Failed.");
-//                    }
-//                }
-//                catch (Exception e) {
-//                    // Error calling the rest api
-//                    Log.e("REST_API: ", "POST method failed: " + e.getMessage());
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-        RESTApi restApi = new RESTApi(url, token, tk);
+        final TextView loginText = (TextView)findViewById(R.id.login_profile_text);
+        RestGetUserInfo restGetUserInfo = new RestGetUserInfo(url, token, tk);
         try {
-            String rs = restApi.execute().get();
+            String rs = restGetUserInfo.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -96,38 +59,6 @@ public class LoginConfirmed extends AppCompatActivity {
         else if (role.equals("ROLE_USER"))
             hd.postDelayed(new confirmedHandlerCustomer(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
 
-    }
-
-    private String convertStreamToString(InputStream is)
-    {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-
-        try
-        {
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                is.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 
     private class confirmedHandlerCustomer implements Runnable{
