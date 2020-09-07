@@ -245,7 +245,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // BackPressedForFinish 클래시의 onBackPressed() 함수를 호출한다.
-        backPressedForFinish.onBackPressed();
+        backPressedForFinish.onBackPressed(this);
     }
 }
