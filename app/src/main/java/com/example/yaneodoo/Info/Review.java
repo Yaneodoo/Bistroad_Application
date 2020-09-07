@@ -1,6 +1,8 @@
 package com.example.yaneodoo.Info;
 
-public class Review {
+import java.io.Serializable;
+
+public class Review implements Serializable {
     private String orderId;
     private String contents;
     private String id;

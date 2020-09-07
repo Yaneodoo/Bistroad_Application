@@ -1,9 +1,10 @@
 package com.example.yaneodoo.Info;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private String id;
     private String storeId;
     private String userId;

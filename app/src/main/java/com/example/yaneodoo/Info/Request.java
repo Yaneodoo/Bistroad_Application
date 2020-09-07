@@ -1,8 +1,9 @@
 package com.example.yaneodoo.Info;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Request {
+public class Request implements Serializable {
     String amount;
     private List<Menu> menuList;
 
