@@ -28,8 +28,13 @@ public class MyPageOwner extends AppCompatActivity {
                 editor.commit();
                 Intent intent = new Intent(MyPageOwner.this, Login.class);
                 startActivity(intent);
+                MyPageOwner.this.finish();
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

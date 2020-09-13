@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Login;
+import com.example.yaneodoo.Owner.MyPageOwner;
 import com.example.yaneodoo.R;
 
 public class MyPageCustomer extends AppCompatActivity {
@@ -29,7 +30,12 @@ public class MyPageCustomer extends AppCompatActivity {
                 editor.commit();
                 Intent intent = new Intent(MyPageCustomer.this, Login.class);
                 startActivity(intent);
+                MyPageCustomer.this.finish();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }
