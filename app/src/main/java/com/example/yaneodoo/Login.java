@@ -115,7 +115,7 @@ public class Login extends AppCompatActivity {
             bPwd = tk.getString("bPwd","");
             id.setText(bId);
             password.setText(bPwd);
-            //btnOwner.performClick();
+            btnOwner.performClick();
         }
     }
 

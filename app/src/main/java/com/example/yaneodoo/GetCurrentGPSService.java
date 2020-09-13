@@ -97,15 +97,9 @@ public class GetCurrentGPSService extends Service {
         public void run() {
             //반복적으로 수행할 작업을 한다.
             while (isRun) {
-                Log.d(TAG, "ThreadRun() called");
                 gpsTracker.getLocation();
                 lat = (float)gpsTracker.getLatitude();
                 lon = (float)gpsTracker.getLongitude();
-
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putFloat("lat", lat);
-                editor.putFloat("lon", lon);
-                editor.commit();
 
                 Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
 
@@ -115,9 +109,16 @@ public class GetCurrentGPSService extends Service {
                 if(lat == preLat && lon == preLon)
                     //쓰레드에 있는 핸들러에게 메세지를 보냄
                     handler.sendEmptyMessage( 0 );
+                else
+                    Log.d(TAG, "Location has been changed.");
+
+                SharedPreferences.Editor editor = tk.edit();
+                editor.putFloat("lat", lat);
+                editor.putFloat("lon", lon);
+                editor.commit();
 
                 try {
-                    Thread.sleep( 5000 );
+                    Thread.sleep( 10000 );
                     //10초씩 쉰다.
                 } catch (Exception e) {
 
@@ -156,7 +157,6 @@ public class GetCurrentGPSService extends Service {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setOnlyAlertOnce(true)
                     .setChannelId(NOTIFICATION_ID);
-            Log.d(TAG, "handleMessage() called");
             notificationManager.notify(1,notificationBuilder.build());
         }
     }
