@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
@@ -56,7 +57,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // TODO : GET /nearby-stores하여 받아온 정보 아이템으로 추가
+        final User user = getUserMe(token);
         getNearbyStoreList(token);//소유한 가게 불러오기
 
         // 리스트뷰 참조 및 Adapter달기
@@ -68,12 +69,17 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
                 BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
-
-                String titleStr = item.getTitle();
+                Store store = new Store();
+                store.setId(storeList.get(position).getId());
+                store.setName(storeList.get(position).getName());
+                store.setLocation(storeList.get(position).getLocation());
+                store.setDescription(storeList.get(position).getDescription());
+                //store.setPhotoUri(storeList.get(position).getPhotoUri());
 
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerMenuList.class);
-                intent.putExtra("selectedBistro", titleStr);
-                ShowCustomerBistroList.this.finish();
+                intent.putExtra("userInfo", user);
+                intent.putExtra("bistroInfo", store);
+                //ShowCustomerBistroList.this.finish();
                 startActivity(intent);
             }
         }) ;
@@ -104,8 +110,35 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         });
     }
 
+    private User getUserMe(String token) {
+        final User user = new User();
+        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User body = response.body();
+                    if (body != null) {
+                        user.setId(body.getId());
+                        user.setUsername(body.getUsername());
+                        user.setRole(body.getRole());
+                        user.setPhone(body.getPhone());
+                        user.setFullName(body.getFullName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("t", "fail");
+            }
+        });
+
+        return user;
+    }
+
     private void getNearbyStoreList(String token) {
-        service.getNearbyStoreList("Bearer" + token).enqueue(new Callback<List<Store>>() {
+        service.getNearbyStoreList("Bearer " + token).enqueue(new Callback<List<Store>>() {
             @Override
             public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
                 if (response.isSuccessful()) {

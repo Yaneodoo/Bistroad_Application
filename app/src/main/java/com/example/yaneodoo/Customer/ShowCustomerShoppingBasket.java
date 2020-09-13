@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,20 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 홈 버튼 클릭 리스너
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                ShowCustomerShoppingBasket.this.finish();
+                startActivity(intent);
+            }
+        });
+
+        // TODO : mypagebtn 클릭 리스너
     }
 
     // 더담으러가기 텍스트뷰 클릭 리스너

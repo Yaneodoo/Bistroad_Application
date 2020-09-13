@@ -12,57 +12,84 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Menu;
+import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowCustomerMenuList extends AppCompatActivity {
     private Intent intent;
+    final MenuListViewCustomerAdapter adapter = new MenuListViewCustomerAdapter();
+    private String token;
+    private Retrofit mRetrofit;
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
+    private ListView listview;
+
+    private List<Menu> menuList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_list_customer);
 
-        // ShowCustomerBistroList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
+        listview = (ListView) findViewById(R.id.menu_list_view_customer);
+
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = mRetrofit.create(RetrofitService.class);
+
         intent = getIntent();
-        String bistroName=intent.getStringExtra("selectedBistro");
-        // TODO : GET /stores/{storeId}/items 로 데이터 가져와서 listview에 아이템 추가
-        // 별점 높은 순
+        final User user = (User) intent.getSerializableExtra("userInfo");
+        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
 
-        // Adapter 생성
-        final MenuListViewCustomerAdapter adapter = new MenuListViewCustomerAdapter();
+        TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
+        bistroNameTxtView.setText(store.getName());
+        TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
+        bistroLocationTxtView.setText(store.getLocation().toString());
+        TextView bistroDescTxtView = (TextView) findViewById(R.id.bistro_desc_txtView);
+        bistroDescTxtView.setText(store.getDescription());
 
-        // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.menu_list_view_customer);
-        listview.setAdapter(adapter);
+        getMenuList(token, store.getId());//가게의 메뉴 불러오기
+        //TODO : 별점 높은 순
 
-        // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "떡볶이", "12345", "#떡순튀 #매운맛 조절 가능", "★4.3", " ");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "어묵탕", "12345", "#떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀\n" +
-                "#매운맛 조절 가능 #떡순튀 #매운맛 조절 가능 #떡순튀 #매운맛 조절 가능\n#떡순튀 #매운맛 조절 가능", "★4.3", " ");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "순대", "100000", "#짜장 #짬뽕", "★4.3", " ");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "모듬튀김", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "우동", "서울시 동작구", "#짜장 #짬뽕", "★4.3", " ");
-
-        Log.d("a", "b");
         //메뉴 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
-                String menuStr = item.getMenuStr();
-                String customer = "";
+                Menu menu = new Menu();
+                menu.setId(menuList.get(position).getId());
+                menu.setName(menuList.get(position).getName());
+                menu.setDescription(menuList.get(position).getDescription());
+                menu.setPrice(menuList.get(position).getPrice());
+                menu.setStars(menuList.get(position).getStars());
+                //menu.setPhotoUri(menuList.get(position).getPhotoUri());
+                //menu.set..(menuList.get(position).getOrderedCnt());
+
+                Log.d("menu", menu.toString());
 
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
-                intent.putExtra("selectedMenu", menuStr);
-                intent.putExtra("customer", customer);
-
-                String TAG = "MainActivity";
-                Log.i(TAG, item.getMenuStr());
-
+                intent.putExtra("menuInfo", menu);
+                intent.putExtra("userInfo", user);
                 ShowCustomerMenuList.this.finish();
                 startActivity(intent);
             }
@@ -102,6 +129,41 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         intent.putExtra("mname", mname);
         ShowCustomerMenuList.this.finish();
         startActivity(intent);
+    }
+
+    private void getMenuList(String token, String storeId) {
+        service.getMenuList("Bearer " + token, storeId).enqueue(new Callback<List<Menu>>() {
+            @Override
+            public void onResponse(Call<List<Menu>> call, Response<List<Menu>> response) {
+                if (response.isSuccessful()) {
+                    List<Menu> body = response.body();
+                    if (body != null) {
+                        for (int i = 0; i < body.size(); i++) {
+                            Menu menu = new Menu();
+                            menu.setId(body.get(i).getId());
+                            menu.setName(body.get(i).getName());
+                            menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                            menu.setDescription(body.get(i).getDescription());
+                            menu.setStars("★" + body.get(i).getStars());
+                            //menu.setPhotoUri(body.get(i).getPhotoUri());
+                            menu.setStoreId(body.get(i).getStoreId());
+                            menuList.add(menu);
+
+                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sundae), menu.getName(), menu.getPrice(), menu.getDescription(), menu.getStars(), " ");
+                            Log.d("menu data", "--------------------------------------");
+                        }
+                        Log.d("getMenuList end", "======================================");
+                        listview.setAdapter(adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Menu>> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("fail", "======================================");
+            }
+        });
     }
 
     @Override
