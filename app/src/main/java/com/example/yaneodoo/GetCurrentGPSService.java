@@ -83,7 +83,6 @@ public class GetCurrentGPSService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-
     public class GPSThread extends Thread{
         Handler handler;
         boolean isRun = true;
@@ -103,6 +102,7 @@ public class GetCurrentGPSService extends Service {
         }
         public void run() {
             //반복적으로 수행할 작업을 한다.
+            count = 0;
             while (isRun) {
                 if (tk.getString("bId", "").length() == 0){
                     stopForever();
@@ -119,6 +119,7 @@ public class GetCurrentGPSService extends Service {
                 float preLon = tk.getFloat("lon", 0);
 
                 if(lat == preLat && lon == preLon) {
+                    count ++;
                     //쓰레드에 있는 핸들러에게 메세지를 보냄
                     RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
                     try {
@@ -129,10 +130,11 @@ public class GetCurrentGPSService extends Service {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(sName != "noStore") {
+                    if(sName != "noStore" && count > 2) {
                         msg = new Message();
                         msg.obj = sName;
                         handler.sendMessage(msg);
+                        count = 0;
                     }
                 }
                 else

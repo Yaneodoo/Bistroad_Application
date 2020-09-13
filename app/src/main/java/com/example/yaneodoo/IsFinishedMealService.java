@@ -30,12 +30,14 @@ public class IsFinishedMealService extends Service {
     NotificationManager Notifi_M;
     GPSThread thread;
     GPSTracker gpsTracker;
-    float lat;
-    float lon;
+    float lat, sLat;
+    float lon, sLon;
     int count;
     SharedPreferences tk;
 
-    public IsFinishedMealService() {
+    public IsFinishedMealService(float lat, float lon) {
+        sLat = lat;
+        sLat = lon;
     }
 
     @Override
@@ -80,6 +82,9 @@ public class IsFinishedMealService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    float getDistance(float x, float y, float x1, float y1){
+        return (float) Math.sqrt(Math.pow(Math.abs(x1-x), 2) + Math.pow(Math.abs(y1-y), 2));
+    }
 
     public class GPSThread extends Thread{
         Handler handler;
@@ -99,6 +104,7 @@ public class IsFinishedMealService extends Service {
             }
         }
         public void run() {
+            count = 0;
             //반복적으로 수행할 작업을 한다.
             while (isRun) {
                 if (tk.getString("bId", "").length() == 0){
@@ -112,12 +118,11 @@ public class IsFinishedMealService extends Service {
                 //Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
 
                 String token = tk.getString("bistrotk", "");
-                float preLat = tk.getFloat("lat", 0);
-                float preLon = tk.getFloat("lon", 0);
+                float distance = getDistance(lat, lon, sLat, sLon);
 
-                if(lat == preLat && lon == preLon) {
+                if(distance>=0.0002) {
                     //쓰레드에 있는 핸들러에게 메세지를 보냄
-                    RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
+                    RestGetNearestStore restGetNearestStore = new RestGetNearestStore(sLat, sLon);
                     try {
                         sName = restGetNearestStore.execute().get();
                         //Log.d("Store", sName);
@@ -130,6 +135,7 @@ public class IsFinishedMealService extends Service {
                         msg = new Message();
                         msg.obj = sName;
                         handler.sendMessage(msg);
+                        count = 0;
                     }
                 }
                 else
