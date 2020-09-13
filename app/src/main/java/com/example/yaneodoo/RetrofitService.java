@@ -1,5 +1,6 @@
 package com.example.yaneodoo;
 
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 
@@ -41,6 +42,10 @@ public interface RetrofitService {
     @DELETE("users/{userId}")
     Call<ResponseBody> deleteUser();
 
+    //Get an user profile from given token
+    @GET("users/me")
+    Call<User> getUserMe(@Header("Authorization") String token);
+
     //---------------store----------------//
     //Search stores
     @GET("stores")
@@ -56,9 +61,13 @@ public interface RetrofitService {
     @POST("stores")
     Call<Store> postStore(@Header("Authorization") String token, @Field("store") Store store);
 
-    //----------------user---------------//
-    //Get an user profile from given token
-    @GET("users/me")
-    Call<User> getUserMe(@Header("Authorization") String token);
+    //---------------store-items-------------//
+    //Search items
+    @GET("stores/{storeId}/items")
+    Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId);
 
+    //Create an item
+    @FormUrlEncoded
+    @POST("stores/{storeId}/items")
+    Call<Store> postStore(@Header("Authorization") String token, @Path("storeId") String storeId, @Field("menu") Menu menu);
 }

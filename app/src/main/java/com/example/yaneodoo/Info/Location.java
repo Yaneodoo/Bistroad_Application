@@ -1,6 +1,8 @@
 package com.example.yaneodoo.Info;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
     private String lng;
     private String lat;
 

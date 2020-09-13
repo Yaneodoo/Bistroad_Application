@@ -10,6 +10,9 @@ public class User implements Serializable {
     private String role;
     private String id;
 
+    public User() {
+    }
+
     public User(String username, String password, String fullName, String phone, String role) {
         this.username = username;
         this.password = password;

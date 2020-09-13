@@ -40,7 +40,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
     private BackPressedForFinish backPressedForFinish;
 
-    private String ownerId;
+    private String ownerId, ownerName;
     private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -58,6 +58,10 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         backPressedForFinish = new BackPressedForFinish(this);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+        ownerName = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
+
+        TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
+        ownerNameTxtView.setText(ownerName);
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -65,12 +69,9 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        getUserMe(token);
+        final User owner = getUserMe(token);
+
         getStoreList(token, ownerId);//소유한 가게 불러오기
-
-        // TODO : list만 화면에 add item
-
-        // Adapter 생성
 
         // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
         listview = (ListView) findViewById(R.id.bistro_list_view_owner);
@@ -85,9 +86,17 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
                     String titleStr = item.getTitle();
+                    Store store = new Store();
+                    store.setId(storeList.get(position).getId());
+                    store.setName(storeList.get(position).getName());
+                    store.setLocation(storeList.get(position).getLocation());
+                    store.setDescription(storeList.get(position).getDescription());
+                    //store.setPhotoUri(storeList.get(position).getPhotoUri());
 
+                    Log.d("oooo", owner.toString());
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
-                    intent.putExtra("selectedBistro", titleStr);
+                    intent.putExtra("ownerInfo", owner);
+                    intent.putExtra("bistroInfo", store);
                     startActivity(intent);
                 }
             }
@@ -162,15 +171,21 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         // TODO : mypagebtn 클릭 리스너
     }
 
-    private void getUserMe(String token) {
-        service.getUserMe("Bearer" + token).enqueue(new Callback<User>() {
+    private User getUserMe(String token) {
+        final User owner = new User();
+        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User body = response.body();
                     if (body != null) {
-                        ownerId = body.getId();
-                        Log.d("user.getId()", body.getId());
+                        owner.setId(body.getId());
+                        owner.setUsername(body.getUsername());
+                        owner.setRole(body.getRole());
+                        owner.setPhone(body.getPhone());
+                        owner.setFullName(body.getFullName());
+
+                        Log.d("b", owner.toString());
                     }
                 }
             }
@@ -178,12 +193,15 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 t.printStackTrace();
+                Log.d("t", "fail");
             }
         });
+
+        return owner;
     }
 
     private void getStoreList(String token, String ownerId) {
-        service.getStoreList("Bearer" + token, ownerId).enqueue(new Callback<List<Store>>() {
+        service.getStoreList("Bearer " + token, ownerId).enqueue(new Callback<List<Store>>() {
             @Override
             public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
                 if (response.isSuccessful()) {
@@ -194,14 +212,14 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                             store.setName(body.get(i).getName());
                             store.setLocation(body.get(i).getLocation());
                             store.setDescription(body.get(i).getDescription());
+                            store.setId(body.get(i).getId());
+                            store.setOwnerId(body.get(i).getOwnerId());
+                            store.setPhone(body.get(i).getPhone());
+                            //store.setPhotoUri(body.get(i).getPhotoUri());
                             storeList.add(store);
 
                             adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
 
-                            Log.d("data" + i, body.get(i).getDescription());
-                            Log.d("data" + i, body.get(i).getId());
-                            Log.d("data" + i, body.get(i).getName());
-                            //Log.d("data" + i, body.get(i).getPhotoUri());
                             Log.d("store data", "--------------------------------------");
                         }
                         Log.d("getStoreList end", "======================================");
