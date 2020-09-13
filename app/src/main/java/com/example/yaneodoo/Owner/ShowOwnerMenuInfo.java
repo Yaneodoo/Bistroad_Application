@@ -8,8 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
 
@@ -23,7 +23,19 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
 
         // ShowCustomerMenuList나 ShowOwnerMenuList에서 보낸 menuStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        final String menuName=intent.getStringExtra("selectedMenu");
+        final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
+
+        TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
+        menuNameTxtView.setText(menu.getName());
+        TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
+        menuPriceTxtView.setText(menu.getPrice());
+        TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
+        menuDescTxtView.setText(menu.getDescription());
+        TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
+        menuStarsTxtView.setText(menu.getStars());
+        //TextView menuNameTxtView = (TextView) findViewById(R.id.menu_orderedCnt_txtView);
+        //menuNameTxtView.setText(menu.getName());
+
         // TODO : GET /stores/{storeId}/items/{itemId}/reviews 로 데이터 가져와서 listview에 아이템 추가
 
         // Adapter 생성
@@ -33,26 +45,13 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.review_list_view_owner);
         listview.setAdapter(adapter);
 
-        // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sundae), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!맛있었다!맛있었다!맛있었다!" +
-                "\n맛있었다!\n맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.udon), "2020.07.09", "민주짱", "떡볶이떡볶이떡볶이떡", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tempura), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.eomuk), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tteokbokki), "2020.07.09", "민주짱", "떡볶이", "★4.3", "맛있었다!");
-
-        TextView menu_name_txtview = (TextView) findViewById(R.id.menu_name_txtView);
-        menu_name_txtview.setText(menuName);
-
         Button editbutton = (Button) findViewById(R.id.btn_edit);
 
         // 수정 버튼 클릭 리스너
         editbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
-                intent.putExtra("selectedMenu",menuName);
+                intent.putExtra("selectedMenu", menu);
                 startActivity(intent);
             }
         });

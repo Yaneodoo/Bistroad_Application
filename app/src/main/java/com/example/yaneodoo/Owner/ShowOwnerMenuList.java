@@ -75,8 +75,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
 
-        Log.d("storeId", store.toString());
-
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist);
         btn_orderlist.setOnClickListener(new Button.OnClickListener() {
@@ -94,10 +92,18 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
-                String titleStr = item.getMenuStr();
+                Menu menu = new Menu();
+                menu.setId(menuList.get(position).getId());
+                menu.setName(menuList.get(position).getName());
+                menu.setDescription(menuList.get(position).getDescription());
+                menu.setPrice(menuList.get(position).getPrice());
+                menu.setStars(menuList.get(position).getStars());
+                //menu.setPhotoUri(menuList.get(position).getPhotoUri());
+                //menu.set..(menuList.get(position).getOrderedCnt());
 
+                Log.d("menu", menu.toString());
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
-                intent.putExtra("selectedMenu", titleStr);
+                intent.putExtra("menuInfo", menu);
                 startActivity(intent);
             }
         });
