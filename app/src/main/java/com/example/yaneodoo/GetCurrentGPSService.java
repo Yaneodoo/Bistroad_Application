@@ -7,9 +7,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -20,73 +24,32 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 
-public class GetCurrentGPSService extends Service {
-    public class GPSThread extends Thread{
-        Handler handler;
-        boolean isRun = true;
-        public GPSThread(Handler handler) {
-            this.handler = handler;
-        }
-        public void stopForever() {
-            synchronized (this) {
-                this.isRun = false;
-            }
-        }
-        public void run() {
-            //반복적으로 수행할 작업을 한다.
-            while (isRun) {
-                Log.d(TAG, "ThreadRun() called");
-                handler.sendEmptyMessage( 0 );
-            //쓰레드에 있는 핸들러에게 메세지를 보냄
-                try {
-                    Thread.sleep( 5000 );
-                    //10초씩 쉰다.
-                    } catch (Exception e) {
-
-                }
-            }
-        }
-    }
-    public class myServiceHandler extends Handler{
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            String NOTIFICATION_ID = "10001";
-            String NOTIFICATION_NAME = "리뷰남기기";
-            //채널 생성
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(NOTIFICATION_ID, NOTIFICATION_NAME, NotificationManager.IMPORTANCE_HIGH);
-                channel.setDescription("Bistroad");
-                notificationManager.createNotificationChannel(channel);
-            }
-
-            Intent intent = new Intent(GetCurrentGPSService.this, ShowCustomerBistroList.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(GetCurrentGPSService.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-            Uri soundUri = RingtoneManager.getDefaultUri((RingtoneManager.TYPE_NOTIFICATION));
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( GetCurrentGPSService.this)
-                    .setSmallIcon(R.drawable.logo)
-                    .setContentTitle("Bistroad")
-                    .setContentText("식당에 들어가셨나요?")
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText("식당에 들어가셨나요?"))
-                    .setSound(soundUri)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setOnlyAlertOnce(true)
-                    .setChannelId(NOTIFICATION_ID);
-            Log.d(TAG, "handleMessage() called");
-            notificationManager.notify(1,notificationBuilder.build());
-        }
-    }
-
+public class GetCurrentGPSService extends Service implements LocationListener {
     private static final String TAG = "GetCurrentGPSService";
     NotificationManager Notifi_M;
     GPSThread thread;
 
-    public GetCurrentGPSService() {
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    public GetCurrentGPSService(Context mContext) {
     }
 
     @Override
@@ -128,5 +91,68 @@ public class GetCurrentGPSService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+
+    public class GPSThread extends Thread{
+        Handler handler;
+        boolean isRun = true;
+        public GPSThread(Handler handler) {
+            this.handler = handler;
+        }
+        public void stopForever() {
+            synchronized (this) {
+                this.isRun = false;
+            }
+        }
+        public void run() {
+            //반복적으로 수행할 작업을 한다.
+            while (isRun) {
+                Log.d(TAG, "ThreadRun() called");
+                handler.sendEmptyMessage( 0 );
+                //쓰레드에 있는 핸들러에게 메세지를 보냄
+                try {
+                    Thread.sleep( 10000 );
+                    //10초씩 쉰다.
+                } catch (Exception e) {
+
+                }
+            }
+        }
+    }
+
+    public class myServiceHandler extends Handler{
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            String NOTIFICATION_ID = "10001";
+            String NOTIFICATION_NAME = "리뷰남기기";
+            //채널 생성
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(NOTIFICATION_ID, NOTIFICATION_NAME, NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription("Bistroad");
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            Intent intent = new Intent(GetCurrentGPSService.this, ShowCustomerBistroList.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(GetCurrentGPSService.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            Uri soundUri = RingtoneManager.getDefaultUri((RingtoneManager.TYPE_NOTIFICATION));
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( GetCurrentGPSService.this)
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle("Bistroad")
+                    .setContentText("식당에 들어가셨나요?")
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText("식당에 들어가셨나요?"))
+                    .setSound(soundUri)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setOnlyAlertOnce(true)
+                    .setChannelId(NOTIFICATION_ID);
+            Log.d(TAG, "handleMessage() called");
+            notificationManager.notify(1,notificationBuilder.build());
+        }
     }
 }
