@@ -41,25 +41,15 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        Button btnOwner = (Button) findViewById(R.id.login_button);
+        Button btnCustomer = (Button) findViewById(R.id.login_signup_button);
+        final EditText id = (EditText)findViewById(R.id.login_id_textinput);
+        final EditText password = (EditText)findViewById(R.id.login_password_textinput);
         final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
-
-        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        final String NOTIFICATION_ID = "10001";
-        String NOTIFICATION_NAME = "리뷰남기기";
-        int IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
-        final Intent intent = new Intent(Login.this.getApplicationContext(),LoginConfirmed.class);
-
-        //채널 생성
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_ID, NOTIFICATION_NAME, IMPORTANCE);
-            notificationManager.createNotificationChannel(channel);
-        }
-
+        String bPwd = "";
+        String bId = tk.getString("bId","");
 
         // 회원가입 버튼 클릭 리스너
-        Button btnCustomer = (Button) findViewById(R.id.login_signup_button);
         btnCustomer.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,9 +59,6 @@ public class Login extends AppCompatActivity {
         });
 
         // 로그인 버튼 클릭 리스너
-        Button btnOwner = (Button) findViewById(R.id.login_button);
-        final EditText id = (EditText)findViewById(R.id.login_id_textinput);
-        final EditText password = (EditText)findViewById(R.id.login_password_textinput);
         btnOwner.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,5 +94,12 @@ public class Login extends AppCompatActivity {
 
             }
         });
+
+        if(bId != ""){
+            bPwd = tk.getString("bPwd","");
+            id.setText(bId);
+            password.setText(bPwd);
+            btnOwner.performClick();
+        }
     }
 }

@@ -64,6 +64,8 @@ public class RestGetAuth extends AsyncTask<Integer, Void, Integer> {
                 String token = jsonLogin.getString("access_token");
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bistrotk", token); //
+                editor.putString("bId",mId);
+                editor.putString("bPwd",mPwd);
                 editor.commit();
             }
             else if(rc == 404 || rc == 401){

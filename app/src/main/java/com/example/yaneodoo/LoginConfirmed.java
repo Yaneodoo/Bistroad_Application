@@ -51,8 +51,11 @@ public class LoginConfirmed extends AppCompatActivity {
 
         if(role.equals("ROLE_STORE_OWNER"))
             hd.postDelayed(new confirmedHandlerOwner(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
-        else if(role.equals("ROLE_USER"))
+        else if(role.equals("ROLE_USER")) {
+            Intent intent = new Intent(getApplicationContext(), GetCurrentGPSService.class);
+            startService(intent);
             hd.postDelayed(new confirmedHandlerCustomer(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
+        }
 
     }
 
