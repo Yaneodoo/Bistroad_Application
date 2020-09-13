@@ -63,12 +63,14 @@
         <activity android:name=".Customer.ShowCustomerMenuInfo" />
         <activity android:name=".Customer.ShowCustomerOrderForm" />
         <activity android:name=".Customer.ShowCustomerShoppingBasket" />
+        <activity android:name=".Customer.MyPageCustomer" />
         <activity android:name=".Owner.RegisterBistro" />
         <activity android:name=".Owner.RegisterMenu" />
         <activity android:name=".Owner.ShowOwnerOrderList" />
         <activity android:name=".Owner.ShowOwnerBistroList" />
         <activity android:name=".Owner.ShowOwnerMenuList" />
         <activity android:name=".Owner.ShowOwnerMenuInfo" />
+        <activity android:name=".Owner.MyPageOwner" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".LoginConfirmed" />

@@ -8,6 +8,7 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.MyPageCustomer;
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
@@ -131,6 +134,16 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     addbtn.setText("추가");
                     */
                 }
+            }
+        });
+
+        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn) ;
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowOwnerBistroList.this, MyPageOwner.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
         });
 

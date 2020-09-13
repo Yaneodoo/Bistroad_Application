@@ -38,13 +38,14 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        Button btnOwner = (Button) findViewById(R.id.login_button);
-        Button btnCustomer = (Button) findViewById(R.id.login_signup_button);
+        Button btnLogin = (Button) findViewById(R.id.login_button);
+        Button btnSignup = (Button) findViewById(R.id.login_signup_button);
         final EditText id = (EditText)findViewById(R.id.login_id_textinput);
         final EditText password = (EditText)findViewById(R.id.login_password_textinput);
         final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         String bPwd = "";
         String bId = tk.getString("bId","");
+        Log.d("GetBId",bId);
 
         if(checkLocationServicesStatus())
             checkRunTimePermission();
@@ -52,7 +53,7 @@ public class Login extends AppCompatActivity {
             showDialogForLocationServiceSetting();
 
         // 회원가입 버튼 클릭 리스너
-        btnCustomer.setOnClickListener(new TextView.OnClickListener() {
+        btnSignup.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, SignUp.class);
@@ -61,7 +62,7 @@ public class Login extends AppCompatActivity {
         });
 
         // 로그인 버튼 클릭 리스너
-        btnOwner.setOnClickListener(new TextView.OnClickListener() {
+        btnLogin.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -101,7 +102,8 @@ public class Login extends AppCompatActivity {
             bPwd = tk.getString("bPwd","");
             id.setText(bId);
             password.setText(bPwd);
-            btnOwner.performClick();
+            btnLogin.performClick();
+            this.finish();
         }
     }
 
