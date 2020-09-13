@@ -7,9 +7,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -24,32 +24,16 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 
-public class GetCurrentGPSService extends Service implements LocationListener {
+public class GetCurrentGPSService extends Service {
     private static final String TAG = "GetCurrentGPSService";
     NotificationManager Notifi_M;
     GPSThread thread;
+    GPSTracker gpsTracker;
+    float lat;
+    float lon;
+    SharedPreferences tk;
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    public GetCurrentGPSService(Context mContext) {
+    public GetCurrentGPSService() {
     }
 
     @Override
@@ -64,13 +48,14 @@ public class GetCurrentGPSService extends Service implements LocationListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand() called");
-
+        tk = getSharedPreferences("sFile", MODE_PRIVATE);
+        gpsTracker = new GPSTracker(GetCurrentGPSService.this);
         if (intent == null) {
             return Service.START_STICKY; //서비스가 종료되어도 자동으로 다시 실행시켜줘!
         } else {
             Notifi_M = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
             myServiceHandler handler = new myServiceHandler();
-            thread = new GPSThread( handler );
+            thread = new GPSThread( handler, gpsTracker, tk);
             thread.start();
             //thread.stopForever();
             Log.d(TAG, "onStartCommand() else");
@@ -82,7 +67,7 @@ public class GetCurrentGPSService extends Service implements LocationListener {
     public void onDestroy() {
         Log.d(TAG, "onDestroy() called");
         myServiceHandler handler = new myServiceHandler();
-        thread = new GPSThread( handler );
+        thread = new GPSThread( handler , gpsTracker, tk);
         thread.start();
         super.onDestroy();
     }
@@ -97,8 +82,12 @@ public class GetCurrentGPSService extends Service implements LocationListener {
     public class GPSThread extends Thread{
         Handler handler;
         boolean isRun = true;
-        public GPSThread(Handler handler) {
+        GPSTracker gpsTracker;
+        SharedPreferences tk;
+        public GPSThread(Handler handler, GPSTracker gpsTracker, SharedPreferences tk) {
             this.handler = handler;
+            this.gpsTracker = gpsTracker;
+            this.tk = tk;
         }
         public void stopForever() {
             synchronized (this) {
@@ -109,10 +98,26 @@ public class GetCurrentGPSService extends Service implements LocationListener {
             //반복적으로 수행할 작업을 한다.
             while (isRun) {
                 Log.d(TAG, "ThreadRun() called");
-                handler.sendEmptyMessage( 0 );
-                //쓰레드에 있는 핸들러에게 메세지를 보냄
+                gpsTracker.getLocation();
+                lat = (float)gpsTracker.getLatitude();
+                lon = (float)gpsTracker.getLongitude();
+
+                SharedPreferences.Editor editor = tk.edit();
+                editor.putFloat("lat", lat);
+                editor.putFloat("lon", lon);
+                editor.commit();
+
+                Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
+
+                float preLat = tk.getFloat("lat", 0);
+                float preLon = tk.getFloat("lon", 0);
+
+                if(lat == preLat && lon == preLon)
+                    //쓰레드에 있는 핸들러에게 메세지를 보냄
+                    handler.sendEmptyMessage( 0 );
+
                 try {
-                    Thread.sleep( 10000 );
+                    Thread.sleep( 5000 );
                     //10초씩 쉰다.
                 } catch (Exception e) {
 
