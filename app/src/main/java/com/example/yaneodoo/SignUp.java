@@ -60,7 +60,7 @@ public class SignUp extends AppCompatActivity {
                     Toast noIdToast = Toast.makeText(getApplicationContext(), "확인 비밀번호를 입력해 주세요.", Toast.LENGTH_LONG);
                     noIdToast.show();
                 }
-                else if(pw.getText().toString() != confirmPw.getText().toString()){
+                else if(!pw.getText().toString().equals(confirmPw.getText().toString())){
                     Toast noIdToast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG);
                     noIdToast.show();
                 }
@@ -89,6 +89,7 @@ public class SignUp extends AppCompatActivity {
                             successToast.show();
                             Intent intent = new Intent(SignUp.this, Login.class);
                             startActivity(intent);
+                            SignUp.this.finish();
                         } else if (rc == 409) {
                             Toast sameIdToast = Toast.makeText(getApplicationContext(), "동일한 아이디가 이미 존재합니다.", Toast.LENGTH_LONG);
                             sameIdToast.show();
@@ -101,7 +102,6 @@ public class SignUp extends AppCompatActivity {
                         } else {
                             Log.e("POST", "Failed.");
                         }
-                        SignUp.this.finish();
                     } catch (Exception e) {
                         // Error calling the rest api
                         Log.e("REST_API", "POST method failed: " + e.getMessage());

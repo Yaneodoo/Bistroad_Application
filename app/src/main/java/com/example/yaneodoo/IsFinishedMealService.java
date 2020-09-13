@@ -141,11 +141,6 @@ public class IsFinishedMealService extends Service {
                 else
                     Log.d(TAG, "Location has been changed.");
 
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putFloat("lat", lat);
-                editor.putFloat("lon", lon);
-                editor.commit();
-
                 try {
                     Thread.sleep( 10000 );
                     //10초씩 쉰다.
