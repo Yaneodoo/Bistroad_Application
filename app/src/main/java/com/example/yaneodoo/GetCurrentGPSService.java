@@ -35,6 +35,7 @@ public class GetCurrentGPSService extends Service {
     GPSTracker gpsTracker;
     float lat;
     float lon;
+    int count;
     SharedPreferences tk;
 
     public GetCurrentGPSService() {

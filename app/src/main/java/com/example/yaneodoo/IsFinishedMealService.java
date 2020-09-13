@@ -32,6 +32,7 @@ public class IsFinishedMealService extends Service {
     GPSTracker gpsTracker;
     float lat;
     float lon;
+    int count;
     SharedPreferences tk;
 
     public IsFinishedMealService() {
