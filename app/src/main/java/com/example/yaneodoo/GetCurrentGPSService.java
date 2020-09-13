@@ -23,6 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
+import com.example.yaneodoo.REST.RestGetNearestStore;
+import com.example.yaneodoo.REST.RestGetUserInfo;
+
+import java.util.concurrent.ExecutionException;
 
 public class GetCurrentGPSService extends Service {
     private static final String TAG = "GetCurrentGPSService";
@@ -84,6 +88,8 @@ public class GetCurrentGPSService extends Service {
         boolean isRun = true;
         GPSTracker gpsTracker;
         SharedPreferences tk;
+        Message msg;
+        String sName;
         public GPSThread(Handler handler, GPSTracker gpsTracker, SharedPreferences tk) {
             this.handler = handler;
             this.gpsTracker = gpsTracker;
@@ -103,12 +109,27 @@ public class GetCurrentGPSService extends Service {
 
                 Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
 
+                String token = tk.getString("bistrotk", "");
                 float preLat = tk.getFloat("lat", 0);
                 float preLon = tk.getFloat("lon", 0);
 
-                if(lat == preLat && lon == preLon)
+                if(lat == preLat && lon == preLon) {
                     //쓰레드에 있는 핸들러에게 메세지를 보냄
-                    handler.sendEmptyMessage( 0 );
+                    RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
+                    try {
+                        sName = restGetNearestStore.execute().get();
+                        Log.d("Store", sName);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(sName != "noStore") {
+                        msg = new Message();
+                        msg.obj = sName;
+                        handler.sendMessage(msg);
+                    }
+                }
                 else
                     Log.d(TAG, "Location has been changed.");
 
@@ -131,7 +152,8 @@ public class GetCurrentGPSService extends Service {
         @Override
         public void handleMessage(@NonNull Message msg) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+            String sName = String.valueOf(msg.obj)+"에 입장하셨나요?";
+            //Log.d("handler sname", sName);
             String NOTIFICATION_ID = "10001";
             String NOTIFICATION_NAME = "리뷰남기기";
             //채널 생성
@@ -148,8 +170,7 @@ public class GetCurrentGPSService extends Service {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( GetCurrentGPSService.this)
                     .setSmallIcon(R.drawable.logo)
                     .setContentTitle("Bistroad")
-                    .setContentText("식당에 들어가셨나요?")
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText("식당에 들어가셨나요?"))
+                    .setContentText(sName)
                     .setSound(soundUri)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)

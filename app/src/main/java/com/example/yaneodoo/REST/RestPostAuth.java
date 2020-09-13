@@ -1,13 +1,8 @@
 package com.example.yaneodoo.REST;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 
 import org.json.JSONObject;
 
@@ -15,51 +10,69 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
+public class RestPostAuth extends AsyncTask<Integer, Void, Integer> {
     // Variable to store url
-    protected String mURL, mToken, name, role, loginInfo;
+    protected String mId, mPwd, name, loginInfo;
     SharedPreferences tk;
     int rc;
 
     // Constructor
-    public RestGetUserInfo(String url, String token, SharedPreferences tk) {
-        mURL = url;
-        mToken = token;
+    public RestPostAuth(String id, String pwd, SharedPreferences tk) {
+        mId = id;
+        mPwd = pwd;
         this.tk = tk;
     }
 
     // Background work
 
     @Override
-    protected String doInBackground(Integer... params) {
+    protected Integer doInBackground(Integer... params) {
         try {
             // Open the connection
-            URL url = new URL("https://api.bistroad.kr/v1/users/me");
+            URL url = new URL("https://api.bistroad.kr/v1/auth/token");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Bearer " + mToken);
+
+            JSONObject jsonInfo = new JSONObject();
+            jsonInfo.accumulate("username", mId);
+            jsonInfo.accumulate("password", mPwd);
+
+            String userInfo = jsonInfo.toString();
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Content-type", "application/json");
+
+            conn.setRequestMethod("POST");
+            conn.setDefaultUseCaches(false);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+
+            os.write(userInfo.getBytes("euc-kr"));
+
+            os.flush();
             rc = conn.getResponseCode();
-            Log.d("RC", String.valueOf(rc));
+            Log.d("GetAuth",String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
                 loginInfo = convertStreamToString(is);
-                //Log.d("POST", loginInfo);
                 JSONObject jsonLogin = new JSONObject(loginInfo);
-                name = jsonLogin.getString("fullName");
-                role = jsonLogin.getString("role");
+                String token = jsonLogin.getString("access_token");
                 SharedPreferences.Editor editor = tk.edit();
-                editor.putString("fullName", name); //
-                editor.putString("role", role); //
+                editor.putString("bistrotk", token); //
+                editor.putString("bId",mId);
+                editor.putString("bPwd",mPwd);
                 editor.commit();
             }
+            else if(rc == 404 || rc == 401){
+
+            }
             else{
-                Log.e("GET", "Failed.");
+                Log.e("POST", "Failed.");
             }
         }
         catch (Exception e) {
@@ -67,11 +80,11 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
             Log.e("REST_API: ", "POST method failed: " + e.getMessage());
             e.printStackTrace();
         }
-        return "";
+        return rc;
     }
 
     @Override
-    protected void onPostExecute(String aVoid) {
+    protected void onPostExecute(Integer aVoid) {
         super.onPostExecute(aVoid);
     }
 

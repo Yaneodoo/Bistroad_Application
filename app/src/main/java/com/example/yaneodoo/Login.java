@@ -2,15 +2,11 @@ package com.example.yaneodoo;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,18 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.REST.RestGetAuth;
-import com.example.yaneodoo.REST.RestGetUserInfo;
+import com.example.yaneodoo.REST.RestPostAuth;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
@@ -79,7 +65,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    RestGetAuth restGetAuth = new RestGetAuth(id.getText().toString(), password.getText().toString(), tk);
+                    RestPostAuth restGetAuth = new RestPostAuth(id.getText().toString(), password.getText().toString(), tk);
                     try {
                         rc = restGetAuth.execute().get();
                     } catch (ExecutionException e) {
