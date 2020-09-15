@@ -56,6 +56,7 @@ public class MenuListViewCustomerAdapter extends BaseAdapter {
         descTextView.setText(listViewItem.getDescStr());
         scoreTextView.setText(listViewItem.getScoreStr());
 
+        convertView.setTag("" + position);
         return convertView;
     }
 

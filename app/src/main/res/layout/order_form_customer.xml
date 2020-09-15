@@ -93,12 +93,14 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/menu_desc_txtView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="메뉴 description"
                         android:textSize="12dp" />
 
                     <TextView
+                        android:id="@+id/menu_stars_txtView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
@@ -124,6 +126,7 @@
                         android:text="기본" />
 
                     <TextView
+                        android:id="@+id/menu_price_txtView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -149,12 +152,26 @@
                         android:paddingBottom="20dp"
                         android:text="수량" />
 
-                    <TextView
+                    <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:focusable="false"
+                        android:onClick="Decrement"
+                        android:text="-" />
+
+                    <TextView
+                        android:id="@+id/menu_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="[수량 증감 버튼]" />
+                        android:text="1" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:onClick="Increment"
+                        android:text="+" />
                 </TableRow>
             </TableLayout>
 

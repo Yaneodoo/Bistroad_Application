@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -122,9 +122,9 @@ public class ShowCustomerMenuList extends AppCompatActivity {
 
     // 주문하기 버튼 클릭 리스너
     public void orderMenu(View v) {
-        RelativeLayout parentRow = (RelativeLayout) v.getParent();
-        TextView menuName = (TextView) parentRow.findViewById(R.id.menu_name_txtView);
-        String mname = menuName.getText().toString();
+        LinearLayout parentRow = (LinearLayout) v.getParent().getParent().getParent();
+        Integer position = Integer.parseInt((String) parentRow.getTag());
+
         Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
         intent.putExtra("mname", mname);
         ShowCustomerMenuList.this.finish();
