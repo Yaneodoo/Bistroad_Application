@@ -180,7 +180,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void getUserMe(String token) {
-        service.getUserMe("Bearer" + token).enqueue(new Callback<User>() {
+        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
@@ -200,7 +200,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void postStore(String token, Store store) {
-        service.postStore("Bearer" + token, store).enqueue(new Callback<Store>() {
+        service.postStore("Bearer " + token, store).enqueue(new Callback<Store>() {
             @Override
             public void onResponse(Call<Store> call, Response<Store> response) {
                 if (response.isSuccessful()) {
