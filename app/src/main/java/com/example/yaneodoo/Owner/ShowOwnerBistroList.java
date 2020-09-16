@@ -21,8 +21,6 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
-import com.example.yaneodoo.Customer.MyPageCustomer;
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
@@ -159,16 +157,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn) ;
-        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ShowOwnerBistroList.this, MyPageOwner.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-        });
-
         // 홈 버튼 클릭 리스너
         TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
@@ -179,7 +167,14 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowOwnerBistroList.this, MyPageOwner.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private User getUserMe(String token) {

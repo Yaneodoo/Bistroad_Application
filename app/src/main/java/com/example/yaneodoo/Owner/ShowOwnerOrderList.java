@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,7 +67,14 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowOwnerOrderList.this, MyPageOwner.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 주문접수 토글 버튼 클릭 리스너

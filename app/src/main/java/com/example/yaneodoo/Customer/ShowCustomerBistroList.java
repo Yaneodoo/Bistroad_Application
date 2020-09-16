@@ -103,12 +103,9 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerBistroList.this, MyPageCustomer.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
-
-        // TODO : mypagebtn 클릭 리스너
 
         // FAB 클릭 리스너
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

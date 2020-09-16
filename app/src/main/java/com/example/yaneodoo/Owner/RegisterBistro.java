@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -178,7 +179,15 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterBistro.this, MyPageOwner.class);
+                RegisterBistro.this.finish();
+                startActivity(intent);
+            }
+        });
     }
 
     private void getUserMe(String token) {

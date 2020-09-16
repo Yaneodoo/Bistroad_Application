@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -112,7 +113,15 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowCustomerShoppingBasket.this, MyPageCustomer.class);
+                ShowCustomerShoppingBasket.this.finish();
+                startActivity(intent);
+            }
+        });
     }
 
     // 더담으러가기 텍스트뷰 클릭 리스너

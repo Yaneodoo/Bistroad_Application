@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +72,14 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowCustomerMenuInfo.this, MyPageCustomer.class);
+                startActivity(intent);
+            }
+        });
 
         // FAB 클릭 리스너
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
