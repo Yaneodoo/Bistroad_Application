@@ -71,6 +71,7 @@
                     android:paddingLeft="10dp">
 
                     <TextView
+                        android:id="@+id/bistro_name_txtView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -79,12 +80,14 @@
                         android:textSize="24dp" />
 
                     <TextView
+                        android:id="@+id/bistro_location_txtView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="매장 주소"
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/bistro_desc_txtView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="매장 description"

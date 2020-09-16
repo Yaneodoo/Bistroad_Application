@@ -52,6 +52,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
                 intent.putExtra("selectedMenu", menu);
+                ShowOwnerMenuInfo.this.finish();
                 startActivity(intent);
             }
         });
@@ -62,6 +63,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, ShowOwnerBistroList.class);
+                ShowOwnerMenuInfo.this.finish();
                 startActivity(intent);
             }
         });
@@ -71,6 +73,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        ShowOwnerMenuInfo.this.finish();
         startActivity(new Intent(this, ShowOwnerMenuList.class));
     }
 }

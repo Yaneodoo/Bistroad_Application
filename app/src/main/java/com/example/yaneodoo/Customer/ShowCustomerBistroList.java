@@ -70,6 +70,9 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                 // get item
                 BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
                 Store store = new Store();
+
+                store.setOwnerId(storeList.get(position).getOwnerId());
+                store.setPhone(storeList.get(position).getPhone());
                 store.setId(storeList.get(position).getId());
                 store.setName(storeList.get(position).getName());
                 store.setLocation(storeList.get(position).getLocation());
@@ -79,7 +82,6 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerMenuList.class);
                 intent.putExtra("userInfo", user);
                 intent.putExtra("bistroInfo", store);
-                //ShowCustomerBistroList.this.finish();
                 startActivity(intent);
             }
         }) ;
@@ -91,7 +93,6 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerBistroList.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                ShowCustomerBistroList.this.finish();
                 startActivity(intent);
             }
         });
@@ -104,7 +105,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerShoppingBasket.class);
-                ShowCustomerBistroList.this.finish();
+                intent.putExtra("userInfo", user);
                 startActivity(intent);
             }
         });

@@ -39,6 +39,8 @@ public class ShowCustomerMenuList extends AppCompatActivity {
     private String baseUrl = "https://api.bistroad.kr/v1/";
     private ListView listview;
 
+    private User user;
+
     private List<Menu> menuList = new ArrayList<>();
 
     @Override
@@ -57,8 +59,10 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final User user = (User) intent.getSerializableExtra("userInfo");
+        user = (User) intent.getSerializableExtra("userInfo");
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+
+        Log.d("bistroInfo2", store.getName());
 
         TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
         bistroNameTxtView.setText(store.getName());
@@ -90,7 +94,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
                 intent.putExtra("menuInfo", menu);
                 intent.putExtra("userInfo", user);
-                ShowCustomerMenuList.this.finish();
+
                 startActivity(intent);
             }
         });
@@ -114,7 +118,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerShoppingBasket.class);
-                ShowCustomerMenuList.this.finish();
+                intent.putExtra("userInfo", user);
                 startActivity(intent);
             }
         });
@@ -126,7 +130,9 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         Integer position = Integer.parseInt((String) parentRow.getTag());
 
         Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
-        intent.putExtra("mname", mname);
+        intent.putExtra("userInfo", user);
+        intent.putExtra("menuInfo", menuList.get(position));
+
         ShowCustomerMenuList.this.finish();
         startActivity(intent);
     }
@@ -164,11 +170,5 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        ShowCustomerMenuList.this.finish();
-        startActivity(new Intent(this, ShowCustomerBistroList.class));
     }
 }

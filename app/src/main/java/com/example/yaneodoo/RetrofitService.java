@@ -56,6 +56,10 @@ public interface RetrofitService {
     @GET("stores")
     Call<List<Store>> getNearbyStoreList(@Header("Authorization") String token);
 
+    //Get a store by ID
+    @GET("stores/{id}")
+    Call<Store> getStore(@Header("Authorization") String token, @Path("id") String storeId);
+
     //Create a store
     @FormUrlEncoded
     @POST("stores")

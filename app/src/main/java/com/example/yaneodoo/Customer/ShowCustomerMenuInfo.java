@@ -53,11 +53,9 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         Button btn_order = (Button) findViewById(R.id.btn_order);
         btn_order.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TextView menuName = (TextView) findViewById(R.id.menu_name_txtView);
-                String mname = menuName.getText().toString();
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerOrderForm.class);
-                intent.putExtra("mname", mname);
-                ShowCustomerMenuInfo.this.finish();
+                intent.putExtra("userInfo", user);
+                intent.putExtra("menuInfo", menu);
                 startActivity(intent);
             }
         });
@@ -81,15 +79,9 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerShoppingBasket.class);
-                ShowCustomerMenuInfo.this.finish();
+                intent.putExtra("userInfo", user);
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        ShowCustomerMenuInfo.this.finish();
-        startActivity(new Intent(this, ShowCustomerMenuList.class));
     }
 }
