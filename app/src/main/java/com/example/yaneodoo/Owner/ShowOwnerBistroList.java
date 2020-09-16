@@ -85,7 +85,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 } else {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
-                    String titleStr = item.getTitle();
                     Store store = new Store();
                     store.setId(storeList.get(position).getId());
                     store.setName(storeList.get(position).getName());
@@ -93,7 +92,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     store.setDescription(storeList.get(position).getDescription());
                     //store.setPhotoUri(storeList.get(position).getPhotoUri());
 
-                    Log.d("oooo", owner.toString());
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
                     intent.putExtra("ownerInfo", owner);
                     intent.putExtra("bistroInfo", store);
