@@ -193,8 +193,61 @@ public class Login extends AppCompatActivity {
                 ActivityCompat.requestPermissions(Login.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
-
         }
 
+    }
+
+    //여기부터는 GPS 활성화를 위한 메소드들
+    private void showDialogForLocationServiceSetting() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setTitle("위치 서비스 비활성화");
+        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
+                + "위치 설정을 수정하실래요?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Intent callGPSSettingIntent
+                        = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case GPS_ENABLE_REQUEST_CODE:
+
+                //사용자가 GPS 활성 시켰는지 검사
+                if (checkLocationServicesStatus()) {
+                    if (checkLocationServicesStatus()) {
+
+                        Log.d("@@@", "onActivityResult : GPS 활성화 되있음");
+                        checkRunTimePermission();
+                        return;
+                    }
+                }
+
+                break;
+        }
+    }
+
+    public boolean checkLocationServicesStatus() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 }
