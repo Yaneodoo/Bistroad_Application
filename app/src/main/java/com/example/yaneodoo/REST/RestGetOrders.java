@@ -1,13 +1,8 @@
 package com.example.yaneodoo.REST;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 
 import org.json.JSONObject;
 
@@ -18,18 +13,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
+public class RestGetOrders extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String mURL, mToken, name, role, loginInfo;
+    protected String sUrl, orderInfo, orderId;
     SharedPreferences tk;
     int rc;
 
     // Constructor
-    public RestGetUserInfo(String url, String token, SharedPreferences tk) {
-        mURL = url;
-        mToken = token;
+    public RestGetOrders(String sId, SharedPreferences tk) {
+        sUrl = "https://api.bistroad.kr/v1/stores/"+sId+"/orders?size=1";
         this.tk = tk;
     }
 
@@ -39,24 +31,23 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... params) {
         try {
             // Open the connection
-            URL url = new URL("https://api.bistroad.kr/v1/users/me");
+            URL url = new URL(sUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Bearer " + mToken);
             rc = conn.getResponseCode();
             Log.d("RC", String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
-                loginInfo = convertStreamToString(is);
-                //Log.d("POST", loginInfo);
-                JSONObject jsonLogin = new JSONObject(loginInfo);
-                name = jsonLogin.getString("fullName");
-                role = jsonLogin.getString("role");
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putString("fullName", name); //
-                editor.putString("role", role); //
-                editor.commit();
+                orderInfo = convertStreamToString(is);
+                int reqLength = orderInfo.length();
+                if(reqLength == 3)
+                    orderId = "noOrder";
+                else {
+                    orderInfo = orderInfo.substring(1,orderInfo.length()-2);
+                    JSONObject jsonGPS = new JSONObject(orderInfo);
+                    orderId = jsonGPS.getString("id");
+                }
             }
             else{
                 Log.e("GET", "Failed.");

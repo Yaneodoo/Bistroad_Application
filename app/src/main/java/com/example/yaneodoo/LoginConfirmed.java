@@ -1,5 +1,4 @@
 package com.example.yaneodoo;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,10 +12,6 @@ import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.REST.RestGetUserInfo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 
 public class LoginConfirmed extends AppCompatActivity {
@@ -25,7 +20,7 @@ public class LoginConfirmed extends AppCompatActivity {
     private String name;
     private String role;
     private int rc;
-    private String url = "https://api.bistroad.kr/v1/users/me";
+    private String  url = "https://api.bistroad.kr/v1/users/me";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +29,7 @@ public class LoginConfirmed extends AppCompatActivity {
         setContentView(R.layout.login_confirmed);
 
         SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
-        token = tk.getString("bistrotk", "");
+        token = tk.getString("bistrotk","");
         Log.d("TOKEN", token);
         final TextView loginText = (TextView)findViewById(R.id.login_profile_text);
         RestGetUserInfo restGetUserInfo = new RestGetUserInfo(url, token, tk);
@@ -46,18 +41,21 @@ public class LoginConfirmed extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        name = tk.getString("fullName", "");
-        role = tk.getString("role", "");
+        name = tk.getString("fullName","");
+        role = tk.getString("role","");
         Log.d("name", name);
         Log.d("role", role);
 
         loginText.setText(name);
         Handler hd = new Handler();
 
-        if (role.equals("ROLE_STORE_OWNER"))
+        if(role.equals("ROLE_STORE_OWNER"))
             hd.postDelayed(new confirmedHandlerOwner(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
-        else if (role.equals("ROLE_USER"))
+        else if(role.equals("ROLE_USER")) {
+            Intent intent = new Intent(getApplicationContext(), GetCurrentGPSService.class);
+            startService(intent);
             hd.postDelayed(new confirmedHandlerCustomer(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
+        }
 
     }
 

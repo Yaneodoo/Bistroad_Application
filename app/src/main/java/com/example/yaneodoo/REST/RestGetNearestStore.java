@@ -1,13 +1,8 @@
 package com.example.yaneodoo.REST;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 
 import org.json.JSONObject;
 
@@ -15,22 +10,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
+public class RestGetNearestStore extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String mURL, mToken, name, role, loginInfo;
-    SharedPreferences tk;
+    protected String mToken, sName, sUrl, sLat, sLon, storeInfo;
+    //protected float sLat, sLon;
     int rc;
 
     // Constructor
-    public RestGetUserInfo(String url, String token, SharedPreferences tk) {
-        mURL = url;
-        mToken = token;
-        this.tk = tk;
+    public RestGetNearestStore(float lat, float lon) {
+        sLat = String.valueOf(lat);
+        sLon = String.valueOf(lon);
     }
 
     // Background work
@@ -38,25 +31,26 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
     @Override
     protected String doInBackground(Integer... params) {
         try {
-            // Open the connection
-            URL url = new URL("https://api.bistroad.kr/v1/users/me");
+            sUrl = "https://api.bistroad.kr/v1/stores/nearby?originLat="+sLat+"&originLng="+sLon+"&radius=0.001&size=1";
+            //Log.d("sUrl", sUrl);
+            //Open the connection
+            URL url = new URL(sUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Bearer " + mToken);
             rc = conn.getResponseCode();
-            Log.d("RC", String.valueOf(rc));
+            //Log.d("RC", String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
-                loginInfo = convertStreamToString(is);
-                //Log.d("POST", loginInfo);
-                JSONObject jsonLogin = new JSONObject(loginInfo);
-                name = jsonLogin.getString("fullName");
-                role = jsonLogin.getString("role");
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putString("fullName", name); //
-                editor.putString("role", role); //
-                editor.commit();
+                storeInfo = convertStreamToString(is);
+                int reqLength = storeInfo.length();
+                if(reqLength == 3)
+                    sName = "noStore";
+                else {
+                    storeInfo = storeInfo.substring(1,storeInfo.length()-2);
+                    JSONObject jsonGPS = new JSONObject(storeInfo);
+                    sName = jsonGPS.getString("name");
+                }
             }
             else{
                 Log.e("GET", "Failed.");
@@ -64,10 +58,10 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
         }
         catch (Exception e) {
             // Error calling the rest api
-            Log.e("REST_API: ", "POST method failed: " + e.getMessage());
+            Log.e("REST_API: ", "GET method failed: " + e.getMessage());
             e.printStackTrace();
         }
-        return "";
+        return sName;
     }
 
     @Override
