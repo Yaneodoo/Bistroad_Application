@@ -37,6 +37,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/owner_name_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
@@ -64,8 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dividerHeight="10dp"
-                android:divider="#00000000"
-                android:choiceMode="multipleChoice" />
+                android:choiceMode="multipleChoice"
+                android:divider="#00000000" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FEA6A4"
+            android:background="#FDDFDB"
             android:gravity="center"
             android:text="삭제" />
 
@@ -88,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FEA6A4"
+            android:background="#FDDFDB"
             android:gravity="center"
             android:text="추가" />
     </LinearLayout>

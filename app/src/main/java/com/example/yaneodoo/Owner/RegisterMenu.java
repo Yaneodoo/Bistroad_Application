@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class RegisterMenu extends AppCompatActivity {
                 // POST /stores/{storeId}/items
 
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerMenuList.class);
+                RegisterMenu.this.finish();
                 startActivity(intent);
             }
         });
@@ -66,16 +68,25 @@ public class RegisterMenu extends AppCompatActivity {
         });
 
         // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn) ;
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerBistroList.class);
+                RegisterMenu.this.finish();
                 startActivity(intent);
             }
         });
 
-        // TODO : mypagebtn 클릭 리스너
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterMenu.this, MyPageOwner.class);
+                RegisterMenu.this.finish();
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

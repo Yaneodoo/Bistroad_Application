@@ -87,7 +87,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="매장 위치 : 서울시 용산구 새창로 70"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <fragment
             android:id="@+id/map"
@@ -172,7 +178,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:background="#FEA6A4"
+        android:background="#FDDFDB"
         android:text="등록"/>
 
 

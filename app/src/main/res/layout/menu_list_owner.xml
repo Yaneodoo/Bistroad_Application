@@ -35,6 +35,7 @@
             android:src="@drawable/mypage" />
     </RelativeLayout>
     <TextView
+        android:id="@+id/owner_name_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right">
                 <TextView
+                    android:id="@+id/bistro_name_txtView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="매장 이름"
@@ -86,12 +88,14 @@
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
             <TextView
+                android:id="@+id/bistro_location_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="매장 주소"
                 android:textSize="16dp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/bistro_desc_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="매장 description"
@@ -142,8 +146,7 @@
                 android:layout_height="wrap_content"
                 android:dividerHeight="10dp"
                 android:divider="#00000000"
-                android:layout_weight="1"
-                android:choiceMode="multipleChoice" />
+                android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -155,13 +158,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_delete"
             android:text="삭제"
-            android:background="#FEA6A4"
+            android:background="#FDDFDB"
             android:layout_weight="1"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_add"
-            android:background="#FEA6A4"
+            android:background="#FDDFDB"
             android:text="추가"
             android:layout_weight="1"/>
     </LinearLayout>

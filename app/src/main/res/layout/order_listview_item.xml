@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:text="접수 완료"
+            android:text=""
             android:textColor="#000000"
             android:textSize="15dp" />
 

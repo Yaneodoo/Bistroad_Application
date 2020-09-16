@@ -51,7 +51,8 @@ public class OrderListViewAdapter extends BaseAdapter {
         ToggleButton iconImageView = (ToggleButton) convertView.findViewById(R.id.btn_progress);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.order_date_txtView);
         TextView customerTextView = (TextView) convertView.findViewById(R.id.order_customer_txtView);
-        TextView orderListView = (TextView) convertView.findViewById(R.id.order_list);
+        TextView orderTextView = (TextView) convertView.findViewById(R.id.order_list);
+        TextView stateTextView = (TextView) convertView.findViewById(R.id.order_progress);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         OrderListViewItem listViewItem = listViewItemList.get(position);
@@ -60,7 +61,8 @@ public class OrderListViewAdapter extends BaseAdapter {
         iconImageView.setBackgroundDrawable(listViewItem.getProgress());
         dateTextView.setText(listViewItem.getDateStr());
         customerTextView.setText(listViewItem.getNameStr());
-        orderListView.setText(listViewItem.getOrderStr());
+        orderTextView.setText(listViewItem.getOrderStr());
+        stateTextView.setText(listViewItem.getStateStr());
 
         return convertView;
     }
@@ -78,13 +80,14 @@ public class OrderListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String customer, String order) {
+    public void addItem(Drawable photo, String date, String customer, String order, String state) {
         OrderListViewItem item = new OrderListViewItem();
 
         item.setProgress(photo);
         item.setDateStr(date);
         item.setNameStr(customer);
         item.setOrderStr(order);
+        item.setStateStr(state);
 
         listViewItemList.add(item);
     }
