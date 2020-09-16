@@ -165,6 +165,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerBistroList.class);
+                ShowOwnerMenuList.this.finish();
                 startActivity(intent);
             }
         });
@@ -205,10 +206,5 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, ShowOwnerBistroList.class));
     }
 }

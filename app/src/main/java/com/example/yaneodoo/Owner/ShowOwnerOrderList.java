@@ -61,6 +61,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerOrderList.this, ShowOwnerBistroList.class);
+                ShowOwnerOrderList.this.finish();
                 startActivity(intent);
             }
         });

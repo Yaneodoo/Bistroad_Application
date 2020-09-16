@@ -137,6 +137,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 postStore(token, new Store(desc, new Location("12", "12"), name, ownerId, tel));
 
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
+                RegisterBistro.this.finish();
                 startActivity(intent);
             }
         });
@@ -147,6 +148,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
+                RegisterBistro.this.finish();
                 startActivity(intent);
             }
         });

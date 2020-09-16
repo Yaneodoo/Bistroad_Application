@@ -49,6 +49,7 @@ public class RegisterMenu extends AppCompatActivity {
                 // POST /stores/{storeId}/items
 
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerMenuList.class);
+                RegisterMenu.this.finish();
                 startActivity(intent);
             }
         });
@@ -71,6 +72,7 @@ public class RegisterMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerBistroList.class);
+                RegisterMenu.this.finish();
                 startActivity(intent);
             }
         });
