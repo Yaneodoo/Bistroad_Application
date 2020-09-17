@@ -91,6 +91,9 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 SaveShoppingBasketData(new ArrayList<Menu>());
                 //PopupMenu pop = new PopupMenu(getApplicationContext(), view);
                 Toast.makeText(getApplicationContext(), "주문이 완료되었습니다!", Toast.LENGTH_LONG).show();
+                //TODO : post order
+
+
                 Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
 
                 ShowCustomerShoppingBasket.this.finish();
