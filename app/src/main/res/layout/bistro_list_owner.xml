@@ -43,7 +43,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:text="김민주 점주님"
+        android:text=""
         android:textStyle="bold"
         android:textSize="25dp"/>
 

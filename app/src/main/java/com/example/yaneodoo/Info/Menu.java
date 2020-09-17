@@ -10,7 +10,6 @@ public class Menu implements Serializable {
     private String id;
     private String stars;
     private String storeId;
-
     private Integer quantity;
 
     public Menu() {
