@@ -15,6 +15,11 @@ public class Menu implements Serializable {
     public Menu() {
     }
 
+    public Menu(String id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
     public Menu(String price, String name, String id, String storeId, Integer quantity) {
         this.price = price;
         this.name = name;

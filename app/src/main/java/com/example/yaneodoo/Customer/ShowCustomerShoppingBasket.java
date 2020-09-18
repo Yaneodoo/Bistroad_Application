@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Info.Menu;
+import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ShoppingBasketListViewAdapter;
@@ -44,6 +45,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
     private String baseUrl = "https://api.bistroad.kr/v1/";
     private Store store = new Store();
     private Integer totalAmount = 0;
+    private String storeId = "";
 
     private ShoppingBasketListViewAdapter adapter = new ShoppingBasketListViewAdapter();
     private ListView listview;
@@ -64,14 +66,13 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         intent = getIntent();
         user = (User) intent.getSerializableExtra("userInfo");
 
-        String storeId = "";
-
         for (Menu menu : ReadShoppingBasketData()) {
             selectedMenu.add(menu);
             adapter.addItem(menu.getName(), menu.getPrice());
             storeId = menu.getStoreId();
         }
 
+        Log.d("USER", user.toString());
         updateTotalAmount();
 
         Call<Store> callgetStore = service.getStore("Bearer " + token, storeId);
@@ -90,8 +91,19 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 SaveShoppingBasketData(new ArrayList<Menu>());
                 //PopupMenu pop = new PopupMenu(getApplicationContext(), view);
                 Toast.makeText(getApplicationContext(), "주문이 완료되었습니다!", Toast.LENGTH_LONG).show();
-                //TODO : post order
 
+                //TODO : post order
+                /*
+                List<Request> ml=new ArrayList<>();
+                ml.add(new Request(1, storeId));
+                Date date=new Date();
+                Log.d("DATE",date.toString());
+                Order order=new Order(storeId, user.getId(), ml, date, 0,"REQUESTED");
+
+                Log.d("ORDER",order.toString());
+                Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
+                new postOrder().execute(callpostOrder);
+                */
 
                 Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
 
@@ -197,6 +209,27 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             ArrayList<Menu> arrayList = gson.fromJson(json, type);
             return arrayList;
         } else return new ArrayList<Menu>();
+    }
+
+    private class postOrder extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Order> call = params[0];
+                Response<Order> response = call.execute();
+                Order body = response.body();
+                //Log.d("ORDER", body.toString());
+
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 
     private class getStore extends AsyncTask<Call, Void, String> {
