@@ -26,8 +26,8 @@ public interface RetrofitService {
     Call<List<User>> getUserList();
 
     //특정 사용자를 조회합니다.
-    @GET("users/{userId}")
-    Call<User> getUser(@Path("userId") String userId);
+    @GET("users/{id}")
+    Call<User> getUser(@Header("Authorization") String token, @Path("id") String id);
 
     //새로운 사용자를 등록합니다.
     @FormUrlEncoded

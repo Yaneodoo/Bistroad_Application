@@ -214,20 +214,22 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 Response<List<Store>> response = call.execute();
                 List<Store> body = response.body();
 
-                for (int i = 0; i < body.size(); i++) {
-                    Store store = new Store();
-                    store.setName(body.get(i).getName());
-                    store.setLocation(body.get(i).getLocation());
-                    store.setDescription(body.get(i).getDescription());
-                    store.setId(body.get(i).getId());
-                    store.setOwnerId(body.get(i).getOwnerId());
-                    store.setPhone(body.get(i).getPhone());
-                    //store.setPhotoUri(body.get(i).getPhotoUri());
-                    storeList.add(store);
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Store store = new Store();
+                        store.setName(body.get(i).getName());
+                        store.setLocation(body.get(i).getLocation());
+                        store.setDescription(body.get(i).getDescription());
+                        store.setId(body.get(i).getId());
+                        store.setOwnerId(body.get(i).getOwnerId());
+                        store.setPhone(body.get(i).getPhone());
+                        //store.setPhotoUri(body.get(i).getPhotoUri());
+                        storeList.add(store);
 
-                    Log.d("STORE", store.toString());
-                    adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
-                    Log.d("store data", "--------------------------------------");
+                        Log.d("STORE", store.toString());
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+                        Log.d("store data", "--------------------------------------");
+                    }
                 }
                 return null;
 
