@@ -59,6 +59,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         // ShowCustomerMenuList나 ShowOwnerMenuList에서 보낸 menuStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
+        final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
@@ -71,8 +72,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
         menuStarsTxtView.setText(menu.getStars());
-        //TextView menuNameTxtView = (TextView) findViewById(R.id.menu_orderedCnt_txtView);
-        //menuNameTxtView.setText(menu.getName());
+        TextView menuAmountTxtView = (TextView) findViewById(R.id.menu_orderedCnt_txtView);
+        menuAmountTxtView.setText("주문횟수 : 1");//TODO : 주문횟수
 
         Button editbutton = (Button) findViewById(R.id.btn_edit);
 
@@ -80,7 +81,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         editbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
-                intent.putExtra("selectedMenu", menu);
+                intent.putExtra("menuInfo", menu);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

@@ -13,6 +13,18 @@ public class Order implements Serializable {
     private int tableNum;
     private String progress;
 
+    public Order() {
+    }
+
+    public Order(String storeId, String userId, List<Request> requestList, Date date, Integer tableNum, String progress) {
+        this.storeId = storeId;
+        this.userId = userId;
+        this.requestList = requestList;
+        this.date = date;
+        this.tableNum = tableNum;
+        this.progress = progress;
+    }
+
     public String getId() {
         return id;
     }

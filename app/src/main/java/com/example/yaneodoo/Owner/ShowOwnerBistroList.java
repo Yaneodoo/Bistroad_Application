@@ -86,6 +86,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
                     Store store = new Store();
+                    store.setOwnerId(storeList.get(position).getOwnerId());
                     store.setId(storeList.get(position).getId());
                     store.setName(storeList.get(position).getName());
                     store.setLocation(storeList.get(position).getLocation());
@@ -106,6 +107,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerBistroList.this, RegisterBistro.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

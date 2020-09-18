@@ -82,7 +82,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerOrderList.class);
-                intent.putExtra("bistroStr", storeId);
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -106,6 +107,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Log.d("menu", menu.toString());
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                 intent.putExtra("menuInfo", menu);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -116,7 +118,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, RegisterBistro.class);
-                intent.putExtra("bistroStr", storeId);
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -127,6 +130,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, RegisterMenu.class);
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

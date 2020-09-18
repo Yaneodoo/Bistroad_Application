@@ -1,6 +1,7 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,41 +15,60 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Request;
+import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.RetrofitService;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerOrderList extends AppCompatActivity {
     private Intent intent;
+    private String token;
+    private Retrofit mRetrofit;
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
+
+    private ListView listview;
+    private OrderListViewAdapter adapter = new OrderListViewAdapter();
+
+    private List<Order> orderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bistro_order_list_owner);
 
-        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
+        listview = (ListView) findViewById(R.id.order_list_view_owner);
+
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = mRetrofit.create(RetrofitService.class);
+
         intent = getIntent();
-        final String bistroName = intent.getStringExtra("bistroStr");
+        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+        final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
-        // TODO : GET /stores/{storeId}/orders로 가게의 주문내역을 모두 아이템에 추가
-        // 날짜 최신순
+        TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
+        titleTxtView.setText(owner.getFullName() + " 점주님의\n" + store.getName() + " 주문내역입니다.");
 
-        // Adapter 생성
-        OrderListViewAdapter adapter = new OrderListViewAdapter();
+        Call<List<Order>> callgetOrderList = service.getOrderList("Bearer " + token, store.getId());
+        new callgetOrderList().execute(callgetOrderList);
 
-        // 리스트뷰 참조 및 Adapter달기
-        ListView listview = (ListView) findViewById(R.id.order_list_view_owner);
-        listview.setAdapter(adapter);
-
-        // 아이템 추가 예시
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "elsiff", "짜장 x 1\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "himinju", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "vomin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "Yalru", "짜장 x 1\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수중");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수 완료");
-
-        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -94,6 +114,52 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         } else if (orderState.getText().toString() == "접수 완료") {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
             orderState.setText("접수중");
+        }
+    }
+
+    private class callgetOrderList extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Order>> call = params[0];
+                Response<List<Order>> response = call.execute();
+                List<Order> body = response.body();
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Order order = new Order();
+                        order.setDate(body.get(i).getDate());
+                        order.setId(body.get(i).getId());
+                        order.setProgress(body.get(i).getProgress());
+                        order.setRequestList(body.get(i).getRequestList());
+                        order.setStoreId(body.get(i).getStoreId());
+                        order.setUserId(body.get(i).getUserId());
+
+                        Log.d("ORDER", order.toString());
+                        //orderList.add(order);
+                        String o = "";
+                        for (Request request : order.getRequestList()) {
+                            o += request.getMenu() + " x " + request.getQuantity() + "\n";
+                        }
+                        if (order.getProgress() == "접수중") {
+                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.requested), "2020-09-19", order.getId(), o, order.getProgress());
+                        } else { //접수됨
+                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.accepted), "2020-09-19", order.getId(), o, order.getProgress());
+                        }
+                    }
+                    Log.d("orderList data", "--------------------------------------");
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            listview.setAdapter(adapter);
         }
     }
 }

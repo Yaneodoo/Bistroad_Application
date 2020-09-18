@@ -74,7 +74,6 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
         updateTotalAmount();
 
-        //TODO : 장바구니가 비었을시에는 장바구니 활성화되지 않아 아래 구문들이 실행되지 않을 것임
         Call<Store> callgetStore = service.getStore("Bearer " + token, storeId);
         new getStore().execute(callgetStore);
 
