@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +57,45 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this, SignUp.class);
                 startActivity(intent);
+            }
+        });
+
+        password.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                switch (keyCode){
+                    case KeyEvent.KEYCODE_ENTER:
+                        try {
+                            RestPostAuth restGetAuth = new RestPostAuth(id.getText().toString(), password.getText().toString(), tk);
+                            try {
+                                rc = restGetAuth.execute().get();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("Login rc", String.valueOf(rc));
+                            if(rc == 200){
+                                Intent intent = new Intent(Login.this, LoginConfirmed.class);
+                                startActivity(intent);
+                            }
+                            else if(rc == 404){
+                                Toast noIdToast = Toast.makeText(getApplicationContext(), "계정이 존재하지 않습니다.", Toast.LENGTH_LONG);
+                                noIdToast.show();
+                            } else if (rc == 401) {
+                                Toast diffPwToast = Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다.", Toast.LENGTH_LONG);
+                                diffPwToast.show();
+                            } else {
+                                Log.e("POST", "Failed.");
+                            }
+                        }
+                        catch (Exception e) {
+                            // Error calling the rest api
+                            Log.e("REST_API", "POST method failed: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                }
+                return false;
             }
         });
 

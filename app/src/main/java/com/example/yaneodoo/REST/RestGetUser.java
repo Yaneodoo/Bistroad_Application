@@ -44,9 +44,6 @@ public class RestGetUser extends AsyncTask<Integer, Void, String> {
                 //Log.d("POST", loginInfo);
                 JSONObject jsonLogin = new JSONObject(userInfo);
                 name = jsonLogin.getString("fullName");
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putString("fullName", name); //
-                editor.commit();
             }
             else{
                 Log.e("GET", "Failed.");

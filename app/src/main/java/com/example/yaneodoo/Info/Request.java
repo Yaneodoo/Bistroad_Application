@@ -1,9 +1,12 @@
 package com.example.yaneodoo.Info;
 
-public class Request {
+public class Request implements Serializable {
     private Integer quantity;
     private Menu menu;
     private Review review;
+  
+    private String amount;
+    private Menu item;
 
     public Integer getQuantity() {
         return quantity;

@@ -173,7 +173,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
     public void Increment(View view) {
         TableRow parentRow = (TableRow) view.getParent();
 
-        TextView menuQuantityTxtView = (TextView) parentRow.findViewById(R.id.menu_quantity);
+        TextView menuQuantityTxtView = (TextView) parentRow.findViewById(R.id.menu_quantity_txtView);
         String quantityString = menuQuantityTxtView.getText().toString();
         menuQuantity = Integer.parseInt(quantityString);
         menuQuantity += 1;

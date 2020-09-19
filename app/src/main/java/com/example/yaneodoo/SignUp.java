@@ -110,5 +110,12 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
+        Button btnBack = (Button) findViewById(R.id.signup_back_button);
+        btnSignup.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignUp.this.finish();
+            }
+        });
     }
 }

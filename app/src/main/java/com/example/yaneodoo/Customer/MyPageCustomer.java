@@ -81,6 +81,19 @@ public class MyPageCustomer extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button btnCustomer = (Button) findViewById(R.id.mypage_logout_button);
+        btnCustomer.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = tk.edit();
+                editor.putString("bId", ""); //
+                editor.commit();
+                Intent intent = new Intent(MyPageCustomer.this, Login.class);
+                startActivity(intent);
+                MyPageCustomer.this.finish();
+            }
+        });
     }
 
     private void getOrderList(final String token, String storeId) {
@@ -100,11 +113,22 @@ public class MyPageCustomer extends AppCompatActivity {
                             order.setRequestList(body.get(i).getRequests());
                             orderList.add(order);
 
+                            String requests = "";
+                            String amount = "";
+                            String menu = "";
+                            for( int j = 0 ; j < order.getRequests().size() ; j++ ){
+                                amount = order.getRequests().get(j).getAmount();
+                                menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
+                                requests += menu + " x " + amount + "\n";
+                                Log.d("requests", requests);
+                            }
+                            requests = requests.substring(0,requests.length()-1);
+
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 대기",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 대기",order.getId());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 완료",order.getId());
-                            Log.d("ORDER data", "--------------------------------------");
+                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
+                            Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");
                         listview.setAdapter(adapter);

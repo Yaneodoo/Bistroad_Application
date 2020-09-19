@@ -30,6 +30,8 @@ public interface RetrofitService {
     //특정 사용자를 조회합니다.
     @GET("users/{id}")
     Call<User> getUser(@Header("Authorization") String token, @Path("id") String id);
+    //@GET("users/{userId}")
+    //Call<User> getUser(@Header("Authorization") String token, @Path("userId") String userId);
 
     //새로운 사용자를 등록합니다.
     @FormUrlEncoded
@@ -76,6 +78,10 @@ public interface RetrofitService {
     //get store orders
     @GET("orders")
     Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId);
+
+    //get store orders
+    @GET("orders?size=1")
+    Call<Order> getStoreOrder(@Header("Authorization") String token, @Query("storeId") String storeId);
 
     //get order info
     @GET("orders/{id}")

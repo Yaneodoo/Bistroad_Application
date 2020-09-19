@@ -33,6 +33,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ShowCustomerMenuInfo extends AppCompatActivity {
     private Intent intent;
     private String token;
@@ -151,7 +161,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                         review.setId(body.get(i).getId());
                         review.setOrderId(body.get(i).getOrderId());
                         review.setStars(body.get(i).getStars());
-                        review.setWriterId(body.get(i).getWriterId());
+                        review.setUser(body.get(i).getUser());
                         reviewList.add(review);
 
                         Log.d("REVIEW", review.toString());
@@ -172,16 +182,17 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             for (Review review : reviewList) {
-                Call<User> callgetUser = service.getUser("Bearer " + token, review.getWriterId());
-                new callgetUser().execute(callgetUser);
-
+                Call<User> callgetUser = service.getUser("Bearer " + token, review.getUser().getId());
+                String name ="";
                 try {
-                    Thread.sleep(1000);
+                    name = new callgetUser().execute(callgetUser).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                adapter.addItem("2020.09.19", writerName, "★" + review.getStars(), review.getContents());
+                adapter.addItem("2020.09.19", name, "★" + review.getStars(), review.getContents());
             }
         }
     }
@@ -199,7 +210,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return writerName;
         }
 
         @Override

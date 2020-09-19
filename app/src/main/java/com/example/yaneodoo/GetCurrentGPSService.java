@@ -103,6 +103,7 @@ public class GetCurrentGPSService extends Service {
         public void run() {
             //반복적으로 수행할 작업을 한다.
             count = 0;
+            sName = "noStore";
             while (isRun) {
                 if (tk.getString("bId", "").length() == 0){
                     stopForever();
@@ -130,7 +131,7 @@ public class GetCurrentGPSService extends Service {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(sName != "noStore" && count > 2) {
+                    if(!sName.equals("noStore") && count > 2) {
                         msg = new Message();
                         msg.obj = sName;
                         handler.sendMessage(msg);
