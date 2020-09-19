@@ -118,7 +118,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (ReadShoppingBasketData().size() == 0) {
-                    Toast.makeText(getApplicationContext(), "담은 메뉴가 없습니다", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "담은 메뉴가 없습니다", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerShoppingBasket.class);
                     intent.putExtra("userInfo", user);
