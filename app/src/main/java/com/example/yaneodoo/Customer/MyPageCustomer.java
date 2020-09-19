@@ -6,30 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
-import com.example.yaneodoo.Login;
-import com.example.yaneodoo.Owner.MyPageOwner;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
-import com.example.yaneodoo.Owner.ShowOwnerOrderList;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.RestGetOrders;
-import com.example.yaneodoo.REST.RestGetUser;
 import com.example.yaneodoo.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,21 +59,10 @@ public class MyPageCustomer extends AppCompatActivity {
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
         id = intent.getStringExtra("bistroStr");
-        token = tk.getString("bistrotk","");
+        token = tk.getString("bistrotk", "");
 
-        getOrderList(token, id);//가게의 메뉴 불러오기
-
-        // TODO : GET /stores/{storeId}/orders로 가게의 주문내역을 모두 아이템에 추가
-        // 날짜 최신순
-
-        // 아이템 추가 예시
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "elsiff", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "himinju", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "vomin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "Yalru", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수 완료","");
+        //TODO : 날짜 최신순
+        getOrderList(token, id);//자신의 주문내역 불러오기
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -119,16 +98,16 @@ public class MyPageCustomer extends AppCompatActivity {
                             order.setTableNum(body.get(i).getTableNum());
                             order.setDate(body.get(i).getDate());
                             order.setUserId(body.get(i).getUserId());
-                            order.setRequests(body.get(i).getRequests());
+                            order.setRequestList(body.get(i).getRequests());
                             orderList.add(order);
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 대기",order.getId());
                             else
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 완료",order.getId());
-                            Log.d("menu data", "--------------------------------------");
+                            Log.d("ORDER data", "--------------------------------------");
                         }
-                        Log.d("getMenuList end", "======================================");
+                        Log.d("getmyOrderList end", "======================================");
                         listview.setAdapter(adapter);
                     }
                 }
@@ -140,5 +119,10 @@ public class MyPageCustomer extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
+    }
+
+    // 주문접수 토글 버튼 클릭 리스너
+    public void progressToggle(View v) {
+        //do nothing
     }
 }
