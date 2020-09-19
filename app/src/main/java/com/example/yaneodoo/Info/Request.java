@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Request implements Serializable {
     String amount;
-    private List<Menu> menuList;
+    private Menu item;
 
-    public List<Menu> getMenuList() {
-        return menuList;
+    public Menu getMenu() {
+        return item;
     }
 
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
+    public void setMenu(Menu item) {
+        this.item = item;
     }
 
     public String getAmount() {
@@ -25,7 +25,7 @@ public class Request implements Serializable {
 
     @Override
     public String toString() {
-        return "[menuList = " + menuList + ", amount = " + amount + "]";
+        return "[item = " + item + ", amount = " + amount + "]";
     }
 
 }

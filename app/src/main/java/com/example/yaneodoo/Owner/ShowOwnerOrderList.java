@@ -75,15 +75,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         // TODO : GET /stores/{storeId}/orders로 가게의 주문내역을 모두 아이템에 추가
         // 날짜 최신순
 
-        // 아이템 추가 예시
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "horseesroh", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "elsiff", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "himinju", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "vomin", "짜장 x 1\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "Yalru", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.requested), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수중","");
-//        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.accepted), "2020-02-09", "tjwlsgkkgslwjt", "짜장 x 1\n짬뽕 x 2", "접수 완료","");
-
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -150,7 +141,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             order.setRequests(body.get(i).getRequests());
                             orderList.add(order);
                             RestGetUser restGetUser = new RestGetUser(order.getUserId(),token);
-                            String name ="";
+                            String name = "";
                             try {
                                 name = restGetUser.execute().get();
                             } catch (ExecutionException e) {
@@ -159,10 +150,21 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
+                            String requests = "";
+                            String amount = "";
+                            String menu = "";
+                            for( int j = 0 ; j < order.getRequests().size() ; j++ ){
+                                amount = order.getRequests().get(j).getAmount();
+                                menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
+                                requests += menu + " x " + amount + "\n";
+                                Log.d("requests", requests);
+                            }
+                            requests.substring(0,-1);
+
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 대기",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 대기",order.getId());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 완료",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");
