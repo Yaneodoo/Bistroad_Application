@@ -1,12 +1,10 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yaneodoo.R;
@@ -40,7 +38,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        // ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
+        //ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
         TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
         TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
         TextView scoreTextView=(TextView) convertView.findViewById(R.id.review_score_txtView);
@@ -50,7 +48,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         ReviewListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        // iconImageView.setImageDrawable(listViewItem.getIconDrawable());
+        //iconImageView.setImageDrawable(listViewItem.getIconDrawable());
         dateTextView.setText(listViewItem.getDateStr());
         writerTextView.setText(listViewItem.getWriterStr());
         scoreTextView.setText(listViewItem.getScoreStr());
@@ -72,13 +70,12 @@ public class ReviewListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String writer, String menu, String score, String review) {
+    public void addItem(String date, String writer, String score, String review) {
         ReviewListViewItem item = new ReviewListViewItem();
 
-        item.setIconDrawable(photo);
+        //item.setIconDrawable(photo);
         item.setDateStr(date);
         item.setWriterStr(writer);
-        item.setMenuStr(menu);
         item.setScoreStr(score);
         item.setReviewStr(review);
 

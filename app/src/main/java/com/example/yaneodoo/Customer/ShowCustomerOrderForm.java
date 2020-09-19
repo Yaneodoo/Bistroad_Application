@@ -76,6 +76,8 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 for (Menu menu : ReadShoppingBasketData()) {
                     selectedMenu.add(menu);
                 }
+                TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
+                menu.setQuantity(Integer.parseInt(menuQuantityTxtView.getText().toString()));
                 selectedMenu.add(menu);
 
                 SaveShoppingBasketData(selectedMenu);

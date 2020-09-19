@@ -2,6 +2,7 @@ package com.example.yaneodoo.Owner;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -26,11 +27,11 @@ import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,7 +42,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
     private BackPressedForFinish backPressedForFinish;
 
-    private String ownerId, ownerName;
+    private User owner = new User();
+    //private String ownerId, ownerName;
     private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -58,11 +60,9 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         setContentView(R.layout.bistro_list_owner);
         backPressedForFinish = new BackPressedForFinish(this);
 
-        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
-        ownerName = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
+        listview = (ListView) findViewById(R.id.bistro_list_view_owner);
 
-        TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
-        ownerNameTxtView.setText(ownerName);
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -70,12 +70,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        final User owner = getUserMe(token);
+        Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
+        new getUserMe().execute(callgetUserMe);
 
-        getStoreList(token, ownerId);//소유한 가게 불러오기
-
-        // 리스트뷰 참조, 멀티 선택(체크박스) 설정, Adapter달기
-        listview = (ListView) findViewById(R.id.bistro_list_view_owner);
+        final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, owner.getId());
+        new getStoreList().execute(callgetStoreList);
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,6 +86,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     // get item
                     BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
                     Store store = new Store();
+                    store.setOwnerId(storeList.get(position).getOwnerId());
                     store.setId(storeList.get(position).getId());
                     store.setName(storeList.get(position).getName());
                     store.setLocation(storeList.get(position).getLocation());
@@ -107,6 +107,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerBistroList.this, RegisterBistro.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -177,68 +178,73 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
     }
 
-    private User getUserMe(String token) {
-        final User owner = new User();
-        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User body = response.body();
-                    if (body != null) {
-                        owner.setId(body.getId());
-                        owner.setUsername(body.getUsername());
-                        owner.setRole(body.getRole());
-                        owner.setPhone(body.getPhone());
-                        owner.setFullName(body.getFullName());
+    private class getUserMe extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<User> call = params[0];
+                Response<User> response = call.execute();
+                User body = response.body();
+                Log.d("USER", body.toString());
 
-                        Log.d("b", owner.toString());
-                    }
-                }
+                owner.setId(body.getId());
+                owner.setUsername(body.getUsername());
+                owner.setRole(body.getRole());
+                owner.setPhone(body.getPhone());
+                owner.setFullName(body.getFullName());
+
+                TextView textView = (TextView) findViewById(R.id.owner_name_textView);
+                textView.setText(owner.getFullName() + " 점주님");
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            return null;
+        }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("t", "fail");
-            }
-        });
-
-        return owner;
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 
-    private void getStoreList(String token, String ownerId) {
-        service.getStoreList("Bearer " + token, ownerId).enqueue(new Callback<List<Store>>() {
-            @Override
-            public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
-                if (response.isSuccessful()) {
-                    List<Store> body = response.body();
-                    if (body != null) {
-                        for (int i = 0; i < body.size(); i++) {
-                            Store store = new Store();
-                            store.setName(body.get(i).getName());
-                            store.setLocation(body.get(i).getLocation());
-                            store.setDescription(body.get(i).getDescription());
-                            store.setId(body.get(i).getId());
-                            store.setOwnerId(body.get(i).getOwnerId());
-                            store.setPhone(body.get(i).getPhone());
-                            //store.setPhotoUri(body.get(i).getPhotoUri());
-                            storeList.add(store);
+    private class getStoreList extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Store>> call = params[0];
+                Response<List<Store>> response = call.execute();
+                List<Store> body = response.body();
 
-                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Store store = new Store();
+                        store.setName(body.get(i).getName());
+                        store.setLocation(body.get(i).getLocation());
+                        store.setDescription(body.get(i).getDescription());
+                        store.setId(body.get(i).getId());
+                        store.setOwnerId(body.get(i).getOwnerId());
+                        store.setPhone(body.get(i).getPhone());
+                        //store.setPhotoUri(body.get(i).getPhotoUri());
+                        storeList.add(store);
 
-                            Log.d("store data", "--------------------------------------");
-                        }
-                        Log.d("getStoreList end", "======================================");
-                        listview.setAdapter(adapter);
+                        Log.d("STORE", store.toString());
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+                        Log.d("store data", "--------------------------------------");
                     }
                 }
-            }
+                return null;
 
-            @Override
-            public void onFailure(Call<List<Store>> call, Throwable t) {
-                t.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            listview.setAdapter(adapter);
+        }
     }
 
     void showAlertDialog() {

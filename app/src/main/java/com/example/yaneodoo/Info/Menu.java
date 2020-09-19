@@ -10,10 +10,14 @@ public class Menu implements Serializable {
     private String id;
     private String stars;
     private String storeId;
-
     private Integer quantity;
 
     public Menu() {
+    }
+
+    public Menu(String id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
     }
 
     public Menu(String price, String name, String id, String storeId, Integer quantity) {

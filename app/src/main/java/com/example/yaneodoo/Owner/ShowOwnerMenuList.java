@@ -82,7 +82,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerOrderList.class);
-                intent.putExtra("bistroStr", store.getId());
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -94,6 +95,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
                 Menu menu = new Menu();
+                menu.setStoreId(menuList.get(position).getStoreId());
                 menu.setId(menuList.get(position).getId());
                 menu.setName(menuList.get(position).getName());
                 menu.setDescription(menuList.get(position).getDescription());
@@ -105,6 +107,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Log.d("menu", menu.toString());
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                 intent.putExtra("menuInfo", menu);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -115,7 +118,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, RegisterBistro.class);
-                intent.putExtra("bistroStr", storeId);
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -126,6 +130,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, RegisterMenu.class);
+                intent.putExtra("bistroInfo", store);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

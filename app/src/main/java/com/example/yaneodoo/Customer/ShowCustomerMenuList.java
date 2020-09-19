@@ -82,6 +82,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 // get item
                 MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
                 Menu menu = new Menu();
+                menu.setStoreId(menuList.get(position).getStoreId());
                 menu.setId(menuList.get(position).getId());
                 menu.setName(menuList.get(position).getName());
                 menu.setDescription(menuList.get(position).getDescription());

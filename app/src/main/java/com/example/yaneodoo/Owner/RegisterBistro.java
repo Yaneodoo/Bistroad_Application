@@ -58,6 +58,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
+    private Intent intent;
     private GoogleMap mMap;
     private static final int REQUEST_TAKE_ALBUM = 1111;
     private ImageView upload_btn;
@@ -80,6 +81,27 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = mRetrofit.create(RetrofitService.class);
+
+        intent = getIntent();
+        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+        final User owner = (User) intent.getSerializableExtra("ownerInfo");
+
+        TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
+        ownerNameTxtView.setText(owner.getFullName() + " 점주님");
+
+        if (store != null) {
+            TextView bistroExistTxtView = (TextView) findViewById(R.id.bistro_exist_txtView);
+            bistroExistTxtView.setText("매장 수정");
+
+            TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
+            bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
+            EditText bistroNameTxtView = (EditText) findViewById(R.id.bistro_name_txtView);
+            bistroNameTxtView.setText(store.getName());
+            EditText bistroTelTxtView = (EditText) findViewById(R.id.bistro_tel_txtView);
+            bistroTelTxtView.setText(store.getPhone());
+            EditText bistroDescTxtView = (EditText) findViewById(R.id.bistro_desc_txtView);
+            bistroDescTxtView.setText(store.getDescription());
+        }
 
         // 이미지 업로드 버튼 클릭 리스너
         upload_btn = findViewById(R.id.bistro_imagebtn);

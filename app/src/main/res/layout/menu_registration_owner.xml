@@ -45,6 +45,7 @@
         android:orientation="vertical"
         android:layout_weight="1">
         <TextView
+            android:id="@+id/owner_name_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -52,11 +53,13 @@
             android:textStyle="bold"
             android:textSize="25dp"/>
         <TextView
+            android:id="@+id/bistro_name_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="레드 175"
             android:textSize="25dp"/>
         <TextView
+            android:id="@+id/bistro_location_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="서울 강남구 남부순환로 2942"
