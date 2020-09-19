@@ -175,7 +175,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             order.setTableNum(body.get(i).getTableNum());
                             order.setDate(body.get(i).getDate());
                             order.setUserId(body.get(i).getUserId());
-                            order.setRequestList(body.get(i).getRequests());
+                            order.setRequest(body.get(i).getRequests());
                             orderList.add(order);
                             RestGetUser restGetUser = new RestGetUser(order.getUserId(),token);
                             String name = "";

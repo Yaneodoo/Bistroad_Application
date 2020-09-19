@@ -1,5 +1,7 @@
 package com.example.yaneodoo.Info;
 
+import java.io.Serializable;
+
 public class Request implements Serializable {
     private Integer quantity;
     private Menu menu;
@@ -16,12 +18,15 @@ public class Request implements Serializable {
         this.quantity = quantity;
     }
 
+    public String getAmount(){return amount;}
+    public void setAmount(String amount){this.amount = amount;}
+
     public Menu getMenu() {
-        return menu;
+        return item;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setMenu(Menu item) {
+        this.item = item;
     }
 
     public Review getReview() {

@@ -8,7 +8,7 @@ public class Order implements Serializable {
     private String id;
     private String storeId;
     private String userId;
-    private List<Request> requestList;
+    private List<Request> requests;
     private Date date;
     private Integer tableNum;
     private String progress;
@@ -19,7 +19,7 @@ public class Order implements Serializable {
     public Order(String storeId, String userId, List<Request> requestList, Date date, Integer tableNum, String progress) {
         this.storeId = storeId;
         this.userId = userId;
-        this.requestList = requestList;
+        this.requests = requests;
         this.date = date;
         this.tableNum = tableNum;
         this.progress = progress;
@@ -50,15 +50,11 @@ public class Order implements Serializable {
     }
 
     public List<Request> getRequests() {
-        return requestList;
+        return requests;
     }
 
-    public List<Request> getRequestList() {
-        return requestList;
-    }
-
-    public void setRequestList(List<Request> requestList) {
-        this.requestList = requestList;
+    public void setRequest(List<Request> requests) {
+        this.requests = requests;
     }
 
     public Date getDate() {
@@ -87,6 +83,6 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "[id = " + id + ", storeId = " + storeId + ", userId = " + userId + ", requestList = " + requestList + ", date = " + date + ", tableNum = " + tableNum + ", progress = " + progress + "]";
+        return "[id = " + id + ", storeId = " + storeId + ", userId = " + userId + ", requestList = " + requests + ", date = " + date + ", tableNum = " + tableNum + ", progress = " + progress + "]";
     }
 }

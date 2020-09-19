@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
+import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
@@ -110,7 +112,7 @@ public class MyPageCustomer extends AppCompatActivity {
                             order.setTableNum(body.get(i).getTableNum());
                             order.setDate(body.get(i).getDate());
                             order.setUserId(body.get(i).getUserId());
-                            order.setRequestList(body.get(i).getRequests());
+                            order.setRequest(body.get(i).getRequests());
                             orderList.add(order);
 
                             String requests = "";
