@@ -48,6 +48,7 @@ public class MyPageCustomer extends AppCompatActivity {
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
+        id = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
         final TextView nameText = (TextView)findViewById(R.id.cutomer_name_textView);
         nameText.setText(name+" 고객님");
 
@@ -59,7 +60,7 @@ public class MyPageCustomer extends AppCompatActivity {
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        id = intent.getStringExtra("bistroStr");
+        //id = intent.getStringExtra("bistroStr");
         token = tk.getString("bistrotk", "");
 
         //TODO : 날짜 최신순
@@ -98,8 +99,8 @@ public class MyPageCustomer extends AppCompatActivity {
         });
     }
 
-    private void getOrderList(final String token, String storeId) {
-        service.getUserOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
+    private void getOrderList(final String token, String userId) {
+        service.getUserOrders("Bearer " + token, userId).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful()) {
