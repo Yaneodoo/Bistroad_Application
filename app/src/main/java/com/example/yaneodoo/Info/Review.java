@@ -7,7 +7,7 @@ public class Review implements Serializable {
     private String contents;
     private String id;
     private String stars;
-    private String writerId;
+    private User writer;
 
     public String getOrderId() {
         return orderId;
@@ -41,16 +41,16 @@ public class Review implements Serializable {
         this.stars = stars;
     }
 
-    public String getWriterId() {
-        return writerId;
+    public User getUser() {
+        return writer;
     }
 
-    public void setWriterId(String writerId) {
-        this.writerId = writerId;
+    public void setUser(User writer) {
+        this.writer = writer;
     }
 
     @Override
     public String toString() {
-        return "[orderId = " + orderId + ", contents = " + contents + ", id = " + id + ", stars = " + stars + ", writerId = " + writerId + "]";
+        return "[orderId = " + orderId + ", contents = " + contents + ", id = " + id + ", stars = " + stars + ", writerId = " + writer.toString() + "]";
     }
 }

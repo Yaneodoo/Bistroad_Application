@@ -30,7 +30,7 @@ public interface RetrofitService {
 
     //특정 사용자를 조회합니다.
     @GET("users/{userId}")
-    Call<User> getUser(@Path("userId") String userId);
+    Call<User> getUser(@Header("Authorization") String token, @Path("userId") String userId);
 
     //새로운 사용자를 등록합니다.
     @FormUrlEncoded

@@ -122,7 +122,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                         review.setId(body.get(i).getId());
                         review.setOrderId(body.get(i).getOrderId());
                         review.setStars(body.get(i).getStars());
-                        review.setWriterId(body.get(i).getWriterId());
+                        review.setUser(body.get(i).getUser());
                         reviewList.add(review);
 
                         Log.d("REVIEW", review.toString());
@@ -141,7 +141,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             for (Review review : reviewList) {
-                Call<User> callgetUser = service.getUser("Bearer " + token, review.getWriterId());
+                Call<User> callgetUser = service.getUser("Bearer " + token, review.getUser().getId());
                 new callgetUser().execute(callgetUser);
 
                 try {
