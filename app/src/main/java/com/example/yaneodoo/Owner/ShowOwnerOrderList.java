@@ -54,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerOrderList extends AppCompatActivity {
     private Intent intent;
-    private String token, id;
+    private String token, id, name;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -73,6 +73,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.order_list_view_owner);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+        name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -82,15 +83,15 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        id = intent.getStringExtra("bistroStr");
+        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         token = tk.getString("bistrotk","");
 
-        getOrderList(token, id);//가게의 메뉴 불러오기
+        getOrderList(token, store.getId());//가게의 주문내역 불러오기
+        //TODO : 날짜 최신순
 
-        // TODO : GET /stores/{storeId}/orders로 가게의 주문내역을 모두 아이템에 추가
-        // 날짜 최신순
+        TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
+        titleTxtView.setText(name+" 점주님의\n"+store.getName()+" 주문내역입니다.");
 
-        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -199,7 +200,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 대기",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId());
                             else
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
                             Log.d("menu data", "--------------------------------------");
