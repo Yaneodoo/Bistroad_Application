@@ -63,6 +63,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.bistro_list_view_owner);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+        String ownerId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -73,7 +74,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
         new getUserMe().execute(callgetUserMe);
 
-        final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, owner.getId());
+        final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, ownerId);
         new getStoreList().execute(callgetStoreList);
 
         //가게 선택 리스너

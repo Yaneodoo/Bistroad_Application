@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -21,7 +22,10 @@ import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,11 +130,26 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerShoppingBasket.class);
-                intent.putExtra("userInfo", user);
-                startActivity(intent);
+                if (ReadShoppingBasketData().size() == 0) {
+                    Toast.makeText(getApplicationContext(), "담은 메뉴가 없습니다", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerShoppingBasket.class);
+                    intent.putExtra("userInfo", user);
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    private ArrayList<Menu> ReadShoppingBasketData() {
+        Gson gson = new Gson();
+        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
+        if (json != "EMPTY") {
+            Type type = new TypeToken<ArrayList<Menu>>() {
+            }.getType();
+            ArrayList<Menu> arrayList = gson.fromJson(json, type);
+            return arrayList;
+        } else return new ArrayList<Menu>();
     }
 
     // 주문하기 버튼 클릭 리스너

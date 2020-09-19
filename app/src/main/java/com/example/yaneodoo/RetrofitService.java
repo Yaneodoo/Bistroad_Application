@@ -2,7 +2,6 @@ package com.example.yaneodoo;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
@@ -29,8 +28,10 @@ public interface RetrofitService {
     Call<List<User>> getUserList();
 
     //특정 사용자를 조회합니다.
-    @GET("users/{userId}")
-    Call<User> getUser(@Header("Authorization") String token, @Path("userId") String userId);
+    @GET("users/{id}")
+    Call<User> getUser(@Header("Authorization") String token, @Path("id") String id);
+    //@GET("users/{userId}")
+    //Call<User> getUser(@Header("Authorization") String token, @Path("userId") String userId);
 
     //새로운 사용자를 등록합니다.
     @FormUrlEncoded

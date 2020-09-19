@@ -1,31 +1,39 @@
 package com.example.yaneodoo.Info;
 
-import java.io.Serializable;
-import java.util.List;
-
 public class Request implements Serializable {
-    String amount;
+    private Integer quantity;
+    private Menu menu;
+    private Review review;
+  
+    private String amount;
     private Menu item;
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public Menu getMenu() {
-        return item;
+        return menu;
     }
 
-    public void setMenu(Menu item) {
-        this.item = item;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
-    public String getAmount() {
-        return amount;
+    public Review getReview() {
+        return review;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setReview(Review review) {
+        this.review = review;
     }
 
     @Override
     public String toString() {
-        return "[item = " + item + ", amount = " + amount + "]";
+        return "[quantity = " + quantity + ", menu = " + menu + ", review = " + review + "]";
     }
-
 }

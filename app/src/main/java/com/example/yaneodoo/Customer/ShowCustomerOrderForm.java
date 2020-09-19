@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -64,6 +65,11 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
         menuPriceTxtView.setText(menu.getPrice());
+        TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
+        menuQuantityTxtView.setText("1");
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(menuQuantityTxtView.getText().toString() + "개 담기");
 
         final Store store = getStore(token, menu.getStoreId());
 
@@ -85,6 +91,16 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerOrderForm.this, ShowCustomerMenuList.class);
                 intent.putExtra("userInfo", user);
                 intent.putExtra("bistroInfo", store);
+                ShowCustomerOrderForm.this.finish();
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowCustomerOrderForm.this, MyPageCustomer.class);
                 ShowCustomerOrderForm.this.finish();
                 startActivity(intent);
             }
@@ -120,6 +136,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         if (menuQuantity < 1) menuQuantity = 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(String.valueOf(menuQuantity) + "개 담기");
     }
 
     public void Increment(View view) {
@@ -130,6 +149,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         menuQuantity = Integer.parseInt(quantityString);
         menuQuantity += 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(String.valueOf(menuQuantity) + "개 담기");
     }
 
     private Store getStore(String token, String storeId) {
