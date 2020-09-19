@@ -1,6 +1,7 @@
 package com.example.yaneodoo;
 
 import com.example.yaneodoo.Info.Menu;
+import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 
@@ -64,6 +65,33 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST("stores")
     Call<Store> postStore(@Header("Authorization") String token, @Field("store") Store store);
+
+    //---------------order----------------//
+
+    //get user orders
+    @GET("orders")
+    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
+
+    //get store orders
+    @GET("orders")
+    Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId);
+
+    //get order info
+    @GET("orders/{id}")
+    Call<Order> getOrderInfo(@Header("Authorization") String token, @Path("orderId") String orderId);
+
+    //send order
+    @FormUrlEncoded
+    @POST("orders")
+    Call<Order> postOrder(@Header("Authorization") String token);
+
+    //delete order
+    @DELETE("orders")
+    Call<Order> deleteOrder(@Header("Authorization") String token);
+
+    //edit order
+    @PATCH("orders/{id}")
+    Call<Order> patchOrder(@Header("Authorization") String token, @Path("orderId") String orderId);
 
     //---------------store-items-------------//
     //Search items

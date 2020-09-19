@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LoginConfirmed extends AppCompatActivity {
     private String token;
-    private String loginInfo;
+    private String id;
     private String name;
     private String role;
     private int rc;

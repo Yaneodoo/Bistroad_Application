@@ -40,7 +40,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
+        // ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
         TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
         TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
         TextView scoreTextView=(TextView) convertView.findViewById(R.id.review_score_txtView);
@@ -50,7 +50,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         ReviewListViewItem listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getIconDrawable());
+        // iconImageView.setImageDrawable(listViewItem.getIconDrawable());
         dateTextView.setText(listViewItem.getDateStr());
         writerTextView.setText(listViewItem.getWriterStr());
         scoreTextView.setText(listViewItem.getScoreStr());

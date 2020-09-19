@@ -1,13 +1,8 @@
 package com.example.yaneodoo.REST;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 
 import org.json.JSONObject;
 
@@ -18,19 +13,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
+public class RestGetUser extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String mURL, mToken, name, role, loginInfo, id;
+    protected String mid, mToken, userInfo, name;
     SharedPreferences tk;
     int rc;
 
     // Constructor
-    public RestGetUserInfo(String url, String token, SharedPreferences tk) {
-        mURL = url;
-        mToken = token;
-        this.tk = tk;
+    public RestGetUser(String uid, String token) {
+        mid = uid;
+        mToken=token;
     }
 
     // Background work
@@ -39,7 +31,7 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... params) {
         try {
             // Open the connection
-            URL url = new URL("https://api.bistroad.kr/v1/users/me");
+            URL url = new URL("https://api.bistroad.kr/v1/users/"+mid);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Authorization", "Bearer " + mToken);
@@ -48,16 +40,12 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
-                loginInfo = convertStreamToString(is);
+                userInfo = convertStreamToString(is);
                 //Log.d("POST", loginInfo);
-                JSONObject jsonLogin = new JSONObject(loginInfo);
+                JSONObject jsonLogin = new JSONObject(userInfo);
                 name = jsonLogin.getString("fullName");
-                role = jsonLogin.getString("role");
-                id = jsonLogin.getString("id");
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("fullName", name); //
-                editor.putString("role", role); //
-                editor.putString("id", id);
                 editor.commit();
             }
             else{
@@ -69,7 +57,7 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
             Log.e("REST_API: ", "POST method failed: " + e.getMessage());
             e.printStackTrace();
         }
-        return "";
+        return name;
     }
 
     @Override

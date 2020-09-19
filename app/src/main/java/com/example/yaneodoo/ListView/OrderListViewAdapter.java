@@ -80,7 +80,7 @@ public class OrderListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String customer, String order, String state) {
+    public void addItem(Drawable photo, String date, String customer, String order, String state, String orderId) {
         OrderListViewItem item = new OrderListViewItem();
 
         item.setProgress(photo);
@@ -88,6 +88,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         item.setNameStr(customer);
         item.setOrderStr(order);
         item.setStateStr(state);
+        item.setOrderNum(orderId);
 
         listViewItemList.add(item);
     }

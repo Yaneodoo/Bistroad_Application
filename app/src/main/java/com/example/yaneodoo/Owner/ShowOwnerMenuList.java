@@ -82,7 +82,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerOrderList.class);
-                intent.putExtra("bistroStr", storeId);
+                intent.putExtra("bistroStr", store.getId());
                 startActivity(intent);
             }
         });

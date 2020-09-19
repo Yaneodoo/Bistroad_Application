@@ -27,6 +27,10 @@ public class OrderListViewItem {
         return stateStr;
     }
 
+    public String getOrderNum() {
+        return orderNum;
+    }
+
     public void setProgress(Drawable progress) {
         this.progress = progress;
     }
@@ -45,10 +49,6 @@ public class OrderListViewItem {
 
     public void setStateStr(String stateStr) {
         this.stateStr = stateStr;
-    }
-
-    public String getOrderNum() {
-        return orderNum;
     }
 
     public void setOrderNum(String orderNum) {

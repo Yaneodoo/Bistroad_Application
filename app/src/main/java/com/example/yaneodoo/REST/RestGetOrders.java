@@ -15,39 +15,39 @@ import java.net.URL;
 
 public class RestGetOrders extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String sUrl, orderInfo, orderId;
-    SharedPreferences tk;
+    protected String oUrl, mUid, orderInfo, mToken, mRole;
     int rc;
 
     // Constructor
-    public RestGetOrders(String sId, SharedPreferences tk) {
-        sUrl = "https://api.bistroad.kr/v1/stores/"+sId+"/orders?size=1";
-        this.tk = tk;
+    public RestGetOrders(String uId, String token, String role) {
+        mUid = uId;
+        mToken = token;
+        mRole = role;
     }
 
     // Background work
 
     @Override
     protected String doInBackground(Integer... params) {
+        if(mRole.equals("ROLE_USER")){
+            Log.d("getUserOrder", mRole);
+            oUrl = "https://api.bistroad.kr/v1/orders?userId=" + mUid;}
+        else{
+            Log.d("getOwnerOrder", mRole);
+            oUrl = "https://api.bistroad.kr/v1/orders?storeId=" + mUid;}
+
         try {
             // Open the connection
-            URL url = new URL(sUrl);
+            URL url = new URL(oUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + mToken);
             rc = conn.getResponseCode();
             Log.d("RC", String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
                 orderInfo = convertStreamToString(is);
-                int reqLength = orderInfo.length();
-                if(reqLength == 3)
-                    orderId = "noOrder";
-                else {
-                    orderInfo = orderInfo.substring(1,orderInfo.length()-2);
-                    JSONObject jsonGPS = new JSONObject(orderInfo);
-                    orderId = jsonGPS.getString("id");
-                }
             }
             else{
                 Log.e("GET", "Failed.");
@@ -58,7 +58,7 @@ public class RestGetOrders extends AsyncTask<Integer, Void, String> {
             Log.e("REST_API: ", "POST method failed: " + e.getMessage());
             e.printStackTrace();
         }
-        return "";
+        return orderInfo;
     }
 
     @Override
