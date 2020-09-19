@@ -164,7 +164,9 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                         review.setUser(body.get(i).getUser());
                         reviewList.add(review);
 
-                        Log.d("REVIEW", review.toString());
+                        Log.d("REVIEW", review.getUser().toString());
+
+                        adapter.addItem("2020.09.19", review.getUser().getUsername(), "★" + review.getStars(), review.getContents());
                     }
                     Log.d("review data", "--------------------------------------");
                 } else {
@@ -181,42 +183,8 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            for (Review review : reviewList) {
-                Call<User> callgetUser = service.getUser("Bearer " + token, review.getUser().getId());
-                String name ="";
-                try {
-                    name = new callgetUser().execute(callgetUser).get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
-                adapter.addItem("2020.09.19", name, "★" + review.getStars(), review.getContents());
-            }
-        }
-    }
-
-    private class callgetUser extends AsyncTask<Call, Void, String> {
-        @Override
-        protected String doInBackground(Call[] params) {
-            try {
-                Call<User> call = params[0];
-                Response<User> response = call.execute();
-                User body = response.body();
-                writerName = body.getFullName();
-
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return writerName;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
             listview.setAdapter(adapter);
         }
     }
-
 }

@@ -125,9 +125,13 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                         review.setUser(body.get(i).getUser());
                         reviewList.add(review);
 
-                        Log.d("REVIEW", review.toString());
+                        Log.d("REVIEW", review.getUser().toString());
+
+                        adapter.addItem("2020.09.19", review.getUser().getUsername(), "★" + review.getStars(), review.getContents());
                     }
                     Log.d("review data", "--------------------------------------");
+                } else {
+                    Log.d("REVIEW", "EMPTY");
                 }
 
                 return null;
@@ -140,42 +144,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            for (Review review : reviewList) {
-                Call<User> callgetUser = service.getUser("Bearer " + token, review.getUser().getId());
-                new callgetUser().execute(callgetUser);
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                adapter.addItem("2020.09.19", writerName, "★" + review.getStars(), review.getContents());
-            }
-        }
-    }
-
-    private class callgetUser extends AsyncTask<Call, Void, String> {
-        @Override
-        protected String doInBackground(Call[] params) {
-            try {
-                Call<User> call = params[0];
-                Response<User> response = call.execute();
-                User body = response.body();
-                writerName = body.getFullName();
-
-                Log.d("CALLGETUSER", writerName);
-
-                return null;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
             listview.setAdapter(adapter);
         }
     }

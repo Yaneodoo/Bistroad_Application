@@ -6,8 +6,26 @@ public class Review implements Serializable {
     private String orderId;
     private String contents;
     private String id;
+    private String itemId;
+    private String storeId;
     private String stars;
     private User writer;
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 
     public String getOrderId() {
         return orderId;
