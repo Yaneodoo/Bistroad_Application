@@ -70,15 +70,17 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bistro_delete_dynamic_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bistro_delete_dynamic_area"
+        android:background="#999999"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:background="#FDDFDB"
             android:gravity="center"
@@ -88,6 +90,7 @@
             android:id="@+id/btn_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="#FDDFDB"
             android:gravity="center"

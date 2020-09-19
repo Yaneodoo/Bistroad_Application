@@ -67,8 +67,9 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
+                    android:layout_width="180dp"
                     android:id="@+id/menu_image"
-                    android:layout_width="150dp"
+                    android:paddingRight="5dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
                     android:src="@drawable/tteokbokki" />
@@ -89,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:text="메뉴 이름"
                             android:textColor="#000000"
-                            android:textSize="20dp" />
+                            android:textSize="25dp" />
                     </LinearLayout>
 
                     <TextView
@@ -97,7 +98,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="메뉴 description"
-                        android:textSize="12dp" />
+                        android:textColor="#000000"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/menu_stars_txtView"
@@ -112,14 +114,13 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*">
+                android:stretchColumns="0">
 
                 <TableRow>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
@@ -128,10 +129,11 @@
                     <TextView
                         android:id="@+id/menu_price_txtView"
                         android:layout_width="wrap_content"
+                        android:layout_span="3"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="5000원" />
+                        android:text="메뉴가격"
+                        android:textColor="#000000" />
                 </TableRow>
 
                 <View
@@ -146,7 +148,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
@@ -163,7 +164,10 @@
                         android:id="@+id/menu_quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:gravity="center"
+                        android:textColor="#000000"
                         android:text="1" />
 
                     <Button

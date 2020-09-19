@@ -152,21 +152,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#999999"
         android:orientation="horizontal">
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/btn_delete"
-            android:text="삭제"
-            android:background="#FDDFDB"
-            android:layout_weight="1"/>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_add"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
             android:background="#FDDFDB"
-            android:text="추가"
-            android:layout_weight="1"/>
+            android:gravity="center"
+            android:text="삭제" />
+
+        <Button
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="#FDDFDB"
+            android:gravity="center"
+            android:text="추가" />
     </LinearLayout>
 
 </LinearLayout>
