@@ -46,6 +46,17 @@ public class MyPageOwner extends AppCompatActivity {
             }
         });
 
+        // 홈 버튼 클릭 리스너
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPageOwner.this, ShowOwnerBistroList.class);
+                MyPageOwner.this.finish();
+                startActivity(intent);
+            }
+        });
+
     }
     @Override
     public void onBackPressed() {
