@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
@@ -77,7 +76,7 @@ public class MyPageCustomer extends AppCompatActivity {
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPageCustomer.this, ShowOwnerBistroList.class);
+                Intent intent = new Intent(MyPageCustomer.this, ShowCustomerBistroList.class);
                 MyPageCustomer.this.finish();
                 startActivity(intent);
             }
@@ -117,6 +116,17 @@ public class MyPageCustomer extends AppCompatActivity {
             public void onFailure(Call<List<Order>> call, Throwable t) {
                 t.printStackTrace();
                 Log.d("fail", "======================================");
+            }
+        });
+
+        // 홈 버튼 클릭 리스너
+        TextView btnHome = (TextView) findViewById(R.id.homebtn);
+        btnHome.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPageCustomer.this, ShowCustomerBistroList.class);
+                MyPageCustomer.this.finish();
+                startActivity(intent);
             }
         });
     }
