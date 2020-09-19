@@ -65,6 +65,11 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
         menuPriceTxtView.setText(menu.getPrice());
+        TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
+        menuQuantityTxtView.setText("1");
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(menuQuantityTxtView.getText().toString() + "개 담기");
 
         final Store store = getStore(token, menu.getStoreId());
 
@@ -131,6 +136,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         if (menuQuantity < 1) menuQuantity = 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(String.valueOf(menuQuantity) + "개 담기");
     }
 
     public void Increment(View view) {
@@ -141,6 +149,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         menuQuantity = Integer.parseInt(quantityString);
         menuQuantity += 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
+
+        Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
+        btnPickupBtn.setText(String.valueOf(menuQuantity) + "개 담기");
     }
 
     private Store getStore(String token, String storeId) {
