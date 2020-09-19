@@ -53,14 +53,14 @@
         </LinearLayout>
         // TODO : image slicing, show popup image
 
-        <ImageView
-            android:id="@+id/review_imgView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:scaleType="fitCenter"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:src="@drawable/tteokbokki" />
+<!--        <ImageView-->
+<!--            android:id="@+id/review_imgView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:src="@drawable/tteokbokki" />-->
 
         <TextView
             android:id="@+id/review_score_txtView"
