@@ -69,17 +69,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         intent = getIntent();
         id = intent.getStringExtra("bistroStr");
         token = tk.getString("bistrotk","");
-        role = tk.getString("role", "");
-
-        RestGetOrders restGetOrders = new RestGetOrders(id, token, role);
-        try {
-            orderInfo = restGetOrders.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d("orderInfo", orderInfo);
 
         getOrderList(token, id);//가게의 메뉴 불러오기
 
@@ -169,7 +158,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, "짜장 x 1\n짬뽕 x 2", "접수 대기",order.getId());

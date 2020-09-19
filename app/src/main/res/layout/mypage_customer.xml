@@ -36,7 +36,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:text="김민주 점주님"
+            android:text="김민주 고객님"
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="25dp"/>
@@ -63,39 +63,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="주문 리스트"
-            android:textSize="20dp"/>
-        <ListView
-            android:id="@+id/order_list_view_customer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="10dp"
-            android:choiceMode="multipleChoice"
-            android:divider="#00000000" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bistro_delete_dynamic_area"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_delete"
+            android:textSize="25dp"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"/>
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FDDFDB"
-            android:gravity="center"
-            android:text="삭제" />
-
-        <Button
-            android:id="@+id/btn_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FDDFDB"
-            android:gravity="center"
-            android:text="추가" />
+            android:fillViewport="true">
+            <ListView
+                android:id="@+id/order_list_view_customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dividerHeight="10dp"
+                android:divider="#00000000"
+                android:choiceMode="multipleChoice" />
+        </ScrollView>
     </LinearLayout>
 
 </LinearLayout>
