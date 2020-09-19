@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -85,6 +86,16 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerOrderForm.this, ShowCustomerMenuList.class);
                 intent.putExtra("userInfo", user);
                 intent.putExtra("bistroInfo", store);
+                ShowCustomerOrderForm.this.finish();
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        btnMyPage.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShowCustomerOrderForm.this, MyPageCustomer.class);
                 ShowCustomerOrderForm.this.finish();
                 startActivity(intent);
             }
