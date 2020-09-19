@@ -103,6 +103,19 @@ public class MyPageCustomer extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button btnCustomer = (Button) findViewById(R.id.mypage_logout_button);
+        btnCustomer.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = tk.edit();
+                editor.putString("bId", ""); //
+                editor.commit();
+                Intent intent = new Intent(MyPageCustomer.this, Login.class);
+                startActivity(intent);
+                MyPageCustomer.this.finish();
+            }
+        });
     }
 
     private void getOrderList(final String token, String storeId) {
