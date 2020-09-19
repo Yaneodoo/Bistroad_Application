@@ -144,7 +144,7 @@ public class MyPageCustomer extends AppCompatActivity {
                                 requests += menu + " x " + amount + "\n";
                                 Log.d("requests", requests);
                             }
-                            requests.substring(0,-1);
+                            requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 대기",order.getId());

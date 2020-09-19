@@ -131,7 +131,7 @@ public class GetCurrentGPSService extends Service {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(sName != "noStore" && count > 2) {
+                    if(!sName.equals("noStore") && count > 2) {
                         msg = new Message();
                         msg.obj = sName;
                         handler.sendMessage(msg);

@@ -39,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerOrderList extends AppCompatActivity {
     private Intent intent;
-    private String token, id, role, orderInfo;
+    private String token, id;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -124,6 +124,28 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         }
     }
 
+    private void checkOrder(final String token, String storeId, final SharedPreferences sp){
+        service.getStoreOrder("Bearer " + token, storeId).enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Call<Order> call, Response<Order> response) {
+                if (response.isSuccessful()) {
+                    Order body = response.body();
+                    if (body != null) {
+                        Order order = new Order();
+                        order.setId(body.getId());
+                        sp.getString("orderId", "");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Order> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("fail", "======================================");
+            }
+        });
+    }
+
     private void getOrderList(final String token, String storeId) {
         service.getStoreOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
             @Override
@@ -159,7 +181,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                                 requests += menu + " x " + amount + "\n";
                                 Log.d("requests", requests);
                             }
-                            requests.substring(0,-1);
+                            requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 대기",order.getId());

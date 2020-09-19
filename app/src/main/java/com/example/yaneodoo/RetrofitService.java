@@ -76,6 +76,10 @@ public interface RetrofitService {
     @GET("orders")
     Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId);
 
+    //get store orders
+    @GET("orders?size=1")
+    Call<Order> getStoreOrder(@Header("Authorization") String token, @Query("storeId") String storeId);
+
     //get order info
     @GET("orders/{id}")
     Call<Order> getOrderInfo(@Header("Authorization") String token, @Path("orderId") String orderId);
