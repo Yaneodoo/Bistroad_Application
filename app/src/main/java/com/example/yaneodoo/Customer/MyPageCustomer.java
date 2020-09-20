@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
@@ -92,6 +93,7 @@ public class MyPageCustomer extends AppCompatActivity {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
                 editor.commit();
+                ActivityCompat.finishAffinity(MyPageCustomer.this);
                 Intent intent = new Intent(MyPageCustomer.this, Login.class);
                 startActivity(intent);
                 MyPageCustomer.this.finish();

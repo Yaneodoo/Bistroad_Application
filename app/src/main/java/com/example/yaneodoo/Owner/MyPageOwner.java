@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.example.yaneodoo.Customer.MyPageCustomer;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
@@ -40,6 +42,7 @@ public class MyPageOwner extends AppCompatActivity {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
                 editor.commit();
+                ActivityCompat.finishAffinity(MyPageOwner.this);
                 Intent intent = new Intent(MyPageOwner.this, Login.class);
                 startActivity(intent);
                 MyPageOwner.this.finish();
