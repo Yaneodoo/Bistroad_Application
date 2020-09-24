@@ -10,6 +10,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -65,12 +66,10 @@ public interface RetrofitService {
     Call<Store> getStore(@Header("Authorization") String token, @Path("id") String storeId);
 
     //Create a store
-    @FormUrlEncoded
     @POST("stores")
-    Call<Store> postStore(@Header("Authorization") String token, @Field("store") Store store);
+    Call<Store> postStore(@Header("Authorization") String token, @Body Store store);
 
     //---------------order----------------//
-
     //get user orders
     @GET("orders")
     Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
@@ -124,5 +123,4 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST("orders")
     Call<Order> postOrder(@Header("Authorization") String token, @Field("order") Order order);
-
 }

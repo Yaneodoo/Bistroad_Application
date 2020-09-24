@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -31,7 +32,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.ShowCustomerMenuInfo;
 import com.example.yaneodoo.Info.Location;
+import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.PhImageCapture;
@@ -48,8 +51,11 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +70,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     private ImageView upload_btn;
     private PhImageCapture mCamera;
 
-    private String ownerId;
     private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -149,15 +154,30 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
                 Drawable uploadedImg = imgBtn.getDrawable();
                 String name = nameEditTxt.getText().toString();
-                String tel = telEditTxt.getText().toString();
+                String phone = telEditTxt.getText().toString();
                 String desc = descEditTxt.getText().toString();
 
                 //store.setPhotoUri(photo);
                 // TODO : 지도에서 값 가져오기
 
-                // TODO : POST /stores로 생성한 bistro등록
-                getUserMe(token);
-                postStore(token, new Store(desc, new Location("12", "12"), name, ownerId, tel));
+                if(store==null){
+                    Store nStore=new Store();
+                    nStore.setOwnerId(owner.getId());
+                    nStore.setName(name);
+                    nStore.setDescription(desc);
+                    nStore.setLocation(new Location("12", "12"));
+                    nStore.setPhone(phone);
+
+                    Log.d("NSTORE",nStore.toString());
+                    Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
+                    try {
+                        new callpostStore().execute(callpostStore).get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                 RegisterBistro.this.finish();
@@ -212,49 +232,42 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-    private void getUserMe(String token) {
-        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User body = response.body();
-                    if (body != null) {
-                        ownerId = body.getId();
-                        Log.d("user.getId()", body.getId());
-                    }
+    private class callpostStore extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Store> call = params[0];
+                Response<Store> response = call.execute();
+                Store body = response.body();
+
+                if (body != null) {
+                    Store store = new Store();
+                    store.setDescription(body.getDescription());
+                    store.setId(body.getId());
+                    store.setLocation(body.getLocation());
+                    store.setName(body.getName());
+                    store.setOwnerId(body.getOwnerId());
+                    store.setPhone(body.getPhone());
+                    //store.setPhotoUri(body.get(i).getPhotoUri());
+
+                    Log.d("NEW STORE", store.toString());
+                    Log.d("postStore end", "======================================");
+                } else {
+                int statusCode  = response.code();
+                Log.d("CODE",Integer.toString(statusCode));
                 }
-            }
+                return null;
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                t.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-    }
+            return null;
+        }
 
-    private void postStore(String token, Store store) {
-        service.postStore("Bearer " + token, store).enqueue(new Callback<Store>() {
-            @Override
-            public void onResponse(Call<Store> call, Response<Store> response) {
-                if (response.isSuccessful()) {
-                    Store body = response.body();
-                    if (body != null) {
-                        Log.d("data.getId()", body.getId());
-                        Log.d("data.getOwnerId()", body.getOwnerId());
-                        Log.d("data.getName()", body.getName());
-                        Log.d("data.getPhone()", body.getPhone());
-                        Log.d("data.getDescription()", body.getDescription());
-                        Log.d("data.getLocation()", body.getLocation().getLat() + body.getLocation().getLng());
-                        Log.d("postStore end", "======================================");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Store> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+        }
     }
 
     @Override
