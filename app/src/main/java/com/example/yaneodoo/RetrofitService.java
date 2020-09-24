@@ -69,6 +69,9 @@ public interface RetrofitService {
     @POST("stores")
     Call<Store> postStore(@Header("Authorization") String token, @Body Store store);
 
+    @PATCH("stores/{id}")
+    Call<Store> patchStore(@Header("Authorization") String token, @Body Store store, @Path("id") String storeId);
+
     //---------------order----------------//
     //get user orders
     @GET("orders")

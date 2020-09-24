@@ -92,6 +92,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     store.setName(storeList.get(position).getName());
                     store.setLocation(storeList.get(position).getLocation());
                     store.setDescription(storeList.get(position).getDescription());
+                    store.setPhone(storeList.get(position).getPhone());
                     //store.setPhotoUri(storeList.get(position).getPhotoUri());
 
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);

@@ -147,20 +147,21 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
+                //ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
                 EditText nameEditTxt = (EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt = (EditText) findViewById(R.id.bistro_tel_txtView);
                 EditText descEditTxt = (EditText) findViewById(R.id.bistro_desc_txtView);
 
-                Drawable uploadedImg = imgBtn.getDrawable();
-                String name = nameEditTxt.getText().toString();
-                String phone = telEditTxt.getText().toString();
-                String desc = descEditTxt.getText().toString();
+                if(nameEditTxt.getText().toString().equals("") || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
+                    Toast.makeText(getApplicationContext(), "항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                else{
+                    //Drawable uploadedImg = imgBtn.getDrawable();
+                    String name = nameEditTxt.getText().toString();
+                    String phone = telEditTxt.getText().toString();
+                    String desc = descEditTxt.getText().toString();
+                    //store.setPhotoUri(photo);
+                    // TODO : 지도에서 값 가져오기
 
-                //store.setPhotoUri(photo);
-                // TODO : 지도에서 값 가져오기
-
-                if(store==null){
                     Store nStore=new Store();
                     nStore.setOwnerId(owner.getId());
                     nStore.setName(name);
@@ -168,20 +169,32 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     nStore.setLocation(new Location("12", "12"));
                     nStore.setPhone(phone);
 
-                    Log.d("NSTORE",nStore.toString());
-                    Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
-                    try {
-                        new callpostStore().execute(callpostStore).get();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if(store==null){ //새로운 가게 등록
+                        Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
+                        try {
+                            new callpostStore().execute(callpostStore).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
+                    else{ //존재하는 가게 수정
+                        Call<Store> callpatchStore = service.patchStore("Bearer " + token, nStore, store.getId());
+                        try {
+                            new callpatchStore().execute(callpatchStore).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
-                RegisterBistro.this.finish();
-                startActivity(intent);
+
+                    Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
+                    RegisterBistro.this.finish();
+                    startActivity(intent);
+                }
             }
         });
 
@@ -255,6 +268,44 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 } else {
                 int statusCode  = response.code();
                 Log.d("CODE",Integer.toString(statusCode));
+                }
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+        }
+    }
+
+    private class callpatchStore extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Store> call = params[0];
+                Response<Store> response = call.execute();
+                Store body = response.body();
+
+                if (body != null) {
+                    Store store = new Store();
+                    store.setDescription(body.getDescription());
+                    store.setId(body.getId());
+                    store.setLocation(body.getLocation());
+                    store.setName(body.getName());
+                    store.setOwnerId(body.getOwnerId());
+                    store.setPhone(body.getPhone());
+                    //store.setPhotoUri(body.get(i).getPhotoUri());
+
+                    Log.d("PATCH STORE", store.toString());
+                    Log.d("patchStore end", "======================================");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("CODE",Integer.toString(statusCode));
                 }
                 return null;
 
