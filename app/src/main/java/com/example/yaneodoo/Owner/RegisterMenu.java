@@ -113,6 +113,14 @@ public class RegisterMenu extends AppCompatActivity {
                         }
                     }
                     else{ //기존 메뉴 수정
+                        Call<Menu> callpatchMenu = service.patchMenu("Bearer " + token, nMenu, store.getId(), menu.getId());
+                        try {
+                            new patchMenu().execute(callpatchMenu).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -186,14 +194,6 @@ public class RegisterMenu extends AppCompatActivity {
                 Menu body = response.body();
                 Log.d("MENU", body.toString());
 
-/*                Menu menu = new Menu();
-                menu.setDescription(body.getDescription());
-                menu.setId(body.getId());
-                menu.setName(body.getName());
-                //store.setPhotoUri(body.getPhotoUri());
-                menu.setPrice(body.getPrice());
-                menu.setStoreId(body.getStoreId());*/
-
                 return null;
 
             } catch (IOException e) {
@@ -207,4 +207,25 @@ public class RegisterMenu extends AppCompatActivity {
         }
     }
 
+    private class patchMenu extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Menu> call = params[0];
+                Response<Menu> response = call.execute();
+                Menu body = response.body();
+                Log.d("MENU", body.toString());
+
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+    }
 }

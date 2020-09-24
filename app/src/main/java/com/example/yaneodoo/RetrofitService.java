@@ -92,6 +92,10 @@ public interface RetrofitService {
     @POST("stores/{storeId}/items")
     Call<Menu> postMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId);
 
+    //Update an item partially
+    @PATCH("stores/{storeId}/items/{id}")
+    Call<Menu> patchMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId, @Path("id") String id);
+
     //--------------store-items-review------------//
     //Search reviews
     @GET("reviews")
