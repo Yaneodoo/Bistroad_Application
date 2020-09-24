@@ -90,7 +90,7 @@ public interface RetrofitService {
 
     //Create an item
     @POST("stores/{storeId}/items")
-    Call<Store> postStore(@Header("Authorization") String token, @Path("storeId") String storeId, @Field("menu") Menu menu);
+    Call<Menu> postMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId);
 
     //--------------store-items-review------------//
     //Search reviews

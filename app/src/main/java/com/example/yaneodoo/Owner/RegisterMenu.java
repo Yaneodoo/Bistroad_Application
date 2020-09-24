@@ -24,6 +24,7 @@ import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -65,21 +66,16 @@ public class RegisterMenu extends AppCompatActivity {
         TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
         ownerNameTxtView.setText(owner.getFullName() + " 점주님");
 
-        if (store != null) {
-            TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
-            bistroNameTxtView.setText(store.getName());
-            TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-            bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
-        } else {
-            Call<Store> callgetStore = service.getStore("Bearer " + token, menu.getStoreId());
-            new getStore().execute(callgetStore);
-        }
+        TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
+        bistroNameTxtView.setText(store.getName());
+        TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
+        bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
 
         if (menu != null) {
             EditText menuNameTxtView = (EditText) findViewById(R.id.menu_name_txtView);
             menuNameTxtView.setText(menu.getName());
             EditText menuPriceTxtView = (EditText) findViewById(R.id.menu_price_txtView);
-            menuPriceTxtView.setText(menu.getPrice());
+            menuPriceTxtView.setText(menu.getPrice().substring(0,store.getName().length()-1));
             EditText meuDescTxtView = (EditText) findViewById(R.id.menu_desc_txtView);
             meuDescTxtView.setText(menu.getDescription());
         }
@@ -89,11 +85,40 @@ public class RegisterMenu extends AppCompatActivity {
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 이미 있는 품목이면 수정, 없는 품목이면 등록
-                // PUT /stores/{storeId}/items/{itemId}
-                // POST /stores/{storeId}/items
+                EditText nameEditTxt = (EditText) findViewById(R.id.menu_name_txtView);
+                EditText priceEditTxt = (EditText) findViewById(R.id.menu_price_txtView);
+                EditText descEditTxt = (EditText) findViewById(R.id.menu_desc_txtView);
+
+                if(nameEditTxt.getText().toString().equals("") || priceEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
+                    Toast.makeText(getApplicationContext(), "항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                else {
+                    //Drawable uploadedImg = imgBtn.getDrawable();
+                    String name = nameEditTxt.getText().toString();
+                    String price = priceEditTxt.getText().toString();
+                    String desc = descEditTxt.getText().toString();
+
+                    Menu nMenu=new Menu();
+                    nMenu.setDescription(desc);
+                    nMenu.setName(name);
+                    nMenu.setPrice(price);
+
+                    if (menu == null) { //새로운 메뉴 등록
+                        Call<Menu> callpostMenu = service.postMenu("Bearer " + token, nMenu, store.getId());
+                        try {
+                            new postMenu().execute(callpostMenu).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{ //기존 메뉴 수정
+                    }
+                }
 
                 Intent intent = new Intent(RegisterMenu.this, ShowOwnerMenuList.class);
+                intent.putExtra("ownerInfo", owner);
+                intent.putExtra("bistroInfo", store);
                 RegisterMenu.this.finish();
                 startActivity(intent);
             }
@@ -152,22 +177,23 @@ public class RegisterMenu extends AppCompatActivity {
         }
     }
 
-    private class getStore extends AsyncTask<Call, Void, String> {
+    private class postMenu extends AsyncTask<Call, Void, String> {
         @Override
         protected String doInBackground(Call[] params) {
             try {
-                Call<Store> call = params[0];
-                Response<Store> response = call.execute();
-                Store body = response.body();
-                Log.d("STORE", body.toString());
+                Call<Menu> call = params[0];
+                Response<Menu> response = call.execute();
+                Menu body = response.body();
+                Log.d("MENU", body.toString());
 
-                store.setName(body.getName());
-                store.setLocation(body.getLocation());
-                store.setDescription(body.getDescription());
-                store.setId(body.getId());
-                store.setOwnerId(body.getOwnerId());
-                store.setPhone(body.getPhone());
-                //store.setPhotoUri(body.get(i).getPhotoUri());
+/*                Menu menu = new Menu();
+                menu.setDescription(body.getDescription());
+                menu.setId(body.getId());
+                menu.setName(body.getName());
+                //store.setPhotoUri(body.getPhotoUri());
+                menu.setPrice(body.getPrice());
+                menu.setStoreId(body.getStoreId());*/
+
                 return null;
 
             } catch (IOException e) {
@@ -178,10 +204,7 @@ public class RegisterMenu extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
-            bistroNameTxtView.setText(store.getName());
-            TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-            bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
         }
     }
+
 }

@@ -65,6 +65,20 @@
             android:text="서울 강남구 남부순환로 2942"
             android:textSize="20dp"/>
 
+        <TextView
+            android:paddingTop="10dp"
+            android:id="@+id/menu_exist_txtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="메뉴 등록"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="대표 이미지"
+            android:textSize="20dp"/>
+
         <ImageView
             android:id="@+id/upload_btn"
             android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
@@ -60,6 +61,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         intent = getIntent();
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
+        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
 
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
@@ -83,6 +85,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
                 intent.putExtra("menuInfo", menu);
                 intent.putExtra("ownerInfo", owner);
+                intent.putExtra("bistroInfo", store);
                 startActivity(intent);
             }
         });

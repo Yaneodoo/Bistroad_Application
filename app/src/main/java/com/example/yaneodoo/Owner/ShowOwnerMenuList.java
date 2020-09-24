@@ -106,6 +106,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
                 Log.d("menu", menu.toString());
                 Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
+                intent.putExtra("bistroInfo", store);
                 intent.putExtra("menuInfo", menu);
                 intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
