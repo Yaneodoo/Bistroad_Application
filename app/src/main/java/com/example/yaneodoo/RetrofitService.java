@@ -24,29 +24,6 @@ import retrofit2.http.Query;
 public interface RetrofitService {
 
     //---------------user----------------//
-    //사용자 목록을 조회합니다.
-    @GET("users")
-    Call<List<User>> getUserList();
-
-    //특정 사용자를 조회합니다.
-    @GET("users/{id}")
-    Call<User> getUser(@Header("Authorization") String token, @Path("id") String id);
-    //@GET("users/{userId}")
-    //Call<User> getUser(@Header("Authorization") String token, @Path("userId") String userId);
-
-    //새로운 사용자를 등록합니다.
-    @FormUrlEncoded
-    @POST("users")
-    Call<User> postUser(@Field("user") User user);
-
-    //사용자 정보를 일부 수정합니다.
-    @PATCH("users/{userId}")
-    Call<User> patchUser(@Path("userId") String userId);
-
-    //사용자 계정을 삭제합니다.
-    @DELETE("users/{userId}")
-    Call<ResponseBody> deleteUser();
-
     //Get an user profile from given token
     @GET("users/me")
     Call<User> getUserMe(@Header("Authorization") String token);
@@ -69,8 +46,13 @@ public interface RetrofitService {
     @POST("stores")
     Call<Store> postStore(@Header("Authorization") String token, @Body Store store);
 
+    //Update or create a store
     @PATCH("stores/{id}")
     Call<Store> patchStore(@Header("Authorization") String token, @Body Store store, @Path("id") String storeId);
+
+    //Delete a store
+    @DELETE("stores/{id}")
+    Call<Void> deleteStore(@Header("Authorization") String token, @Path("id") String storeId);
 
     //---------------order----------------//
     //get user orders
@@ -90,7 +72,6 @@ public interface RetrofitService {
     Call<Order> getOrderInfo(@Header("Authorization") String token, @Path("orderId") String orderId);
 
     //send order
-    @FormUrlEncoded
     @POST("orders")
     Call<Order> postOrder(@Header("Authorization") String token);
 
@@ -108,7 +89,6 @@ public interface RetrofitService {
     Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId);
 
     //Create an item
-    @FormUrlEncoded
     @POST("stores/{storeId}/items")
     Call<Store> postStore(@Header("Authorization") String token, @Path("storeId") String storeId, @Field("menu") Menu menu);
 
@@ -116,14 +96,4 @@ public interface RetrofitService {
     //Search reviews
     @GET("reviews")
     Call<List<Review>> getReviewList(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("itemId") String itemId);
-
-    //----------------order------------------//
-    //Search orders
-    @GET("orders")
-    Call<List<Order>> getOrderList(@Header("Authorization") String token, @Query("storeId") String storeId);
-
-    //Create an order
-    @FormUrlEncoded
-    @POST("orders")
-    Call<Order> postOrder(@Header("Authorization") String token, @Field("order") Order order);
 }
