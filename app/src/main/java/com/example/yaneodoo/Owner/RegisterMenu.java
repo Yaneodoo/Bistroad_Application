@@ -75,7 +75,7 @@ public class RegisterMenu extends AppCompatActivity {
             EditText menuNameTxtView = (EditText) findViewById(R.id.menu_name_txtView);
             menuNameTxtView.setText(menu.getName());
             EditText menuPriceTxtView = (EditText) findViewById(R.id.menu_price_txtView);
-            menuPriceTxtView.setText(menu.getPrice().substring(0,store.getName().length()-1));
+            menuPriceTxtView.setText(menu.getPrice().substring(0,menu.getPrice().length()-1));
             EditText meuDescTxtView = (EditText) findViewById(R.id.menu_desc_txtView);
             meuDescTxtView.setText(menu.getDescription());
         }

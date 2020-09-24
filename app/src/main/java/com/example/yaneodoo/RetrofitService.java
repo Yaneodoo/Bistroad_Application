@@ -96,6 +96,10 @@ public interface RetrofitService {
     @PATCH("stores/{storeId}/items/{id}")
     Call<Menu> patchMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId, @Path("id") String id);
 
+    //Delete an item
+    @DELETE("stores/{storeId}/items/{id}")
+    Call<Void> deleteMenu(@Header("Authorization") String token, @Path("storeId") String storeId, @Path("id") String id);
+
     //--------------store-items-review------------//
     //Search reviews
     @GET("reviews")

@@ -1,8 +1,11 @@
 package com.example.yaneodoo.Owner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,7 +13,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -22,8 +27,10 @@ import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,10 +39,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerMenuList extends AppCompatActivity {
+    boolean onChoice = false;
     private Intent intent;
 
     private String storeId;
     private String token, ownerName;
+    private Store store;
+
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -44,6 +54,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
     private ListView listview;
 
     private List<Menu> menuList = new ArrayList<>();
+
+    private SparseBooleanArray checkedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +73,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+        store = (Store) intent.getSerializableExtra("bistroInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
         TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
@@ -92,29 +104,32 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
-                Menu menu = new Menu();
-                menu.setStoreId(menuList.get(position).getStoreId());
-                menu.setId(menuList.get(position).getId());
-                menu.setName(menuList.get(position).getName());
-                menu.setDescription(menuList.get(position).getDescription());
-                menu.setPrice(menuList.get(position).getPrice());
-                menu.setStars(menuList.get(position).getStars());
-                //menu.setPhotoUri(menuList.get(position).getPhotoUri());
-                //menu.set..(menuList.get(position).getOrderedCnt());
+                if (onChoice) {
+                    v.setBackgroundColor(R.id.dark);
+                } else {
+                    // get item
+                    Menu menu = new Menu();
+                    menu.setStoreId(menuList.get(position).getStoreId());
+                    menu.setId(menuList.get(position).getId());
+                    menu.setName(menuList.get(position).getName());
+                    menu.setDescription(menuList.get(position).getDescription());
+                    menu.setPrice(menuList.get(position).getPrice());
+                    menu.setStars(menuList.get(position).getStars());
+                    //menu.setPhotoUri(menuList.get(position).getPhotoUri());
+                    //menu.set..(menuList.get(position).getOrderedCnt());
 
-                Log.d("menu", menu.toString());
-                Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
-                intent.putExtra("bistroInfo", store);
-                intent.putExtra("menuInfo", menu);
-                intent.putExtra("ownerInfo", owner);
-                startActivity(intent);
+                    Log.d("menu", menu.toString());
+                    Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
+                    intent.putExtra("bistroInfo", store);
+                    intent.putExtra("menuInfo", menu);
+                    intent.putExtra("ownerInfo", owner);
+                    startActivity(intent);
+                }
             }
         });
 
         // 수정 버튼 클릭 리스너
-        Button editbtn = (Button) findViewById(R.id.btn_edit) ;
+        Button editbtn = (Button) findViewById(R.id.btn_edit);
         editbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +165,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (delbtn.getText().toString() == "삭제") {
+                    onChoice = true;
                     delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     delbtn.setTextSize(14);
                     delbtn.setText("확인");
@@ -157,12 +173,19 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                     addbtn.setTextSize(14);
                     addbtn.setText("");
                 } else {
-                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+/*                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                     delbtn.setTextSize(14);
                     delbtn.setText("삭제");
                     Button addbtn = (Button) findViewById(R.id.btn_add);
                     addbtn.setTextSize(14);
-                    addbtn.setText("추가");
+                    addbtn.setText("추가");*/
+                    checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
+                    if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
+                    else {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -186,6 +209,46 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("삭제 확인");
+        builder.setMessage("선택한 항목(들)을 삭제합니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //다중 삭제 처리 동작
+                        int count = adapter.getCount();
+                        for (int i = count - 1; i >= 0; i--) {
+                            if (checkedItems.get(i)) { //i position의 상태가 Checked이면
+                                Call<Void> calldeleteMenu = service.deleteMenu("Bearer " + token, store.getId(), menuList.get(i).getId());
+                                try {
+                                    new deleteMenu().execute(calldeleteMenu).get();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        Toast.makeText(getApplicationContext(), "삭제 완료.", Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "삭제 취소.", Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
     }
 
     private void getMenuList(String token, String storeId) {
@@ -221,5 +284,28 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
+    }
+
+    private class deleteMenu extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Void> call = params[0];
+                Response<Void> response = call.execute();
+                Void body = response.body();
+
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }
