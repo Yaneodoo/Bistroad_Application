@@ -2,6 +2,7 @@ package com.example.yaneodoo.Owner;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.BackPressedForFinish;
+import com.example.yaneodoo.GetRealtimeOrderService;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
@@ -43,7 +45,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     private BackPressedForFinish backPressedForFinish;
 
     private User owner = new User();
-    //private String ownerId, ownerName;
     private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -64,7 +65,9 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         String ownerId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
-
+        SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+        editor.putString("storeId", "");
+        editor.commit();
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -97,6 +100,14 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
                     intent.putExtra("ownerInfo", owner);
                     intent.putExtra("bistroInfo", store);
+
+                    SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+                    editor.putString("storeId", store.getId()); //
+                    editor.commit();
+
+                    Intent orderIntent = new Intent(getApplicationContext(), GetRealtimeOrderService.class);
+                    startService(orderIntent);
+
                     startActivity(intent);
                 }
             }

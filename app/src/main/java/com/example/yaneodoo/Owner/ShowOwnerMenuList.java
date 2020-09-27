@@ -1,6 +1,7 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.GetRealtimeOrderService;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
@@ -75,7 +77,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         bistroDescTxtView.setText(store.getDescription());
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
-
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist);
         btn_orderlist.setOnClickListener(new Button.OnClickListener() {

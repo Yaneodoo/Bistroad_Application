@@ -40,7 +40,8 @@ public class MyPageOwner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = tk.edit();
-                editor.putString("bId", ""); //
+                editor.putString("storeId", ""); //
+                editor.putString("bId","");
                 editor.commit();
                 ActivityCompat.finishAffinity(MyPageOwner.this);
                 Intent intent = new Intent(MyPageOwner.this, Login.class);

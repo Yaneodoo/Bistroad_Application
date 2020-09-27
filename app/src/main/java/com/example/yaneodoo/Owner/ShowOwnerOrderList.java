@@ -1,7 +1,6 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,21 +15,12 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.Info.User;
-import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
-import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.Info.Request;
 import com.example.yaneodoo.Info.Store;
-import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.RestGetOrders;
 import com.example.yaneodoo.REST.RestGetUser;
 import com.example.yaneodoo.RetrofitService;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +28,6 @@ import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.yaneodoo.RetrofitService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -86,11 +66,18 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         token = tk.getString("bistrotk","");
 
-        getOrderList(token, store.getId());//가게의 주문내역 불러오기
+        SharedPreferences.Editor editor = tk.edit();
+        editor.putString("storeId", store.getId()); //
+        editor.commit();
+
+        getOrderList(token, store.getId(), tk);//가게의 주문내역 불러오기
         //TODO : 날짜 최신순
 
         TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
         titleTxtView.setText(name+" 점주님의\n"+store.getName()+" 주문내역입니다.");
+
+//        Intent orderIntent = new Intent(ShowOwnerOrderList.this, GetRealtimeOrders.class);
+//        startService(orderIntent);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -139,30 +126,30 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             orderState.setText("접수중");
         }
     }
+//
+//    private void checkOrder(final String token, String storeId, final SharedPreferences sp){
+//        service.getStoreOrder("Bearer " + token, storeId).enqueue(new Callback<Order>() {
+//            @Override
+//            public void onResponse(Call<Order> call, Response<Order> response) {
+//                if (response.isSuccessful()) {
+//                    Order body = response.body();
+//                    if (body != null) {
+//                        Order order = new Order();
+//                        order.setId(body.getId());
+//                        sp.getString("orderId", "");
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Order> call, Throwable t) {
+//                t.printStackTrace();
+//                Log.d("fail", "======================================");
+//            }
+//        });
+//    }
 
-    private void checkOrder(final String token, String storeId, final SharedPreferences sp){
-        service.getStoreOrder("Bearer " + token, storeId).enqueue(new Callback<Order>() {
-            @Override
-            public void onResponse(Call<Order> call, Response<Order> response) {
-                if (response.isSuccessful()) {
-                    Order body = response.body();
-                    if (body != null) {
-                        Order order = new Order();
-                        order.setId(body.getId());
-                        sp.getString("orderId", "");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Order> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("fail", "======================================");
-            }
-        });
-    }
-
-    private void getOrderList(final String token, String storeId) {
+    public void getOrderList(final String token, String storeId, final SharedPreferences sp) {
         service.getStoreOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
@@ -187,6 +174,9 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("orderId", order.getId()); //
+                            editor.commit();
 
                             String requests = "";
                             String amount = "";

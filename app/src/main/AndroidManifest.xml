@@ -32,6 +32,10 @@
             android:name=".GetCurrentGPSService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".GetRealtimeOrderService"
+            android:enabled="true"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
