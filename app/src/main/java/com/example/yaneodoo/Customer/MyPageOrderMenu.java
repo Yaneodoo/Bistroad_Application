@@ -66,6 +66,7 @@ public class MyPageOrderMenu extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
+                Log.d("clicked", "clicked!!!!!!!!!!!!!!!!");
                 // get item
                 OrderListViewItem order = (OrderListViewItem) parent.getItemAtPosition(position);
                 Order listOrder = new Order();
@@ -75,7 +76,7 @@ public class MyPageOrderMenu extends AppCompatActivity {
                 listOrder.setUserId(orderList.get(position).getUserId());
 
                 Log.d("listOrder", listOrder.toString());
-                Intent intent = new Intent(MyPageOrderMenu.this, MyPageLeaveReview.class);
+                Intent intent = new Intent(MyPageOrderMenu.this, MyPageCustomer.class);
                 intent.putExtra("menuInfo", listOrder);
                 startActivity(intent);
             }

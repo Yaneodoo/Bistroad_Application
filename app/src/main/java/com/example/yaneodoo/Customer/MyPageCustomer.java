@@ -127,6 +127,7 @@ public class MyPageCustomer extends AppCompatActivity {
                             order.setDate(body.get(i).getDate());
                             order.setUserId(body.get(i).getUserId());
                             order.setRequest(body.get(i).getRequests());
+                            order.setStoreId(body.get(i).getStoreId());
                             orderList.add(order);
 
                             String requests = "";
