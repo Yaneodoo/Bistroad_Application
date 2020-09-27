@@ -1,6 +1,8 @@
 package com.example.yaneodoo.Customer;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -141,29 +144,68 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Menu> ReadShoppingBasketData() {
-        Gson gson = new Gson();
-        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
-        if (json != "EMPTY") {
-            Type type = new TypeToken<ArrayList<Menu>>() {
-            }.getType();
-            ArrayList<Menu> arrayList = gson.fromJson(json, type);
-            return arrayList;
-        } else return new ArrayList<Menu>();
-    }
-
-    // 주문하기 버튼 클릭 리스너
+    //주문하기 버튼 클릭 리스너
     public void orderMenu(View v) {
         LinearLayout parentRow = (LinearLayout) v.getParent().getParent().getParent();
         Integer position = Integer.parseInt((String) parentRow.getTag());
 
-        Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
-        intent.putExtra("userInfo", user);
-        intent.putExtra("menuInfo", menuList.get(position));
+        List<Menu> selectedMenu = ReadShoppingBasketData();
+        if(selectedMenu.size()==0){
+            Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+            intent.putExtra("userInfo", user);
+            intent.putExtra("menuInfo", menuList.get(position));
 
-        ShowCustomerMenuList.this.finish();
-        startActivity(intent);
+            ShowCustomerMenuList.this.finish();
+            startActivity(intent);
+        }else{
+            if(!(selectedMenu.get(0).getStoreId().equals(menuList.get(position).getStoreId()))) { // 다른 가게의 메뉴
+                Log.d("다른 가게의 메뉴 고름",selectedMenu.get(0).getStoreId().toString()+"      "+menuList.get(position).getStoreId().toString());
+                showAlertDialog(menuList.get(position)); //장바구니 비우고 담기 확인 Alertdialog
+            }else{
+                for(Menu m: selectedMenu){
+                    if(m.getId().equals(menuList.get(position).getId())){ //이미 담은 메뉴
+                        Log.d("장바구니에 있는 메뉴임"," ");
+                        Toast.makeText(getApplicationContext(), "이미 장바구니에 있는 메뉴입니다.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+                        intent.putExtra("userInfo", user);
+                        intent.putExtra("menuInfo", menuList.get(position));
+                        intent.putExtra("menuQuantity",m.getQuantity().toString());
+
+                        ShowCustomerMenuList.this.finish();
+                        startActivity(intent);
+                    }
+                }
+            }
+        }
     }
+
+    void showAlertDialog(final Menu menu) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //builder.setTitle("삭제 확인");
+        builder.setMessage("다른 가게의 메뉴가 이미 담겨있습니다. 장바구니를 비우고 현재 선택한 메뉴를 담겠습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SaveShoppingBasketData(new ArrayList<Menu>()); // 장바구니 비우기
+
+                        Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+                        intent.putExtra("userInfo", user);
+                        intent.putExtra("menuInfo", menu);
+
+                        ShowCustomerMenuList.this.finish();
+                        startActivity(intent);
+
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.show();
+    }
+
 
     private void getMenuList(String token, String storeId) {
         service.getMenuList("Bearer " + token, storeId).enqueue(new Callback<List<Menu>>() {
@@ -198,5 +240,24 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
+    }
+
+    private ArrayList<Menu> ReadShoppingBasketData() {
+        Gson gson = new Gson();
+        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
+        if (json != "EMPTY") {
+            Type type = new TypeToken<ArrayList<Menu>>() {
+            }.getType();
+            ArrayList<Menu> arrayList = gson.fromJson(json, type);
+            return arrayList;
+        } else return new ArrayList<Menu>();
+    }
+
+    private void SaveShoppingBasketData(ArrayList<Menu> selectedMenu) {
+        SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(selectedMenu);
+        editor.putString("SelectedMenu", json);
+        editor.commit();
     }
 }

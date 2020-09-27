@@ -184,6 +184,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
     // 더담으러가기 텍스트뷰 클릭 리스너
     public void backToMenuList(View v) {
+        SaveShoppingBasketData(selectedMenu);
         Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerMenuList.class);
         intent.putExtra("userInfo", user);
         intent.putExtra("bistroInfo", store);
