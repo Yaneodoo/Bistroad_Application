@@ -79,7 +79,7 @@ public class MyPageCustomer extends AppCompatActivity {
                 listOrder.setUserId(orderList.get(position).getUserId());
 
                 Log.d("listOrder", listOrder.toString());
-                Intent intent = new Intent(MyPageCustomer.this, MyPageOrderMenu.class);
+                Intent intent = new Intent(MyPageCustomer.this, MyPageLeaveReview.class);
                 intent.putExtra("menuInfo", listOrder);
                 startActivity(intent);
             }
