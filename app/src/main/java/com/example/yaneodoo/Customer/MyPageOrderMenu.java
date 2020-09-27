@@ -14,14 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.ListView.OrderListViewItem;
 import com.example.yaneodoo.Login;
-import com.example.yaneodoo.Owner.ShowOwnerMenuInfo;
-import com.example.yaneodoo.Owner.ShowOwnerMenuList;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
@@ -34,7 +30,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MyPageCustomer extends AppCompatActivity {
+public class MyPageOrderMenu extends AppCompatActivity {
     private String token, id, name;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -79,7 +75,7 @@ public class MyPageCustomer extends AppCompatActivity {
                 listOrder.setUserId(orderList.get(position).getUserId());
 
                 Log.d("listOrder", listOrder.toString());
-                Intent intent = new Intent(MyPageCustomer.this, MyPageOrderMenu.class);
+                Intent intent = new Intent(MyPageOrderMenu.this, MyPageLeaveReview.class);
                 intent.putExtra("menuInfo", listOrder);
                 startActivity(intent);
             }
@@ -90,8 +86,8 @@ public class MyPageCustomer extends AppCompatActivity {
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPageCustomer.this, ShowCustomerBistroList.class);
-                MyPageCustomer.this.finish();
+                Intent intent = new Intent(MyPageOrderMenu.this, ShowCustomerBistroList.class);
+                MyPageOrderMenu.this.finish();
                 startActivity(intent);
             }
         });
@@ -103,10 +99,10 @@ public class MyPageCustomer extends AppCompatActivity {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
                 editor.commit();
-                ActivityCompat.finishAffinity(MyPageCustomer.this);
-                Intent intent = new Intent(MyPageCustomer.this, Login.class);
+                ActivityCompat.finishAffinity(MyPageOrderMenu.this);
+                Intent intent = new Intent(MyPageOrderMenu.this, Login.class);
                 startActivity(intent);
-                MyPageCustomer.this.finish();
+                MyPageOrderMenu.this.finish();
             }
         });
     }
@@ -142,9 +138,9 @@ public class MyPageCustomer extends AppCompatActivity {
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");

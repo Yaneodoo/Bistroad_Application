@@ -47,8 +47,6 @@ public class GetRealtimeOrderService extends Service {
 
     private String oldOrderId = "";
     private String newOrderId = "";
-    private String storeId = "";
-    private String [] sort = new String[2];
 
     public GetRealtimeOrderService() {
     }
@@ -67,8 +65,6 @@ public class GetRealtimeOrderService extends Service {
         Log.d(TAG, "onStartCommand() called");
         tk = getSharedPreferences("sFile", MODE_PRIVATE);
         oldOrderId = tk.getString("orderId", "noOrder");
-        sort[0] = "date";
-        sort[1] = "asc";
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -165,7 +161,6 @@ public class GetRealtimeOrderService extends Service {
                 checkOrder(token, sId, tk);
 
                 newOrderId = tk.getString("orderId", "noOrder");
-                storeId = tk.getString("storeId", "");
                 Log.d("New Order", newOrderId);
                 Log.d("Old Order", oldOrderId);
                 if(!newOrderId.equals(oldOrderId)){

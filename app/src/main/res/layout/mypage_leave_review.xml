@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Customer.MyPageLeaveReview">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:background="#C6D3FC">
+        <TextView
+            android:id="@+id/homebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#C6D3FC"
+            android:fontFamily="@font/rage"
+            android:text="Bistroad"
+            android:textAllCaps="false"
+            android:textColorLink="#FFFFFF"
+            android:paddingTop="10sp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:textSize="40sp"/>
+        <ImageButton
+            android:id="@+id/mypagebtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="#C6D3FC"
+            android:paddingRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/mypage" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/customer_name_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="김민주 고객님"
+            android:textStyle="bold"
+            android:textSize="25dp"/>
+        <TextView
+            android:id="@+id/bistro_name_txtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="레드 175"
+            android:textSize="25dp"/>
+        <TextView
+            android:id="@+id/bistro_menu_txtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="순대"
+            android:textSize="30dp"/>
+
+        <ImageView
+            android:id="@+id/upload_btn"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/img_upload"
+            android:scaleType="fitCenter" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="별점"
+                android:textSize="20dp"/>
+            <RatingBar
+                android:id="@+id/menu_ratingBar"
+                style="@style/Widget.AppCompat.RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:numStars="5"
+                android:rating="2.5"
+                android:stepSize="0.5" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내용 : "
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/menu_review_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:minLines="1"
+                android:maxLines="4"
+                android:scrollbars="vertical"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:backgroundTint="#FF6181E8" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FDDFDB"
+        android:text="등록"/>
+</LinearLayout>

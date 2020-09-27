@@ -71,6 +71,10 @@ public interface RetrofitService {
 
     //---------------order----------------//
 
+    //get orders
+    @GET("orders")
+    Call<List<Order>> getOrders(@Header("Authorization") String token);
+
     //get user orders
     @GET("orders")
     Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
@@ -114,6 +118,11 @@ public interface RetrofitService {
     //Search reviews
     @GET("reviews")
     Call<List<Review>> getReviewList(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("itemId") String itemId);
+
+
+    @FormUrlEncoded
+    @POST("stores/{storeId}/items")
+    Call<Store> postReview(@Header("Authorization") String token, @Field("review") Review review);
 
     //----------------order------------------//
     //Search orders
