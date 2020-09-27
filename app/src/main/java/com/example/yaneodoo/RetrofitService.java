@@ -79,9 +79,9 @@ public interface RetrofitService {
     @DELETE("orders")
     Call<Order> deleteOrder(@Header("Authorization") String token);
 
-    //edit order
+    //Update an order partially
     @PATCH("orders/{id}")
-    Call<Order> patchOrder(@Header("Authorization") String token, @Path("orderId") String orderId);
+    Call<Order> patchOrder(@Header("Authorization") String token, @Body Order order, @Path("id") String id);
 
     //---------------store-items-------------//
     //Search items

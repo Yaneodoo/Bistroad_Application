@@ -16,21 +16,12 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.Info.User;
-import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
-import com.example.yaneodoo.Info.Order;
-import com.example.yaneodoo.Info.Request;
 import com.example.yaneodoo.Info.Store;
-import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.RestGetOrders;
 import com.example.yaneodoo.REST.RestGetUser;
 import com.example.yaneodoo.RetrofitService;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerOrderList extends AppCompatActivity {
     private Intent intent;
@@ -124,15 +107,27 @@ public class ShowOwnerOrderList extends AppCompatActivity {
     public void progressToggle(View v) {
         LinearLayout parentRow = (LinearLayout) v.getParent();
         TextView orderState = (TextView) parentRow.findViewById(R.id.order_progress);
+        int position = listview.getPositionForView(v);
 
         ToggleButton tb2 = (ToggleButton) v.findViewById(R.id.btn_progress);
         Log.d("tag", orderState.getText().toString());
         if (orderState.getText().toString() == "접수중") {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
             orderState.setText("접수 완료");
+            orderList.get(position).setProgress("ACCEPTED");
         } else if (orderState.getText().toString() == "접수 완료") {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
             orderState.setText("접수중");
+            orderList.get(position).setProgress("REQUESTED");
+        }
+
+        Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
+        try {
+            new patchOrder().execute(callPatchOrder).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -213,5 +208,31 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                 Log.d("fail", "======================================");
             }
         });
+    }
+
+    private class patchOrder extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Order> call = params[0];
+                Response<Order> response = call.execute();
+                Order order = response.body();
+
+                if (order == null){
+                    int statusCode  = response.code();
+                    Log.d("CODE",Integer.toString(statusCode));
+                }
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 }
