@@ -71,6 +71,7 @@
         <activity android:name=".Customer.ShowCustomerShoppingBasket" />
         <activity android:name=".Customer.MyPageCustomer" />
         <activity android:name=".Customer.MyPageLeaveReview" />
+        <activity android:name=".Customer.MyPageOrderMenu" />
         <activity android:name=".Owner.RegisterBistro" />
         <activity android:name=".Owner.RegisterMenu" />
         <activity android:name=".Owner.ShowOwnerOrderList" />

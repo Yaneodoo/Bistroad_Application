@@ -68,7 +68,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mypage_leave_review);
         final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
-        listview = (ListView) findViewById(R.id.order_list_view_customer);
+        listview = (ListView) findViewById(R.id.leave_review_list_view);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
@@ -142,16 +142,16 @@ public class MyPageLeaveReview extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ImageView imgBtn = findViewById(R.id.upload_btn);
-                RatingBar ratingBar = (RatingBar) findViewById(R.id.menu_ratingBar);
-                EditText reviewText = (EditText) findViewById(R.id.menu_review_editText);
+//                RatingBar ratingBar = (RatingBar) findViewById(R.id.menu_ratingBar);
+//                EditText reviewText = (EditText) findViewById(R.id.menu_review_editText);
 
                 Drawable uploadedImg = imgBtn.getDrawable();
-                int stars = ratingBar.getNumStars();
-                String reviewContent = reviewText.getText().toString();
+//                int stars = ratingBar.getNumStars();
+//                String reviewContent = reviewText.getText().toString();
 
-                postReview(token, new Review(reviewContent, itemId, orderId, stars, storeId, id));//리뷰 남기기
+//                postReview(token, new Review(reviewContent, itemId, orderId, stars, storeId, id));//리뷰 남기기
 
-                Intent intent = new Intent(MyPageLeaveReview.this, ShowOwnerBistroList.class);
+                Intent intent = new Intent(MyPageLeaveReview.this, MyPageCustomer.class);
                 MyPageLeaveReview.this.finish();
                 startActivity(intent);
             }

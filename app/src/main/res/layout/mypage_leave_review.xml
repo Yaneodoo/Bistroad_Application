@@ -58,68 +58,81 @@
             android:layout_height="wrap_content"
             android:text="레드 175"
             android:textSize="25dp"/>
-        <TextView
-            android:id="@+id/bistro_menu_txtView"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="순대"
-            android:textSize="30dp"/>
-
-        <ImageView
-            android:id="@+id/upload_btn"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:paddingTop="10dp"
+            android:layout_weight="1"
             android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/img_upload"
-            android:scaleType="fitCenter" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="별점"
-                android:textSize="20dp"/>
-            <RatingBar
-                android:id="@+id/menu_ratingBar"
-                style="@style/Widget.AppCompat.RatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:numStars="5"
-                android:rating="2.5"
-                android:stepSize="0.5" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="내용 : "
-                android:textSize="20dp"/>
-
-            <EditText
-                android:id="@+id/menu_review_editText"
+            android:fillViewport="true">
+            <ListView
+                android:id="@+id/leave_review_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:lines="4"
-                android:minLines="1"
-                android:maxLines="4"
-                android:scrollbars="vertical"
-                android:textSize="20dp"
-                android:paddingLeft="10dp"
-                android:backgroundTint="#FF6181E8" />
-        </LinearLayout>
+                android:dividerHeight="10dp"
+                android:divider="#00000000" />
+        </ScrollView>
+<!--        <TextView-->
+<!--            android:id="@+id/bistro_menu_txtView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="순대"-->
+<!--            android:textSize="30dp"/>-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/upload_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:src="@drawable/img_upload"-->
+<!--            android:scaleType="fitCenter" />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_gravity="center">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="별점"-->
+<!--                android:textSize="20dp"/>-->
+<!--            <RatingBar-->
+<!--                android:id="@+id/menu_ratingBar"-->
+<!--                style="@style/Widget.AppCompat.RatingBar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:numStars="5"-->
+<!--                android:rating="2.5"-->
+<!--                android:stepSize="0.5" />-->
+<!--        </LinearLayout>-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_gravity="center">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="내용 : "-->
+<!--                android:textSize="20dp"/>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/menu_review_editText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textMultiLine"-->
+<!--                android:lines="4"-->
+<!--                android:minLines="1"-->
+<!--                android:maxLines="4"-->
+<!--                android:scrollbars="vertical"-->
+<!--                android:textSize="20dp"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:backgroundTint="#FF6181E8" />-->
+<!--        </LinearLayout>-->
     </LinearLayout>
 
     <Button
