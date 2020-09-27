@@ -71,9 +71,9 @@ public interface RetrofitService {
     @GET("orders/{id}")
     Call<Order> getOrderInfo(@Header("Authorization") String token, @Path("orderId") String orderId);
 
-    //send order
+    //Create an order
     @POST("orders")
-    Call<Order> postOrder(@Header("Authorization") String token);
+    Call<Order> postOrder(@Header("Authorization") String token, @Body Order order);
 
     //delete order
     @DELETE("orders")

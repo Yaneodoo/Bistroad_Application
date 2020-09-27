@@ -51,6 +51,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         ToggleButton iconImageView = (ToggleButton) convertView.findViewById(R.id.btn_progress);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.order_date_txtView);
         TextView customerTextView = (TextView) convertView.findViewById(R.id.order_customer_txtView);
+        TextView tableNumTextView = (TextView) convertView.findViewById(R.id.tableNum_txtView);
         TextView orderTextView = (TextView) convertView.findViewById(R.id.order_list);
         TextView stateTextView = (TextView) convertView.findViewById(R.id.order_progress);
 
@@ -61,6 +62,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         iconImageView.setBackgroundDrawable(listViewItem.getProgress());
         dateTextView.setText(listViewItem.getDateStr());
         customerTextView.setText(listViewItem.getNameStr());
+        tableNumTextView.setText("테이블 번호 : "+listViewItem.getTableNum());
         orderTextView.setText(listViewItem.getOrderStr());
         stateTextView.setText(listViewItem.getStateStr());
 
@@ -80,7 +82,7 @@ public class OrderListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String customer, String order, String state, String orderId) {
+    public void addItem(Drawable photo, String date, String customer, String order, String state, String orderId, Integer tableNum) {
         OrderListViewItem item = new OrderListViewItem();
 
         item.setProgress(photo);
@@ -89,6 +91,7 @@ public class OrderListViewAdapter extends BaseAdapter {
         item.setOrderStr(order);
         item.setStateStr(state);
         item.setOrderNum(orderId);
+        item.setTableNum(tableNum);
 
         listViewItemList.add(item);
     }

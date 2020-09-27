@@ -125,10 +125,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         LinearLayout parentRow = (LinearLayout) v.getParent();
         TextView orderState = (TextView) parentRow.findViewById(R.id.order_progress);
 
-        LinearLayout pparentRow = (LinearLayout) parentRow.getParent();
-        TextView orderDate = (TextView) pparentRow.findViewById(R.id.order_date_txtView);
-        TextView orderCustomerId = (TextView) pparentRow.findViewById(R.id.order_customer_txtView);
-
         ToggleButton tb2 = (ToggleButton) v.findViewById(R.id.btn_progress);
         Log.d("tag", orderState.getText().toString());
         if (orderState.getText().toString() == "접수중") {
@@ -192,7 +188,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             String amount = "";
                             String menu = "";
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount();
+                                amount = order.getRequests().get(j).getAmount().toString();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
                                 requests += menu + " x " + amount + "\n";
                                 Log.d("requests", requests);
@@ -200,9 +196,9 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");

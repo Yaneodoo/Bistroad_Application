@@ -42,7 +42,7 @@ public class ShoppingBasketListViewAdapter extends BaseAdapter {
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         TextView nameTextView = (TextView) convertView.findViewById(R.id.menu_name_txtView);
         TextView priceTextView = (TextView) convertView.findViewById(R.id.menu_price_txtView);
-        //TextView quantityTextView = (TextView) convertView.findViewById(R.id.menu_quantity_txtView);
+        TextView quantityTextView = (TextView) convertView.findViewById(R.id.menu_quantity);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ShoppingBasketListViewItem listViewItem = listViewItemList.get(position);
@@ -50,7 +50,7 @@ public class ShoppingBasketListViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         nameTextView.setText(listViewItem.getNameStr());
         priceTextView.setText(listViewItem.getPriceStr());
-        //quantityTextView.setText(listViewItem.getAmount());
+        quantityTextView.setText(listViewItem.getAmount().toString());
 
         return convertView;
     }
@@ -68,12 +68,12 @@ public class ShoppingBasketListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String name, String price) {
+    public void addItem(String name, String price, Integer amount) {
         ShoppingBasketListViewItem item = new ShoppingBasketListViewItem();
 
         item.setNameStr(name);
         item.setPriceStr(price);
-        item.setAmount(1);
+        item.setAmount(amount);
 
         listViewItemList.add(item);
     }

@@ -120,7 +120,7 @@ public class MyPageCustomer extends AppCompatActivity {
                             String amount = "";
                             String menu = "";
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount();
+                                amount = order.getRequests().get(j).getAmount().toString();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
                                 requests += menu + " x " + amount + "\n";
                                 Log.d("requests", requests);
@@ -128,9 +128,9 @@ public class MyPageCustomer extends AppCompatActivity {
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");

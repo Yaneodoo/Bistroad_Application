@@ -6,6 +6,15 @@ public class OrderListViewItem {
     private Drawable progress;
     private String dateStr, nameStr, orderStr, stateStr;
     private String orderNum;
+    private Integer tableNum;
+
+    public Integer getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(Integer tableNum) {
+        this.tableNum = tableNum;
+    }
 
     public Drawable getProgress() {
         return progress;

@@ -33,7 +33,15 @@
             android:text="민주짱"
             android:textColor="#666666"
             android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tableNum_txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="테이블 번호 : "
+            android:textColor="#666666"/>
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/order_list"

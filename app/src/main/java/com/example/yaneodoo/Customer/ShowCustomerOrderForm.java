@@ -92,6 +92,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 intent.putExtra("userInfo", user);
                 intent.putExtra("bistroInfo", store);
                 ShowCustomerOrderForm.this.finish();
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
