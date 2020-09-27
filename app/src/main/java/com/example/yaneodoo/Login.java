@@ -65,9 +65,9 @@ public class Login extends AppCompatActivity {
         password.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                switch (keyCode){
-                    case KeyEvent.KEYCODE_ENTER:
-                        btnLogin.performClick();
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+                    Log.d("keyCode", String.valueOf(keyCode));
+                    btnLogin.performClick();
                 }
                 return false;
             }
@@ -90,6 +90,7 @@ public class Login extends AppCompatActivity {
                     if(rc == 200){
                         Intent intent = new Intent(Login.this, LoginConfirmed.class);
                         startActivity(intent);
+                        Login.this.finish();
                     }
                     else if(rc == 404){
                         Toast noIdToast = Toast.makeText(getApplicationContext(), "계정이 존재하지 않습니다.", Toast.LENGTH_LONG);
@@ -115,7 +116,6 @@ public class Login extends AppCompatActivity {
             id.setText(bId);
             password.setText(bPwd);
             btnLogin.performClick();
-            this.finish();
         }
     }
 
