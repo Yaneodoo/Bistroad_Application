@@ -131,28 +131,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         }
     }
 
-    private void checkOrder(final String token, String storeId, final SharedPreferences sp){
-        service.getStoreOrder("Bearer " + token, storeId).enqueue(new Callback<Order>() {
-            @Override
-            public void onResponse(Call<Order> call, Response<Order> response) {
-                if (response.isSuccessful()) {
-                    Order body = response.body();
-                    if (body != null) {
-                        Order order = new Order();
-                        order.setId(body.getId());
-                        sp.getString("orderId", "");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Order> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("fail", "======================================");
-            }
-        });
-    }
-
     private void getOrderList(final String token, String storeId) {
         service.getStoreOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
             @Override

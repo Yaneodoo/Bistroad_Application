@@ -144,7 +144,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     }
-
                 }
             }
         });
@@ -245,8 +244,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 Call<Void> call = params[0];
                 Response<Void> response = call.execute();
                 Void body = response.body();
-
-                Log.d("EXECUTE","a");
 
                 if (body == null){
                     int statusCode  = response.code();
