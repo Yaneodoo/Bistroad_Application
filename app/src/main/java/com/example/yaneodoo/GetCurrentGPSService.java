@@ -135,7 +135,7 @@ public class GetCurrentGPSService extends Service {
                     RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
                     try {
                         sName = restGetNearestStore.execute().get();
-                        //Log.d("Store", sName);
+                        Log.d("Store", sName);
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -167,7 +167,6 @@ public class GetCurrentGPSService extends Service {
     }
 
     public class BistroCheckInServiceHandler extends Handler{
-
         @Override
         public void handleMessage(@NonNull Message msg) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

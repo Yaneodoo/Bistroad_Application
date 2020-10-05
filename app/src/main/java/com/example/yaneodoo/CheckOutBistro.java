@@ -20,13 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.yaneodoo.Customer.MyPageCustomer;
-import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.REST.RestGetNearestStore;
-
-import java.util.concurrent.ExecutionException;
 
 public class CheckOutBistro extends Service {
-    private static final String TAG = "GetCurrentGPSService";
+    private static final String TAG = "CheckOutBistro";
     NotificationManager Notifi_M;
     GPSThread thread;
     GPSTracker gpsTracker;
@@ -34,6 +30,8 @@ public class CheckOutBistro extends Service {
     float lon;
     int count;
     SharedPreferences tk;
+    float preLat;
+    float preLon;
 
     public CheckOutBistro() {
     }
@@ -52,6 +50,7 @@ public class CheckOutBistro extends Service {
         Log.d(TAG, "onStartCommand() called");
         tk = getSharedPreferences("sFile", MODE_PRIVATE);
         gpsTracker = new GPSTracker(CheckOutBistro.this);
+
         if (intent == null) {
             return Service.START_STICKY; //서비스가 종료되어도 자동으로 다시 실행시켜줘!
         } else {
@@ -86,7 +85,6 @@ public class CheckOutBistro extends Service {
         GPSTracker gpsTracker;
         SharedPreferences tk;
         Message msg;
-        String sName;
         public GPSThread(Handler handler, GPSTracker gpsTracker, SharedPreferences tk) {
             this.handler = handler;
             this.gpsTracker = gpsTracker;
@@ -100,7 +98,11 @@ public class CheckOutBistro extends Service {
         public void run() {
             //반복적으로 수행할 작업을 한다.
             count = 0;
-            sName = "noStore";
+            double distance = 0;
+
+            preLat = tk.getFloat("storeLat",0);
+            preLon = tk.getFloat("storeLon",0);
+
             while (isRun) {
                 if (tk.getString("bId", "").length() == 0){
                     stopForever();
@@ -110,52 +112,37 @@ public class CheckOutBistro extends Service {
                 lat = (float)gpsTracker.getLatitude();
                 lon = (float)gpsTracker.getLongitude();
 
-                //Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
+                distance = Math.sqrt(Math.pow(Math.abs(preLat-lat), 2) + Math.pow(Math.abs(preLon-lon), 2));
 
-                float preLat = tk.getFloat("lat", 0);
-                float preLon = tk.getFloat("lon", 0);
+                Log.d(TAG, String.valueOf(lat)+", "+String.valueOf(lon));
 
-                if(lat == preLat && lon == preLon) {
-                    count ++;
-                    //쓰레드에 있는 핸들러에게 메세지를 보냄
-                    RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
-                    try {
-                        sName = restGetNearestStore.execute().get();
-                        //Log.d("Store", sName);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if(!sName.equals("noStore") && count > 2) {
-                        msg = new Message();
-                        msg.obj = sName;
-                        handler.sendMessage(msg);
-                        count = 0;
-                    }
+                if(count > 30 && distance > 0.001) {
+                    msg = new Message();
+                    handler.sendEmptyMessage(0);
+                    count = 0;
+                    stopForever();
+                    break;
                 }
-                else
-                    Log.d(TAG, "Location has been changed.");
-
-                SharedPreferences.Editor editor = tk.edit();
-                editor.putFloat("lat", lat);
-                editor.putFloat("lon", lon);
-                editor.commit();
 
                 try {
-                    Thread.sleep( 10000 );
-                    //10초씩 쉰다.
+                    Thread.sleep( 1000 );
+                    count += 10;
+                    //// 위는 테스트 아래는 실적용 ////
+//                    Thread.sleep( 60000 );
+//                    count += 1;
+                    //1분씩 쉰다.
                 } catch (Exception e) {
 
                 }
             }
         }
     }
+
     public class BistroCheckOutServiceHandler extends Handler{
         @Override
         public void handleMessage(@NonNull Message msg) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            String sName = String.valueOf(msg.obj)+"에 입장하셨나요?";
+            String sName = "맛있는 시간 되셨나요? 리뷰 부탁드립니다!";
             //Log.d("handler sname", sName);
             String NOTIFICATION_ID = "10001";
             String NOTIFICATION_NAME = "리뷰남기기";

@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.CheckOutBistro;
+import com.example.yaneodoo.GetCurrentGPSService;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Request;
@@ -67,6 +69,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         setContentView(R.layout.shoppingbasket_customer);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+        final SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -82,7 +85,6 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             adapter.addItem(menu.getName(), menu.getPrice(),menu.getQuantity());
             storeId = menu.getStoreId();
         }
-
         Log.d("USER", user.toString());
         updateTotalAmount();
 
@@ -103,6 +105,12 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 View promptsView = li.inflate(R.layout.custom_popup_dialog, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setView(promptsView);
+
+                editor.putFloat("storeLat", Float.valueOf(store.getLocation().getLat()));
+                editor.putFloat("storeLon", Float.valueOf(store.getLocation().getLng()));
+                editor.commit();
+                Intent intent = new Intent(getApplicationContext(), CheckOutBistro.class);
+                startService(intent);
 
                 final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
 
