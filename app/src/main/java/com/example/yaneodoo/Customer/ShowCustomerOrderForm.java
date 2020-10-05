@@ -55,6 +55,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         intent = getIntent();
         final User user = (User) intent.getSerializableExtra("userInfo");
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
+        final String menuQuantity = (String) intent.getStringExtra("menuQuantity");
+
+        selectedMenu = ReadShoppingBasketData();
 
         TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
         menuNameTxtView.setText(menu.getName());
@@ -66,7 +69,8 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
         menuPriceTxtView.setText(menu.getPrice());
         TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
-        menuQuantityTxtView.setText("1");
+        if(menuQuantity!=null) menuQuantityTxtView.setText(menuQuantity);
+        else menuQuantityTxtView.setText("1");
 
         Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
         btnPickupBtn.setText(menuQuantityTxtView.getText().toString() + "개 담기");
@@ -79,12 +83,17 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         pickupbtn.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Menu menu : ReadShoppingBasketData()) {
-                    selectedMenu.add(menu);
-                }
                 TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
                 menu.setQuantity(Integer.parseInt(menuQuantityTxtView.getText().toString()));
-                selectedMenu.add(menu);
+
+                boolean exist=false;
+                for(int i=0;i<selectedMenu.size();i++){
+                    if(selectedMenu.get(i).getId().equals(menu.getId())){ //이미 담아있는 메뉴
+                        selectedMenu.set(i,menu);
+                        exist=true;
+                    }
+                }
+                if(!exist) selectedMenu.add(menu); //새로 담는 메뉴
 
                 SaveShoppingBasketData(selectedMenu);
 
@@ -92,6 +101,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 intent.putExtra("userInfo", user);
                 intent.putExtra("bistroInfo", store);
                 ShowCustomerOrderForm.this.finish();
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -105,25 +115,6 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void SaveShoppingBasketData(ArrayList<Menu> selectedMenu) {
-        SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(selectedMenu);
-        editor.putString("SelectedMenu", json);
-        editor.commit();
-    }
-
-    private ArrayList<Menu> ReadShoppingBasketData() {
-        Gson gson = new Gson();
-        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
-        if (json != "EMPTY") {
-            Type type = new TypeToken<ArrayList<Menu>>() {
-            }.getType();
-            ArrayList<Menu> arrayList = gson.fromJson(json, type);
-            return arrayList;
-        } else return new ArrayList<Menu>();
     }
 
     public void Decrement(View view) {
@@ -181,5 +172,24 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         });
 
         return store;
+    }
+
+    private ArrayList<Menu> ReadShoppingBasketData() {
+        Gson gson = new Gson();
+        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
+        if (json != "EMPTY") {
+            Type type = new TypeToken<ArrayList<Menu>>() {
+            }.getType();
+            ArrayList<Menu> arrayList = gson.fromJson(json, type);
+            return arrayList;
+        } else return new ArrayList<Menu>();
+    }
+
+    private void SaveShoppingBasketData(ArrayList<Menu> selectedMenu) {
+        SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(selectedMenu);
+        editor.putString("SelectedMenu", json);
+        editor.commit();
     }
 }

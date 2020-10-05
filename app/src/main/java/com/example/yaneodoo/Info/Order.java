@@ -9,14 +9,14 @@ public class Order implements Serializable {
     private String storeId;
     private String userId;
     private List<Request> requests;
-    private Date date;
+    private String date;
     private Integer tableNum;
     private String progress;
 
     public Order() {
     }
 
-    public Order(String storeId, String userId, List<Request> requestList, Date date, Integer tableNum, String progress) {
+    public Order(String storeId, String userId, List<Request> requests, String date, Integer tableNum, String progress) {
         this.storeId = storeId;
         this.userId = userId;
         this.requests = requests;
@@ -57,11 +57,11 @@ public class Order implements Serializable {
         this.requests = requests;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

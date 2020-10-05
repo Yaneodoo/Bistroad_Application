@@ -32,6 +32,7 @@ import com.example.yaneodoo.RetrofitService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -40,7 +41,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowOwnerBistroList extends AppCompatActivity {
     boolean onChoice = false;
-    boolean remove = false;
 
     private BackPressedForFinish backPressedForFinish;
 
@@ -54,6 +54,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     private ListView listview;
 
     private List<Store> storeList = new ArrayList<>();
+
+    private SparseBooleanArray checkedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     store.setName(storeList.get(position).getName());
                     store.setLocation(storeList.get(position).getLocation());
                     store.setDescription(storeList.get(position).getDescription());
+                    store.setPhone(storeList.get(position).getPhone());
                     //store.setPhotoUri(storeList.get(position).getPhotoUri());
 
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
@@ -145,26 +148,12 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                     addbtn.setTextSize(14);
                     addbtn.setText("");
                 } else {
-                    SparseBooleanArray checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
-
-                    Log.d("selected", checkedItems.toString());
+                    checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
                     if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
                     else {
                         Intent intent = getIntent();
                         finish();
                         startActivity(intent);
-                    }
-
-                    //다중 삭제 처리 동작
-                    if (remove) {
-                        int count = adapter.getCount();
-                        for (int i = count - 1; i >= 0; i--) {
-                            if (checkedItems.get(i)) { //i position의 상태가 Checked이면
-                                // TODO : DELETE /stores/{storeId}로 해당 매장 삭제
-                                BistroListViewItem bistro = (BistroListViewItem) adapter.getItem(i);
-                                //bistro.getTitle(); //Id로
-                            }
-                        }
                     }
                 }
             }
@@ -259,6 +248,33 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         }
     }
 
+    private class calldeleteStore extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Void> call = params[0];
+                Response<Void> response = call.execute();
+                Void body = response.body();
+
+                if (body == null){
+                    int statusCode  = response.code();
+                    Log.d("CODE",Integer.toString(statusCode));
+                }
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("삭제 확인");
@@ -266,7 +282,24 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        remove = true;
+
+                    //다중 삭제 처리 동작
+                        int count = adapter.getCount();
+                        Log.d("DELETE", Integer.toString(count));
+                        for (int i = count - 1; i >= 0; i--) {
+                            if (checkedItems.get(i)) { //i position의 상태가 Checked이면
+                                Call<Void> calldeleteStore = service.deleteStore("Bearer " + token, storeList.get(i).getId());
+                                Log.d("DELETE",storeList.get(i).getId());
+                                try {
+                                    new calldeleteStore().execute(calldeleteStore).get();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
                         Toast.makeText(getApplicationContext(), "삭제 완료.", Toast.LENGTH_LONG).show();
                         Intent intent = getIntent();
                         finish();

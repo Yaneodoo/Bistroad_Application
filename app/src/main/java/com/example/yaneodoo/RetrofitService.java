@@ -10,6 +10,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -65,9 +66,16 @@ public interface RetrofitService {
     Call<Store> getStore(@Header("Authorization") String token, @Path("id") String storeId);
 
     //Create a store
-    @FormUrlEncoded
     @POST("stores")
-    Call<Store> postStore(@Header("Authorization") String token, @Field("store") Store store);
+    Call<Store> postStore(@Header("Authorization") String token, @Body Store store);
+
+    //Update or create a store
+    @PATCH("stores/{id}")
+    Call<Store> patchStore(@Header("Authorization") String token, @Body Store store, @Path("id") String storeId);
+
+    //Delete a store
+    @DELETE("stores/{id}")
+    Call<Void> deleteStore(@Header("Authorization") String token, @Path("id") String storeId);
 
     //---------------order----------------//
 
@@ -91,18 +99,17 @@ public interface RetrofitService {
     @GET("orders/{id}")
     Call<Order> getOrderInfo(@Header("Authorization") String token, @Path("orderId") String orderId);
 
-    //send order
-    @FormUrlEncoded
+    //Create an order
     @POST("orders")
-    Call<Order> postOrder(@Header("Authorization") String token);
+    Call<Order> postOrder(@Header("Authorization") String token, @Body Order order);
 
     //delete order
     @DELETE("orders")
     Call<Order> deleteOrder(@Header("Authorization") String token);
 
-    //edit order
+    //Update an order partially
     @PATCH("orders/{id}")
-    Call<Order> patchOrder(@Header("Authorization") String token, @Path("orderId") String orderId);
+    Call<Order> patchOrder(@Header("Authorization") String token, @Body Order order, @Path("id") String id);
 
     //---------------store-items-------------//
     //Search items
@@ -110,9 +117,16 @@ public interface RetrofitService {
     Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId);
 
     //Create an item
-    @FormUrlEncoded
     @POST("stores/{storeId}/items")
-    Call<Store> postStore(@Header("Authorization") String token, @Path("storeId") String storeId, @Field("menu") Menu menu);
+    Call<Menu> postMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId);
+
+    //Update an item partially
+    @PATCH("stores/{storeId}/items/{id}")
+    Call<Menu> patchMenu(@Header("Authorization") String token, @Body Menu menu, @Path("storeId") String storeId, @Path("id") String id);
+
+    //Delete an item
+    @DELETE("stores/{storeId}/items/{id}")
+    Call<Void> deleteMenu(@Header("Authorization") String token, @Path("storeId") String storeId, @Path("id") String id);
 
     //--------------store-items-review------------//
     //Search reviews
@@ -128,10 +142,4 @@ public interface RetrofitService {
     //Search orders
     @GET("orders")
     Call<List<Order>> getOrderList(@Header("Authorization") String token, @Query("storeId") String storeId);
-
-    //Create an order
-    @FormUrlEncoded
-    @POST("orders")
-    Call<Order> postOrder(@Header("Authorization") String token, @Field("order") Order order);
-
 }

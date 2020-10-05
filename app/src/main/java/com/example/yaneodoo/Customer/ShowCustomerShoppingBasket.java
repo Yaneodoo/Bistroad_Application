@@ -1,22 +1,28 @@
 package com.example.yaneodoo.Customer;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Request;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ShoppingBasketListViewAdapter;
@@ -28,6 +34,9 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -35,6 +44,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowCustomerShoppingBasket extends AppCompatActivity {
+    private Integer curTableNum;
+    final Context context = this;
     int menuQuantity;
     ArrayList<Menu> selectedMenu = new ArrayList<>();
     private Intent intent;
@@ -68,7 +79,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
         for (Menu menu : ReadShoppingBasketData()) {
             selectedMenu.add(menu);
-            adapter.addItem(menu.getName(), menu.getPrice());
+            adapter.addItem(menu.getName(), menu.getPrice(),menu.getQuantity());
             storeId = menu.getStoreId();
         }
 
@@ -88,27 +99,63 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         shoppingbasketOrderBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SaveShoppingBasketData(new ArrayList<Menu>());
-                //PopupMenu pop = new PopupMenu(getApplicationContext(), view);
-                Toast.makeText(getApplicationContext(), "주문이 완료되었습니다!", Toast.LENGTH_LONG).show();
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.custom_popup_dialog, null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setView(promptsView);
 
-                //TODO : post order
-                /*
-                List<Request> ml=new ArrayList<>();
-                ml.add(new Request(1, storeId));
-                Date date=new Date();
-                Log.d("DATE",date.toString());
-                Order order=new Order(storeId, user.getId(), ml, date, 0,"REQUESTED");
+                final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
 
-                Log.d("ORDER",order.toString());
-                Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
-                new postOrder().execute(callpostOrder);
-                */
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        curTableNum=Integer.parseInt(userInput.getText().toString());
 
-                Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
+                                        SaveShoppingBasketData(new ArrayList<Menu>()); //장바구니 비우기
 
-                ShowCustomerShoppingBasket.this.finish();
-                startActivity(intent);
+                                        List<Request> requestList=new ArrayList<>();
+
+                                        for (Menu menu : selectedMenu) {
+                                            requestList.add(new Request(menu.getId(),menu.getQuantity()));
+                                            Log.d("SELECTED MENU",menu.getId()+","+menu.getQuantity());
+                                        }
+                                        Log.d("SELECTED MENU LIST","-------------------------");
+
+                                        Date date=new Date();
+                                        Log.d("DATE",date.toString());
+
+                                        //TODO : DATE 형식 맞춰 보내기
+                                        Order order=new Order(storeId, user.getId(), requestList, "2020-09-26T12:40:11.966+00:00", curTableNum,"REQUESTED");
+                                        Log.d("CREATE ORDER",order.toString());
+
+                                        Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
+                                        try {
+                                            new postOrder().execute(callpostOrder).get();
+                                        } catch (ExecutionException e) {
+                                            e.printStackTrace();
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        Toast.makeText(getApplicationContext(), "주문이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+
+                                        Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
+
+                                        ShowCustomerShoppingBasket.this.finish();
+                                        startActivity(intent);
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -137,10 +184,10 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
     // 더담으러가기 텍스트뷰 클릭 리스너
     public void backToMenuList(View v) {
+        SaveShoppingBasketData(selectedMenu);
         Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerMenuList.class);
         intent.putExtra("userInfo", user);
         intent.putExtra("bistroInfo", store);
-        //TODO : 장바구니에 있는 메뉴의 bistro로 이동
         ShowCustomerShoppingBasket.this.finish();
         startActivity(intent);
     }
@@ -167,6 +214,11 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         if (menuQuantity < 1) menuQuantity = 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
 
+        int position = listview.getPositionForView(view);
+        Menu curMenu = selectedMenu.get(position);
+        curMenu.setQuantity(menuQuantity);
+        selectedMenu.set(position,curMenu); //들어가는 값 변경
+
         updateTotalAmount();
     }
 
@@ -179,17 +231,35 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         menuQuantity += 1;
         menuQuantityTxtView.setText(String.valueOf(menuQuantity));
 
+        int position = listview.getPositionForView(view);
+        Menu curMenu = selectedMenu.get(position);
+        curMenu.setQuantity(menuQuantity);
+        selectedMenu.set(position,curMenu); //들어가는 값 변경
+
         updateTotalAmount();
     }
 
     private void updateTotalAmount() {
-        totalAmount = 0;
-        for (Menu menu : selectedMenu) {
-            //TODO : QUANTITY 제대로 동작하도록
-            totalAmount += Integer.parseInt(menu.getPrice().substring(0, menu.getPrice().length() - 1)) * 1;
+        if(selectedMenu.size()==0){
+            Toast.makeText(getApplicationContext(), "장바구니가 텅 비었습니다!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
+            ShowCustomerShoppingBasket.this.finish();
+            startActivity(intent);
         }
-        TextView shoppingTotalAmountTxtView = (TextView) findViewById(R.id.shoppingbasket_total_amount_txtView);
-        shoppingTotalAmountTxtView.setText(totalAmount + "원");
+        else{
+            for (Menu menu : selectedMenu) {
+                Log.d("SELECTED MENU",menu.getId()+","+menu.getQuantity());
+            }
+            Log.d("SELECTED MENU LIST","-------------------------");
+
+            totalAmount=0;
+            for (Menu menu : selectedMenu) {
+                totalAmount += Integer.parseInt(menu.getPrice().substring(0, menu.getPrice().length() - 1)) * menu.getQuantity();
+            }
+            TextView shoppingTotalAmountTxtView = (TextView) findViewById(R.id.shoppingbasket_total_amount_txtView);
+            shoppingTotalAmountTxtView.setText(totalAmount + "원");
+        }
     }
 
     private void SaveShoppingBasketData(ArrayList<Menu> selectedMenu) {
@@ -218,7 +288,15 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 Call<Order> call = params[0];
                 Response<Order> response = call.execute();
                 Order body = response.body();
-                //Log.d("ORDER", body.toString());
+                //Log.d("POSTORDER", body.toString());
+
+                if (body != null) {
+
+                }
+                else {
+                    int statusCode  = response.code();
+                    Log.d("CODE",Integer.toString(statusCode));
+                }
 
                 return null;
             } catch (IOException e) {

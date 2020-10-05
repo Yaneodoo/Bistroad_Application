@@ -41,7 +41,6 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:text="김민주 점주님"
         android:textStyle="bold"
         android:textSize="25dp"/>
 
@@ -72,7 +71,6 @@
                     android:id="@+id/bistro_name_txtView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="매장 이름"
                     android:textSize="24dp"
                     android:textColor="#000000"
                     android:gravity="center_vertical"
@@ -91,14 +89,12 @@
                 android:id="@+id/bistro_location_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="매장 주소"
                 android:textSize="16dp"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/bistro_desc_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="매장 description"
                 android:textSize="16dp"
                 android:layout_weight="1"/>
         </LinearLayout>
@@ -146,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:dividerHeight="10dp"
                 android:divider="#00000000"
+                android:choiceMode="multipleChoice"
                 android:layout_weight="1" />
     </LinearLayout>
 

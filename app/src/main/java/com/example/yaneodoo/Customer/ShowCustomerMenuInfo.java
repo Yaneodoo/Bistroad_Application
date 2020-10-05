@@ -77,8 +77,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         final User user = (User) intent.getSerializableExtra("userInfo");
 
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
-        //Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token);
-        Log.d("MMMMMMMM", menu.getStoreId().toString() + "         " + menu.getId().toString());
         new callgetReviewList().execute(callgetReviewList);
 
         TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
@@ -136,17 +134,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Menu> ReadShoppingBasketData() {
-        Gson gson = new Gson();
-        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
-        if (json != "EMPTY") {
-            Type type = new TypeToken<ArrayList<Menu>>() {
-            }.getType();
-            ArrayList<Menu> arrayList = gson.fromJson(json, type);
-            return arrayList;
-        } else return new ArrayList<Menu>();
-    }
-
     private class callgetReviewList extends AsyncTask<Call, Void, String> {
         @Override
         protected String doInBackground(Call[] params) {
@@ -186,5 +173,16 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
             listview.setAdapter(adapter);
         }
+    }
+
+    private ArrayList<Menu> ReadShoppingBasketData() {
+        Gson gson = new Gson();
+        String json = getSharedPreferences("sFile", MODE_PRIVATE).getString("SelectedMenu", "EMPTY");
+        if (json != "EMPTY") {
+            Type type = new TypeToken<ArrayList<Menu>>() {
+            }.getType();
+            ArrayList<Menu> arrayList = gson.fromJson(json, type);
+            return arrayList;
+        } else return new ArrayList<Menu>();
     }
 }
