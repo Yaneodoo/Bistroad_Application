@@ -8,12 +8,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -21,25 +18,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Customer.MyPageCustomer;
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
-import com.example.yaneodoo.Customer.ShowCustomerMenuList;
-import com.example.yaneodoo.Info.Store;
-import com.example.yaneodoo.Info.User;
-import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.REST.RestGetNearestStore;
-import com.example.yaneodoo.REST.RestGetUserInfo;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class GetCurrentGPSService extends Service {
+public class CheckOutBistro extends Service {
     private static final String TAG = "GetCurrentGPSService";
     NotificationManager Notifi_M;
     GPSThread thread;
@@ -49,7 +35,7 @@ public class GetCurrentGPSService extends Service {
     int count;
     SharedPreferences tk;
 
-    public GetCurrentGPSService() {
+    public CheckOutBistro() {
     }
 
     @Override
@@ -65,12 +51,12 @@ public class GetCurrentGPSService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand() called");
         tk = getSharedPreferences("sFile", MODE_PRIVATE);
-        gpsTracker = new GPSTracker(GetCurrentGPSService.this);
+        gpsTracker = new GPSTracker(CheckOutBistro.this);
         if (intent == null) {
             return Service.START_STICKY; //서비스가 종료되어도 자동으로 다시 실행시켜줘!
         } else {
             Notifi_M = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
-            BistroCheckInServiceHandler handler = new BistroCheckInServiceHandler();
+            BistroCheckOutServiceHandler handler = new BistroCheckOutServiceHandler();
             thread = new GPSThread( handler, gpsTracker, tk);
             thread.start();
             //thread.stopForever();
@@ -82,7 +68,7 @@ public class GetCurrentGPSService extends Service {
     @Override
     public void onDestroy() {
         //Log.d(TAG, "onDestroy() called");
-        BistroCheckInServiceHandler handler = new BistroCheckInServiceHandler();
+        BistroCheckOutServiceHandler handler = new BistroCheckOutServiceHandler();
         thread = new GPSThread( handler , gpsTracker, tk);
         thread.start();
         super.onDestroy();
@@ -165,9 +151,7 @@ public class GetCurrentGPSService extends Service {
             }
         }
     }
-
-    public class BistroCheckInServiceHandler extends Handler{
-
+    public class BistroCheckOutServiceHandler extends Handler{
         @Override
         public void handleMessage(@NonNull Message msg) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -182,11 +166,11 @@ public class GetCurrentGPSService extends Service {
                 notificationManager.createNotificationChannel(channel);
             }
 
-            Intent intent = new Intent(GetCurrentGPSService.this, ShowCustomerBistroList.class);
+            Intent intent = new Intent(CheckOutBistro.this, MyPageCustomer.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(GetCurrentGPSService.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(CheckOutBistro.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             Uri soundUri = RingtoneManager.getDefaultUri((RingtoneManager.TYPE_NOTIFICATION));
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( GetCurrentGPSService.this)
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( CheckOutBistro.this)
                     .setSmallIcon(R.drawable.logo)
                     .setContentTitle("Bistroad")
                     .setContentText(sName)

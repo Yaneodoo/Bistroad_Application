@@ -38,7 +38,7 @@ public class RestGetNearestStore extends AsyncTask<Integer, Void, String> {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             rc = conn.getResponseCode();
-            //Log.d("RC", String.valueOf(rc));
+            Log.d("RC", String.valueOf(rc));
 
             if(rc == 200){
                 InputStream is = conn.getInputStream();
