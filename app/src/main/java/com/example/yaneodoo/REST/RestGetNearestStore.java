@@ -31,7 +31,7 @@ public class RestGetNearestStore extends AsyncTask<Integer, Void, String> {
     @Override
     protected String doInBackground(Integer... params) {
         try {
-            sUrl = "https://api.bistroad.kr/v1/stores/nearby?originLat="+sLat+"&originLng="+sLon+"&radius=10.001&size=1";
+            sUrl = "https://api.bistroad.kr/v1/stores/nearby?originLat="+sLat+"&originLng="+sLon+"&radius=50&size=1";
             //Log.d("sUrl", sUrl);
             //Open the connection
             URL url = new URL(sUrl);
