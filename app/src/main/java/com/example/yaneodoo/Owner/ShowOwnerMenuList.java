@@ -19,15 +19,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetStoreImage;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -84,12 +82,12 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
         bistroNameTxtView.setText(store.getName());
         TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-        bistroLocationTxtView.setText(store.getLocation().toString());
+        bistroLocationTxtView.setText(store.getAddress());
         TextView bistroDescTxtView = (TextView) findViewById(R.id.bistro_desc_txtView);
         bistroDescTxtView.setText(store.getDescription());
 
         Bitmap sbitmap = null;
-        GetStoreImage getStoreImage = new GetStoreImage();
+        GetImage getStoreImage = new GetImage();
         if(store.getPhoto()!=null){
             try {
                 sbitmap = getStoreImage.execute(store.getPhoto().getSourceUrl()).get();
@@ -104,11 +102,11 @@ public class ShowOwnerMenuList extends AppCompatActivity {
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         if(owner.getPhoto()!=null){
             Bitmap bitmap = null;
             try {
-                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+                bitmap = getImage.execute(owner.getPhoto().getThumbnailUrl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -137,18 +135,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 if (onChoice) {
                     v.setBackgroundColor(R.id.dark);
                 } else {
-                    // get item
-                    Menu menu = new Menu();
-                    menu.setStoreId(menuList.get(position).getStoreId());
-                    menu.setId(menuList.get(position).getId());
-                    menu.setName(menuList.get(position).getName());
-                    menu.setDescription(menuList.get(position).getDescription());
-                    menu.setPrice(menuList.get(position).getPrice());
-                    menu.setStars(menuList.get(position).getStars());
-                    //menu.setPhotoUri(menuList.get(position).getPhotoUri());
-                    //menu.set..(menuList.get(position).getOrderedCnt());
+                    Menu menu = (Menu) parent.getItemAtPosition(position);
 
-                    Log.d("menu", menu.toString());
                     Intent intent = new Intent(ShowOwnerMenuList.this, ShowOwnerMenuInfo.class);
                     intent.putExtra("bistroInfo", store);
                     intent.putExtra("menuInfo", menu);
@@ -296,11 +284,12 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                             menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
                             menu.setDescription(body.get(i).getDescription());
                             menu.setStars("★" + body.get(i).getStars());
-                            //menu.setPhotoUri(body.get(i).getPhotoUri());
+                            menu.setPhoto(body.get(i).getPhoto());
                             menu.setStoreId(body.get(i).getStoreId());
+                            menu.setOrderCount(body.get(i).getOrderCount());
                             menuList.add(menu);
 
-                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sundae), menu.getName(), menu.getPrice(), menu.getDescription(), menu.getStars(), " ");
+                            adapter.addItem(menu);
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");

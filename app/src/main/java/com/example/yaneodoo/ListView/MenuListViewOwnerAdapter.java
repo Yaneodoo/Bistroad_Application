@@ -1,7 +1,9 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetImage;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class MenuListViewOwnerAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<MenuListViewItem> listViewItemList = new ArrayList<>();
+    private ArrayList<Menu> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
     public MenuListViewOwnerAdapter() {
@@ -48,15 +53,27 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
         TextView orderCountTextView = (TextView) convertView.findViewById(R.id.menu_orderCount_txtView);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        MenuListViewItem listViewItem = listViewItemList.get(position);
+        Menu listViewItem = listViewItemList.get(position);
+
+        Bitmap bitmap = null;
+        GetImage getImage = new GetImage();
+        if(listViewItem.getPhoto()!=null){
+            try {
+                bitmap = getImage.execute(listViewItem.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         // 아이템 내 각 위젯에 데이터 반영
-        menuImageView.setImageDrawable(listViewItem.getIconDrawable());
-        menuTextView.setText(listViewItem.getMenuStr());
-        priceTextView.setText(listViewItem.getPriceStr());
-        descTextView.setText(listViewItem.getDescStr());
-        scoreTextView.setText(listViewItem.getScoreStr());
-        orderCountTextView.setText(listViewItem.getOrderCountStr());
+        if(bitmap!=null) menuImageView.setImageBitmap(bitmap);
+        menuTextView.setText(listViewItem.getName());
+        priceTextView.setText(listViewItem.getPrice());
+        descTextView.setText(listViewItem.getDescription());
+        scoreTextView.setText(listViewItem.getStars());
+        orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());
 
         return convertView;
     }
@@ -74,15 +91,8 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수.
-    public void addItem(Drawable photo, String menuStr, String priceStr, String descStr, String scoreStr, String orderCountStr) {
-        MenuListViewItem item = new MenuListViewItem();
-
-        item.setIconDrawable(photo);
-        item.setMenuStr(menuStr);
-        item.setPriceStr(priceStr);
-        item.setDescStr(descStr);
-        item.setScore(scoreStr);
-        item.setOrderCountStr(orderCountStr);
+    public void addItem(Menu menu) {
+        Menu item = menu;
 
         listViewItemList.add(item);
     }

@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.net.URL;
 
-public class GetStoreImage extends AsyncTask<String, Void, Bitmap> {
+public class GetImage extends AsyncTask<String, Void, Bitmap> {
     Bitmap bitmap = null;
     @Override
     protected Bitmap doInBackground(String... strings) {

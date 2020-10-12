@@ -2,20 +2,17 @@ package com.example.yaneodoo.ListView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetStoreImage;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -57,7 +54,7 @@ public class BistroListViewAdapter extends BaseAdapter {
         Store listViewItem = listViewItemList.get(position);
 
         Bitmap bitmap = null;
-        GetStoreImage getStoreImage = new GetStoreImage();
+        GetImage getStoreImage = new GetImage();
         if(listViewItem.getPhoto()!=null){
             try {
                 bitmap = getStoreImage.execute(listViewItem.getPhoto().getThumbnailUrl()).get();

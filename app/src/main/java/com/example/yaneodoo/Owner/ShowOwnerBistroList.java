@@ -24,7 +24,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -187,11 +187,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            GetUserImage getUserImage = new GetUserImage();
+            GetImage getImage = new GetImage();
             if(owner.getPhoto()!=null){
                 Bitmap bitmap = null;
                 try {
-                    bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+                    bitmap = getImage.execute(owner.getPhoto().getThumbnailUrl()).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {

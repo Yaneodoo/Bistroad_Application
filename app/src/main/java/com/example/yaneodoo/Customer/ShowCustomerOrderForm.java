@@ -16,7 +16,7 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,10 +59,10 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final String menuQuantity = (String) intent.getStringExtra("menuQuantity");
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         try {
             if(user.getPhoto()!=null) {
-                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
                 ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }

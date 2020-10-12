@@ -28,7 +28,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ShoppingBasketListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -90,10 +90,10 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
         Call<Store> callgetStore = service.getStore("Bearer " + token, storeId);
         new getStore().execute(callgetStore);
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         try {
             if(user.getPhoto()!=null) {
-                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
                 ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }

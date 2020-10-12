@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -88,11 +87,11 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         if(owner.getPhoto()!=null){
             Bitmap bitmap = null;
             try {
-                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+                bitmap = getImage.execute(owner.getPhoto().getThumbnailUrl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

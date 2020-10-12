@@ -23,10 +23,8 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
-import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetStoreImage;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -81,12 +79,12 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
         bistroNameTxtView.setText(store.getName());
         TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-        bistroLocationTxtView.setText(store.getLocation().toString());
+        bistroLocationTxtView.setText(store.getAddress());
         TextView bistroDescTxtView = (TextView) findViewById(R.id.bistro_desc_txtView);
         bistroDescTxtView.setText(store.getDescription());
 
         Bitmap sbitmap = null;
-        GetStoreImage getStoreImage = new GetStoreImage();
+        GetImage getStoreImage = new GetImage();
         if(store.getPhoto()!=null){
             try {
                 sbitmap = getStoreImage.execute(store.getPhoto().getSourceUrl()).get();
@@ -102,10 +100,10 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
         //TODO : 별점 높은 순
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         try {
             if(user.getPhoto()!=null) {
-                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
                 ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
@@ -119,19 +117,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                MenuListViewItem item = (MenuListViewItem) parent.getItemAtPosition(position);
-                Menu menu = new Menu();
-                menu.setStoreId(menuList.get(position).getStoreId());
-                menu.setId(menuList.get(position).getId());
-                menu.setName(menuList.get(position).getName());
-                menu.setDescription(menuList.get(position).getDescription());
-                menu.setPrice(menuList.get(position).getPrice());
-                menu.setStars(menuList.get(position).getStars());
-                //menu.setPhotoUri(menuList.get(position).getPhotoUri());
-                //menu.set..(menuList.get(position).getOrderedCnt());
-
-                Log.d("menu", menu.toString());
+                Menu menu = (Menu) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerMenuInfo.class);
                 intent.putExtra("menuInfo", menu);
@@ -262,12 +248,12 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                             menu.setName(body.get(i).getName());
                             menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
                             menu.setDescription(body.get(i).getDescription());
-                            menu.setStars("★" + body.get(i).getStars());
-                            //menu.setPhotoUri(body.get(i).getPhotoUri());
+                            menu.setStars(body.get(i).getStars());
+                            menu.setPhoto(body.get(i).getPhoto());
                             menu.setStoreId(body.get(i).getStoreId());
                             menuList.add(menu);
 
-                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sundae), menu.getName(), menu.getPrice(), menu.getDescription(), menu.getStars(), " ");
+                            adapter.addItem(menu);
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");

@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 public class Menu implements Serializable {
     private String price;
-    private String photoUri;
     private String name;
     private String description;
     private String id;
     private String stars;
     private String storeId;
     private Integer quantity;
+    private Photo photo;
+    private Integer orderCount;
 
     public Menu() {
     }
@@ -28,6 +29,22 @@ public class Menu implements Serializable {
         this.quantity = quantity;
     }
 
+    public Integer getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -42,14 +59,6 @@ public class Menu implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    public String getPhotoUri() {
-        return photoUri;
-    }
-
-    public void setPhotoUri(String photoUri) {
-        this.photoUri = photoUri;
     }
 
     public String getName() {
@@ -94,6 +103,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "[price = " + price + ", photoUri = " + photoUri + ", name = " + name + ", description = " + description + ", id = " + id + ", stars = " + stars + ", storeId = " + storeId + "]";
+        return "[price = " + price + ", name = " + name + ", description = " + description + ", id = " + id + ", stars = " + stars + ", storeId = " + storeId +
+                ", quantity = " +quantity+", photo = "+photo.getThumbnailUrl().toString()+", orderCount = "+orderCount+"]";
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getUserImage = new GetImage();
         if(owner.getPhoto()!=null){
             Bitmap bitmap = null;
             try {
@@ -91,7 +92,21 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
         menuStarsTxtView.setText(menu.getStars());
         TextView menuAmountTxtView = (TextView) findViewById(R.id.menu_orderedCnt_txtView);
-        menuAmountTxtView.setText("주문횟수 : 1");//TODO : 주문횟수
+        menuAmountTxtView.setText("주문 횟수 : "+menu.getOrderCount().toString());
+
+        GetImage getMenuImage = new GetImage();
+        Bitmap sbitmap = null;
+        if(menu.getPhoto()!=null){
+            try {
+                sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                ImageView menuRepresentImage=(ImageView) findViewById(R.id.menu_image);
+                menuRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         Button editbutton = (Button) findViewById(R.id.btn_edit);
 

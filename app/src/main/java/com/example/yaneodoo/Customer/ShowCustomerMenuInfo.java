@@ -2,13 +2,13 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +21,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -79,10 +79,11 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
 
-        GetUserImage getUserImage = new GetUserImage();
+        Bitmap bitmap = null;
+        GetImage getUserImage = new GetImage();
         try {
             if(user.getPhoto()!=null) {
-                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
                 ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
@@ -99,7 +100,21 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
-        menuStarsTxtView.setText(menu.getStars());
+        menuStarsTxtView.setText("★"+menu.getStars());
+
+        GetImage getMenuImage = new GetImage();
+        Bitmap sbitmap = null;
+        if(menu.getPhoto()!=null){
+            try {
+                sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                ImageView menuRepresentImage=(ImageView) findViewById(R.id.menu_image);
+                menuRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         Button btn_order = (Button) findViewById(R.id.btn_order);
         btn_order.setOnClickListener(new View.OnClickListener() {

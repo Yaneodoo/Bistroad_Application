@@ -20,7 +20,7 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -62,11 +62,11 @@ public class RegisterMenu extends AppCompatActivity {
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
-        GetUserImage getUserImage = new GetUserImage();
+        GetImage getImage = new GetImage();
         if(owner.getPhoto()!=null){
             Bitmap bitmap = null;
             try {
-                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+                bitmap = getImage.execute(owner.getPhoto().getThumbnailUrl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

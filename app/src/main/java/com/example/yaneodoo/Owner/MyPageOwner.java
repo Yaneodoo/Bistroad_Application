@@ -2,11 +2,9 @@ package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
-import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
-
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Retrofit;
 
