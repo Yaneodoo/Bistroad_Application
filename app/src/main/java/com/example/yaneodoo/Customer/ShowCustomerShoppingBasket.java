@@ -131,7 +131,8 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                                         LocalDateTime date = LocalDateTime.now();
                                         Log.d("DATE",date.toString());
 
-                                        Order order=new Order(store, user.getId(), requestList, date, curTableNum,"REQUESTED");
+                                        Order order=new Order(store, user.getId(), requestList, date.toString()+"+09:00", curTableNum,"REQUESTED");
+                                        order.setStoreId(store.getId());
                                         Log.d("CREATE ORDER",order.toString());
 
                                         Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
@@ -286,12 +287,14 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
     }
 
     private class postOrder extends AsyncTask<Call, Void, String> {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Call[] params) {
             try {
                 Call<Order> call = params[0];
                 Response<Order> response = call.execute();
                 Order body = response.body();
+                Log.d("POSTORDER", "POSTORDER");
                 //Log.d("POSTORDER", body.toString());
 
                 if (body != null) {
@@ -299,11 +302,12 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 }
                 else {
                     int statusCode  = response.code();
-                    Log.d("CODE",Integer.toString(statusCode));
+                    Log.d("POSTORDER CODE",Integer.toString(statusCode));
                 }
 
                 return null;
             } catch (IOException e) {
+                Log.d("POSTORDER", "FAIL");
                 e.printStackTrace();
             }
             return null;

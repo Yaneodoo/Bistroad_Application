@@ -84,7 +84,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         GetImage getMenuImage = new GetImage();
         try {
-            if(store.getPhoto()!=null) {
+            if(menu.getPhoto()!=null) {
                 Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
                 ImageView menuRepresentImgView = (ImageView) findViewById(R.id.menu_image);
                 menuRepresentImgView.setImageBitmap(bitmap);

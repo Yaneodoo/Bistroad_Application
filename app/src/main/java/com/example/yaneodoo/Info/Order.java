@@ -5,7 +5,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,12 +17,13 @@ public class Order implements Serializable {
     private Integer tableNum;
     private String progress;
     private Boolean hasReview=false;
-    private LocalDateTime timestamp;
+    private String storeId;
+    private String timestamp;
 
     public Order() {
     }
 
-    public Order(Store store, String userId, List<Request> requests, LocalDateTime date, Integer tableNum, String progress) {
+    public Order(Store store, String userId, List<Request> requests, String date, Integer tableNum, String progress) {
         this.store = store;
         this.userId = userId;
         this.orderLines = requests;
@@ -32,11 +32,19 @@ public class Order implements Serializable {
         this.progress = progress;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
