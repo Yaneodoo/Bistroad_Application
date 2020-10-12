@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -79,7 +80,20 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
-        menuStarsTxtView.setText(menu.getStars());
+        menuStarsTxtView.setText("★"+menu.getStars());
+
+        GetImage getMenuImage = new GetImage();
+        try {
+            if(store.getPhoto()!=null) {
+                Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                ImageView menuRepresentImgView = (ImageView) findViewById(R.id.menu_image);
+                menuRepresentImgView.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
         menuPriceTxtView.setText(menu.getPrice());

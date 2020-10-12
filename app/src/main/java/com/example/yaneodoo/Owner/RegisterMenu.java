@@ -91,6 +91,19 @@ public class RegisterMenu extends AppCompatActivity {
             menuPriceTxtView.setText(menu.getPrice().substring(0,menu.getPrice().length()-1));
             EditText meuDescTxtView = (EditText) findViewById(R.id.menu_desc_txtView);
             meuDescTxtView.setText(menu.getDescription());
+
+            GetImage getMenuImage = new GetImage();
+            if(store.getPhoto()!=null){
+                try {
+                    Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                    ImageView menuImage = (ImageView) findViewById(R.id.upload_btn);
+                    menuImage.setImageBitmap(bitmap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         // 등록 버튼 클릭 리스너

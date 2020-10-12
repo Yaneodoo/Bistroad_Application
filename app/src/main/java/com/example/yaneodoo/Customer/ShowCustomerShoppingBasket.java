@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,7 +40,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -91,19 +92,6 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
         Call<Store> callgetStore = service.getStore("Bearer " + token, storeId);
         new getStore().execute(callgetStore);
-
-        GetImage getImage = new GetImage();
-        try {
-            if(user.getPhoto()!=null) {
-                Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
-                btnMyPage.setImageBitmap(bitmap);
-            }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         listview = (ListView) findViewById(R.id.shoppingbasket_list_view_customer);
 
@@ -341,7 +329,8 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 store.setId(body.getId());
                 store.setOwnerId(body.getOwnerId());
                 store.setPhone(body.getPhone());
-                //store.setPhotoUri(body.get(i).getPhotoUri());
+                store.setAddress(body.getAddress());
+                store.setPhoto(body.getPhoto());
                 return null;
 
             } catch (IOException e) {
@@ -352,10 +341,23 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            GetImage getStoreImage = new GetImage();
+            try {
+                if(store.getPhoto()!=null) {
+                    Bitmap bitmap = getStoreImage.execute(store.getPhoto().getThumbnailUrl()).get();
+                    ImageView bistroRepresentImgView = (ImageView) findViewById(R.id.bistro_represent_image);
+                    bistroRepresentImgView.setImageBitmap(bitmap);
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
             bistroNameTxtView.setText(store.getName());
             TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-            bistroLocationTxtView.setText("lat : " + store.getLocation().getLat() + "lng : " + store.getLocation().getLng());
+            bistroLocationTxtView.setText(store.getAddress());
             TextView bistroDescTxtView = (TextView) findViewById(R.id.bistro_desc_txtView);
             bistroDescTxtView.setText(store.getDescription());
         }

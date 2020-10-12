@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -108,15 +109,30 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             TextView bistroExistTxtView = (TextView) findViewById(R.id.bistro_exist_txtView);
             bistroExistTxtView.setText("매장 수정");
 
-            //이미지
+            //TODO : 지도와 연동
+            //TextView bistroMainAddressTxtView = (TextView) findViewById(R.id.bistro_main_address_txtView);
+            //bistroMainAddressTxtView.setText(store.getAddress());
             EditText bistroLocationTxtView = (EditText) findViewById(R.id.bistro_location_txtView);
-            bistroLocationTxtView.setText("매장 위치 : "+store.getAddress());
+            bistroLocationTxtView.setText(store.getAddress());
             EditText bistroNameTxtView = (EditText) findViewById(R.id.bistro_name_txtView);
             bistroNameTxtView.setText(store.getName());
             EditText bistroTelTxtView = (EditText) findViewById(R.id.bistro_tel_txtView);
             bistroTelTxtView.setText(store.getPhone());
             EditText bistroDescTxtView = (EditText) findViewById(R.id.bistro_desc_txtView);
             bistroDescTxtView.setText(store.getDescription());
+
+            GetImage getStoreImage = new GetImage();
+            if(store.getPhoto()!=null){
+                try {
+                    Bitmap bitmap = getStoreImage.execute(store.getPhoto().getSourceUrl()).get();
+                    ImageView bistroImage = (ImageView) findViewById(R.id.bistro_imagebtn);
+                    bistroImage.setImageBitmap(bitmap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         // 이미지 업로드 버튼 클릭 리스너
@@ -158,51 +174,39 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
+                ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
                 EditText addressEditTxt = (EditText) findViewById(R.id.bistro_location_txtView);
                 EditText nameEditTxt = (EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt = (EditText) findViewById(R.id.bistro_tel_txtView);
                 EditText descEditTxt = (EditText) findViewById(R.id.bistro_desc_txtView);
 
-                //TODO : 주소 입력 창
-                if(nameEditTxt.getText().toString().equals("") || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
-                    Toast.makeText(getApplicationContext(), "항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                if(addressEditTxt.getText().toString().equals("")||nameEditTxt.getText().toString().equals("") || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
+                    Toast.makeText(getApplicationContext(), "주소, 상호명, 전화번호, 설명의 항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 else{
-                    //Drawable uploadedImg = imgBtn.getDrawable();
-                    String address=addressEditTxt.getText().toString().substring(8);
+                    Drawable uploadedImg = imgBtn.getDrawable();
+                    String address=addressEditTxt.getText().toString();
                     String name = nameEditTxt.getText().toString();
                     String phone = telEditTxt.getText().toString();
                     String desc = descEditTxt.getText().toString();
-                    //store.setPhotoUri(photo);
-                    // TODO : 지도에서 값 가져오기
 
                     Store nStore=new Store();
                     nStore.setOwnerId(owner.getId());
                     nStore.setName(name);
                     nStore.setDescription(desc);
+                    // TODO : 지도에서 값 가져오기
                     nStore.setLocation(new Location("12", "12"));
                     nStore.setPhone(phone);
                     nStore.setAddress(address);
+                    //TODO : POST store photo
+                    //nStore.setPhoto();
 
                     if(store==null){ //새로운 가게 등록
                         Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
-                        try {
-                            new callpostStore().execute(callpostStore).get();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        new callpostStore().execute(callpostStore);
                     }
                     else{ //존재하는 가게 수정
                         Call<Store> callpatchStore = service.patchStore("Bearer " + token, nStore, store.getId());
-                        try {
-                            new callpatchStore().execute(callpatchStore).get();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        new callpatchStore().execute(callpatchStore);
                     }
 
                     Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
@@ -276,7 +280,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     store.setName(body.getName());
                     store.setOwnerId(body.getOwnerId());
                     store.setPhone(body.getPhone());
-                    //store.setPhotoUri(body.get(i).getPhotoUri());
 
                     Log.d("NEW STORE", store.toString());
                     Log.d("postStore end", "======================================");
