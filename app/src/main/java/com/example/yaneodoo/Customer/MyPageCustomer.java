@@ -101,6 +101,7 @@ public class MyPageCustomer extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
+                editor.putString("bistrotk", ""); //
                 editor.commit();
                 ActivityCompat.finishAffinity(MyPageCustomer.this);
                 Intent intent = new Intent(MyPageCustomer.this, Login.class);

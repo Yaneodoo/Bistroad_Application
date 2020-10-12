@@ -42,6 +42,7 @@ public class MyPageOwner extends AppCompatActivity {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("storeId", ""); //
                 editor.putString("bId","");
+                editor.putString("bistrotk", ""); //
                 editor.commit();
                 ActivityCompat.finishAffinity(MyPageOwner.this);
                 Intent intent = new Intent(MyPageOwner.this, Login.class);

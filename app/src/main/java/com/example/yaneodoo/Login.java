@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
+import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.REST.RestPostAuth;
 
 import java.util.concurrent.ExecutionException;
@@ -46,6 +48,8 @@ public class Login extends AppCompatActivity {
         final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         String bPwd = "";
         String bId = tk.getString("bId","");
+        String token = tk.getString("bistrotk", "");
+        String role = tk.getString("role", "");
         Log.d("GetBId",bId);
 
         if(checkLocationServicesStatus())
@@ -111,12 +115,23 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        if(bId != ""){
-            bPwd = tk.getString("bPwd","");
-            id.setText(bId);
-            password.setText(bPwd);
-            btnLogin.performClick();
+        if(token != ""){
+            if(role.equals("ROLE_STORE_OWNE")){
+                Intent intent = new Intent(Login.this, ShowOwnerBistroList.class);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(Login.this, ShowCustomerBistroList.class);
+                startActivity(intent);
+            }
         }
+
+//        if(bId != ""){
+//            bPwd = tk.getString("bPwd","");
+//            id.setText(bId);
+//            password.setText(bPwd);
+//            btnLogin.performClick();
+//        }
     }
 
 
