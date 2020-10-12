@@ -1,6 +1,7 @@
 package com.example.yaneodoo.Owner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,11 +19,13 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -57,7 +60,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // ShowCustomerMenuList나 ShowOwnerMenuList에서 보낸 menuStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
@@ -65,6 +67,20 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
 
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
+
+        GetUserImage getUserImage = new GetUserImage();
+        if(owner.getPhoto()!=null){
+            Bitmap bitmap = null;
+            try {
+                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            btnMyPage.setImageBitmap(bitmap);
+        }
 
         TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
         menuNameTxtView.setText(menu.getName());
@@ -106,6 +122,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

@@ -20,6 +20,7 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -33,8 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterMenu extends AppCompatActivity {
     private Intent intent;
-    private String storeId;
-    private String token, ownerName;
+    private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -57,11 +57,24 @@ public class RegisterMenu extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
+
+        GetUserImage getUserImage = new GetUserImage();
+        if(owner.getPhoto()!=null){
+            Bitmap bitmap = null;
+            try {
+                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            btnMyPage.setImageBitmap(bitmap);
+        }
 
         TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
         ownerNameTxtView.setText(owner.getFullName() + " 점주님");
@@ -160,6 +173,7 @@ public class RegisterMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterMenu.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 RegisterMenu.this.finish();
                 startActivity(intent);
             }

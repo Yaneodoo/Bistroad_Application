@@ -1,10 +1,9 @@
 package com.example.yaneodoo.Customer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,16 +16,15 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,6 +36,9 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
+    private Store store=new Store();
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,23 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final User user = (User) intent.getSerializableExtra("userInfo");
+        user = (User) intent.getSerializableExtra("userInfo");
+        store = (Store) intent.getSerializableExtra("bistroInfo");
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final String menuQuantity = (String) intent.getStringExtra("menuQuantity");
+
+        GetUserImage getUserImage = new GetUserImage();
+        try {
+            if(user.getPhoto()!=null) {
+                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         selectedMenu = ReadShoppingBasketData();
 
@@ -74,10 +89,6 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
         btnPickupBtn.setText(menuQuantityTxtView.getText().toString() + "개 담기");
-
-        final Store store = getStore(token, menu.getStoreId());
-
-        final Context context = this;
 
         Button pickupbtn = (Button) findViewById(R.id.btn_pick_up);
         pickupbtn.setOnClickListener(new TextView.OnClickListener() {
@@ -111,6 +122,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerOrderForm.this, MyPageCustomer.class);
+                intent.putExtra("userInfo", user);
                 ShowCustomerOrderForm.this.finish();
                 startActivity(intent);
             }
@@ -143,35 +155,6 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
 
         Button btnPickupBtn = (Button) findViewById(R.id.btn_pick_up);
         btnPickupBtn.setText(String.valueOf(menuQuantity) + "개 담기");
-    }
-
-    private Store getStore(String token, String storeId) {
-        final Store store = new Store();
-        service.getStore("Bearer " + token, storeId).enqueue(new Callback<Store>() {
-            @Override
-            public void onResponse(Call<Store> call, Response<Store> response) {
-                if (response.isSuccessful()) {
-                    Store body = response.body();
-                    if (body != null) {
-                        store.setName(body.getName());
-                        store.setLocation(body.getLocation());
-                        store.setDescription(body.getDescription());
-                        store.setId(body.getId());
-                        store.setOwnerId(body.getOwnerId());
-                        store.setPhone(body.getPhone());
-                        //store.setPhotoUri(body.get(i).getPhotoUri());
-                        Log.d("bistroInfo1", store.toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Store> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-        return store;
     }
 
     private ArrayList<Menu> ReadShoppingBasketData() {

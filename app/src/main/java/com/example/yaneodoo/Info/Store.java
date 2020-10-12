@@ -10,6 +10,7 @@ public class Store implements Serializable {
     private String id;
     private String ownerId;
     private String photoUri;
+    private String address;
 
     public Store() {
     }
@@ -24,6 +25,7 @@ public class Store implements Serializable {
         this.description = description;
         this.location = location;
         this.ownerId = ownerId;
+        //address
     }
 
     public void setPhotoUri(String photoUri) {
@@ -76,6 +78,14 @@ public class Store implements Serializable {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.yaneodoo.Owner;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -43,7 +45,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     private BackPressedForFinish backPressedForFinish;
 
     private User owner = new User();
-    //private String ownerId, ownerName;
     private String token;
     private Retrofit mRetrofit;
     private RetrofitService service;
@@ -78,6 +79,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, ownerId);
         new getStoreList().execute(callgetStoreList);
+
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,6 +165,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerBistroList.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });
@@ -182,6 +185,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 owner.setRole(body.getRole());
                 owner.setPhone(body.getPhone());
                 owner.setFullName(body.getFullName());
+                owner.setPhoto(body.getPhoto());
 
                 TextView textView = (TextView) findViewById(R.id.owner_name_textView);
                 textView.setText(owner.getFullName() + " 점주님");
@@ -195,6 +199,19 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            GetUserImage getUserImage = new GetUserImage();
+            if(owner.getPhoto()!=null){
+                Bitmap bitmap = null;
+                try {
+                    bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
         }
     }
 
@@ -215,11 +232,13 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                         store.setId(body.get(i).getId());
                         store.setOwnerId(body.get(i).getOwnerId());
                         store.setPhone(body.get(i).getPhone());
+                        store.setAddress(body.get(i).getAddress());
                         //store.setPhotoUri(body.get(i).getPhotoUri());
                         storeList.add(store);
 
                         Log.d("STORE", store.toString());
-                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki),
+                                store.getName(), store.getAddress(), store.getDescription());
                         Log.d("store data", "--------------------------------------");
                     }
                 }

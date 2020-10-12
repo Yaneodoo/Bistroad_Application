@@ -32,13 +32,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.yaneodoo.Customer.ShowCustomerMenuInfo;
 import com.example.yaneodoo.Info.Location;
-import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,11 +53,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -91,6 +88,20 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
+        GetUserImage getUserImage = new GetUserImage();
+        if(owner.getPhoto()!=null){
+            Bitmap bitmap = null;
+            try {
+                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            btnMyPage.setImageBitmap(bitmap);
+        }
+
         TextView ownerNameTxtView = (TextView) findViewById(R.id.owner_name_textView);
         ownerNameTxtView.setText(owner.getFullName() + " 점주님");
 
@@ -98,8 +109,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             TextView bistroExistTxtView = (TextView) findViewById(R.id.bistro_exist_txtView);
             bistroExistTxtView.setText("매장 수정");
 
-            TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-            bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
+            //이미지
+            EditText bistroLocationTxtView = (EditText) findViewById(R.id.bistro_location_txtView);
+            bistroLocationTxtView.setText("매장 위치 : "+store.getAddress());
             EditText bistroNameTxtView = (EditText) findViewById(R.id.bistro_name_txtView);
             bistroNameTxtView.setText(store.getName());
             EditText bistroTelTxtView = (EditText) findViewById(R.id.bistro_tel_txtView);
@@ -148,14 +160,17 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view) {
                 //ImageView imgBtn = findViewById(R.id.bistro_imagebtn);
+                EditText addressEditTxt = (EditText) findViewById(R.id.bistro_location_txtView);
                 EditText nameEditTxt = (EditText) findViewById(R.id.bistro_name_txtView);
                 EditText telEditTxt = (EditText) findViewById(R.id.bistro_tel_txtView);
                 EditText descEditTxt = (EditText) findViewById(R.id.bistro_desc_txtView);
 
+                //TODO : 주소 입력 창
                 if(nameEditTxt.getText().toString().equals("") || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
                     Toast.makeText(getApplicationContext(), "항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 else{
                     //Drawable uploadedImg = imgBtn.getDrawable();
+                    String address=addressEditTxt.getText().toString().substring(8);
                     String name = nameEditTxt.getText().toString();
                     String phone = telEditTxt.getText().toString();
                     String desc = descEditTxt.getText().toString();
@@ -168,6 +183,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     nStore.setDescription(desc);
                     nStore.setLocation(new Location("12", "12"));
                     nStore.setPhone(phone);
+                    nStore.setAddress(address);
 
                     if(store==null){ //새로운 가게 등록
                         Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
@@ -189,7 +205,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                             e.printStackTrace();
                         }
                     }
-
 
                     Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
                     RegisterBistro.this.finish();
@@ -239,6 +254,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterBistro.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 RegisterBistro.this.finish();
                 startActivity(intent);
             }

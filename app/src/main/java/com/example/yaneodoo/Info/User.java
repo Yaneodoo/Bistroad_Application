@@ -9,6 +9,7 @@ public class User implements Serializable {
     private String phone;
     private String role;
     private String id;
+    private Photo photo;
 
     public User() {
     }
@@ -19,6 +20,14 @@ public class User implements Serializable {
         this.fullName = fullName;
         this.phone = phone;
         this.role = role;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
     public String getRole() {

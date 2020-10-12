@@ -2,6 +2,7 @@ package com.example.yaneodoo.Owner;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +23,9 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
-import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.ListView.MenuListViewOwnerAdapter;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.io.IOException;
@@ -42,8 +43,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
     boolean onChoice = false;
     private Intent intent;
 
-    private String storeId;
-    private String token, ownerName;
+    private String token;
     private Store store;
 
     private Retrofit mRetrofit;
@@ -87,6 +87,20 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         bistroDescTxtView.setText(store.getDescription());
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
+
+        GetUserImage getUserImage = new GetUserImage();
+        if(owner.getPhoto()!=null){
+            Bitmap bitmap = null;
+            try {
+                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            btnMyPage.setImageBitmap(bitmap);
+        }
 
         // 주문내역 버튼 클릭 리스너
         Button btn_orderlist = (Button) findViewById(R.id.btn_orderlist);
@@ -206,6 +220,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerMenuList.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

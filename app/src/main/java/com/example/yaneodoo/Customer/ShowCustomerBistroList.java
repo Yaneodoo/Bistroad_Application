@@ -1,6 +1,10 @@
 package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,15 +23,21 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
 import com.example.yaneodoo.ListView.BistroListViewItem;
+import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +59,8 @@ public class ShowCustomerBistroList extends AppCompatActivity {
 
     private BackPressedForFinish backPressedForFinish;
 
+    private User user = new User();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +75,15 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        final User user = getUserMe(token);
-        getNearbyStoreList(token);//소유한 가게 불러오기
+        Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
+        new getUserMe().execute(callgetUserMe);
+
+        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token);
+        new getNearbyStoreList().execute(getNearbyStoreList);
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.bistro_list_view_customer);
+        listview.setAdapter(adapter);
 
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,11 +119,12 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn) ;
+        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerBistroList.this, MyPageCustomer.class);
+                intent.putExtra("userInfo", user);
                 startActivity(intent);
             }
         });
@@ -139,66 +156,85 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         } else return new ArrayList<Menu>();
     }
 
-    private User getUserMe(String token) {
-        final User user = new User();
-        service.getUserMe("Bearer " + token).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User body = response.body();
-                    if (body != null) {
-                        user.setId(body.getId());
-                        user.setUsername(body.getUsername());
-                        user.setRole(body.getRole());
-                        user.setPhone(body.getPhone());
-                        user.setFullName(body.getFullName());
-                    }
+    private class getUserMe extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<User> call = params[0];
+                Response<User> response = call.execute();
+                User body = response.body();
+                Log.d("USER", body.toString());
+
+                user.setId(body.getId());
+                user.setUsername(body.getUsername());
+                user.setRole(body.getRole());
+                user.setPhone(body.getPhone());
+                user.setFullName(body.getFullName());
+                user.setPhoto(body.getPhoto());
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            GetUserImage getUserImage = new GetUserImage();
+            try {
+                if(user.getPhoto()!=null) {
+                    Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                    ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                    btnMyPage.setImageBitmap(bitmap);
                 }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("t", "fail");
-            }
-        });
-
-        return user;
+        }
     }
 
-    private void getNearbyStoreList(String token) {
-        service.getNearbyStoreList("Bearer " + token).enqueue(new Callback<List<Store>>() {
-            @Override
-            public void onResponse(Call<List<Store>> call, Response<List<Store>> response) {
-                if (response.isSuccessful()) {
-                    List<Store> body = response.body();
-                    if (body != null) {
-                        for (int i = 0; i < body.size(); i++) {
-                            Store store = new Store();
-                            store.setName(body.get(i).getName());
-                            store.setLocation(body.get(i).getLocation());
-                            store.setDescription(body.get(i).getDescription());
-                            store.setId(body.get(i).getId());
-                            store.setOwnerId(body.get(i).getOwnerId());
-                            store.setPhone(body.get(i).getPhone());
-                            //store.setPhotoUri(body.get(i).getPhotoUri());
-                            storeList.add(store);
+    private class getNearbyStoreList extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Store>> call = params[0];
+                Response<List<Store>> response = call.execute();
+                List<Store> body = response.body();
 
-                            adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki), store.getName(), "lat: " + store.getLocation().getLat() + "lng: " + store.getLocation().getLng(), store.getDescription());
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Store store = new Store();
+                        store.setName(body.get(i).getName());
+                        store.setLocation(body.get(i).getLocation());
+                        store.setDescription(body.get(i).getDescription());
+                        store.setId(body.get(i).getId());
+                        store.setOwnerId(body.get(i).getOwnerId());
+                        store.setPhone(body.get(i).getPhone());
+                        store.setAddress(body.get(i).getAddress());
+                        //store.setPhotoUri(body.get(i).getPhotoUri());
+                        storeList.add(store);
 
-                            Log.d("store data", "--------------------------------------");
-                        }
-                        Log.d("getStoreList end", "======================================");
-                        listview.setAdapter(adapter);
+                        Log.d("STORE", store.toString());
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki),
+                                store.getName(), store.getAddress(), store.getDescription());
+                        Log.d("store data", "--------------------------------------");
                     }
                 }
-            }
+                return null;
 
-            @Override
-            public void onFailure(Call<List<Store>> call, Throwable t) {
-                t.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            listview.setAdapter(adapter);
+        }
     }
 
     @Override

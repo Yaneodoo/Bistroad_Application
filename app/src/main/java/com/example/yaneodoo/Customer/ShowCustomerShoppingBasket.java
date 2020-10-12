@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ShoppingBasketListViewAdapter;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -83,11 +85,23 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             storeId = menu.getStoreId();
         }
 
-        Log.d("USER", user.toString());
         updateTotalAmount();
 
         Call<Store> callgetStore = service.getStore("Bearer " + token, storeId);
         new getStore().execute(callgetStore);
+
+        GetUserImage getUserImage = new GetUserImage();
+        try {
+            if(user.getPhoto()!=null) {
+                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         listview = (ListView) findViewById(R.id.shoppingbasket_list_view_customer);
 
@@ -165,7 +179,6 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerShoppingBasket.this, ShowCustomerBistroList.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 ShowCustomerShoppingBasket.this.finish();
                 startActivity(intent);
             }
@@ -176,6 +189,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerShoppingBasket.this, MyPageCustomer.class);
+                intent.putExtra("userInfo", user);
                 ShowCustomerShoppingBasket.this.finish();
                 startActivity(intent);
             }

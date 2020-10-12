@@ -1,6 +1,8 @@
 package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -33,15 +37,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowCustomerMenuInfo extends AppCompatActivity {
     private Intent intent;
@@ -56,6 +52,9 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
     private List<Review> reviewList = new ArrayList<>();
     private ReviewListViewAdapter adapter = new ReviewListViewAdapter();
+
+    private User user = new User();
+    private Store store=new Store();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +73,24 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
         intent = getIntent();
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
-        final User user = (User) intent.getSerializableExtra("userInfo");
+        user = (User) intent.getSerializableExtra("userInfo");
+        store = (Store) intent.getSerializableExtra("bistroInfo");
 
         Call<List<Review>> callgetReviewList = service.getReviewList("Bearer " + token, menu.getStoreId(), menu.getId());
         new callgetReviewList().execute(callgetReviewList);
+
+        GetUserImage getUserImage = new GetUserImage();
+        try {
+            if(user.getPhoto()!=null) {
+                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
         menuNameTxtView.setText(menu.getName());
@@ -94,6 +107,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, ShowCustomerOrderForm.class);
                 intent.putExtra("userInfo", user);
                 intent.putExtra("menuInfo", menu);
+                intent.putExtra("bistroInfo",store);
                 startActivity(intent);
             }
         });
@@ -114,6 +128,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, MyPageCustomer.class);
+                intent.putExtra("userInfo", user);
                 startActivity(intent);
             }
         });

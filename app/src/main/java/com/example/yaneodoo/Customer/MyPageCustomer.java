@@ -2,25 +2,31 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +40,8 @@ public class MyPageCustomer extends AppCompatActivity {
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
+
+    private User user = new User();
 
     private OrderListViewAdapter adapter = new OrderListViewAdapter();
     private ListView listview;
@@ -58,9 +66,23 @@ public class MyPageCustomer extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
-        //id = intent.getStringExtra("bistroStr");
+        user = (User) intent.getSerializableExtra("userInfo");
+
+        GetUserImage getUserImage = new GetUserImage();
+        try {
+            if(user.getPhoto()!=null) {
+                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        intent = getIntent();
         token = tk.getString("bistrotk", "");
 
         //TODO : 날짜 최신순
