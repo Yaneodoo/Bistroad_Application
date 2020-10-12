@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -22,9 +24,13 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
+import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.Owner.ShowOwnerOrderList;
 import com.example.yaneodoo.REST.RestGetUser;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,6 +53,9 @@ public class GetRealtimeOrderService extends Service {
 
     private String oldOrderId = "";
     private String newOrderId = "";
+    String ownerId = "";
+    private User owner = new User();
+    Store store = new Store();
 
     public GetRealtimeOrderService() {
     }
@@ -65,11 +74,15 @@ public class GetRealtimeOrderService extends Service {
         Log.d(TAG, "onStartCommand() called");
         tk = getSharedPreferences("sFile", MODE_PRIVATE);
         oldOrderId = tk.getString("orderId", "noOrder");
+        ownerId = tk.getString("id", "");
+
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = mRetrofit.create(RetrofitService.class);
+        Call<User> callgetUserMe = service.getUserMe("Bearer " + tk);
+        new getUserMe().execute(callgetUserMe);
         if (intent == null) {
             return Service.START_STICKY; //서비스가 종료되어도 자동으로 다시 실행시켜줘!
         } else {
@@ -164,6 +177,8 @@ public class GetRealtimeOrderService extends Service {
                 Log.d("New Order", newOrderId);
                 Log.d("Old Order", oldOrderId);
                 if(!newOrderId.equals(oldOrderId)){
+                    final Call<Store> callgetStore = service.getStore("Bearer " + token, sId);
+                    new getStore().execute(callgetStore);
                     handler.sendEmptyMessage(0);
                     oldOrderId = newOrderId;
                 }
@@ -187,6 +202,8 @@ public class GetRealtimeOrderService extends Service {
             }
 
             Intent intent = new Intent(GetRealtimeOrderService.this, ShowCustomerBistroList.class);
+            intent.putExtra("bistroInfo", store);
+            intent.putExtra("ownerInfo", owner);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(GetRealtimeOrderService.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             Uri soundUri = RingtoneManager.getDefaultUri((RingtoneManager.TYPE_NOTIFICATION));
@@ -202,6 +219,60 @@ public class GetRealtimeOrderService extends Service {
                     .setOnlyAlertOnce(true)
                     .setChannelId(NOTIFICATION_ID);
             notificationManager.notify(1,notificationBuilder.build());
+        }
+    }
+
+    private class getUserMe extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<User> call = params[0];
+                Response<User> response = call.execute();
+                User body = response.body();
+                Log.d("USER", body.toString());
+
+                owner.setId(body.getId());
+                owner.setUsername(body.getUsername());
+                owner.setRole(body.getRole());
+                owner.setPhone(body.getPhone());
+                owner.setFullName(body.getFullName());
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+    }
+
+    private class getStore extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Store> call = params[0];
+                Response<Store> response = call.execute();
+                Store body = response.body();
+
+                store.setName(body.getName());
+                store.setLocation(body.getLocation());
+                store.setDescription(body.getDescription());
+                store.setId(body.getId());
+                store.setOwnerId(body.getOwnerId());
+                store.setPhone(body.getPhone());
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
         }
     }
 }
