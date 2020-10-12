@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.RestGetUser;
@@ -37,7 +38,7 @@ import java.io.IOException;
 
 public class ShowOwnerOrderList extends AppCompatActivity {
     private Intent intent;
-    private String token, id, name;
+    private String token, name;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -56,7 +57,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.order_list_view_owner);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
-        name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -66,6 +66,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
+        final User owner = (User) intent.getSerializableExtra("ownerInfo");
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         token = tk.getString("bistrotk","");
 
@@ -73,7 +74,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         //TODO : 날짜 최신순
 
         TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
-        titleTxtView.setText(name+" 점주님의\n"+store.getName()+" 주문내역입니다.");
+        titleTxtView.setText(owner.getFullName()+" 점주님의\n"+store.getName()+" 주문내역입니다.");
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,6 +99,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowOwnerOrderList.this, MyPageOwner.class);
+                intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }
         });

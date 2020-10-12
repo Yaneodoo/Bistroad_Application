@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
 import com.example.yaneodoo.ListView.MenuListViewItem;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetStoreImage;
 import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -82,6 +84,20 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         bistroLocationTxtView.setText(store.getLocation().toString());
         TextView bistroDescTxtView = (TextView) findViewById(R.id.bistro_desc_txtView);
         bistroDescTxtView.setText(store.getDescription());
+
+        Bitmap sbitmap = null;
+        GetStoreImage getStoreImage = new GetStoreImage();
+        if(store.getPhoto()!=null){
+            try {
+                sbitmap = getStoreImage.execute(store.getPhoto().getSourceUrl()).get();
+                ImageView bistroRepresentImage=(ImageView) findViewById(R.id.bistro_represent_image);
+                bistroRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
         //TODO : 별점 높은 순

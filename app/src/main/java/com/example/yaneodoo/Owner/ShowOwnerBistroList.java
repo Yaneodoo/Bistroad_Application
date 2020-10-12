@@ -18,13 +18,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
-import com.example.yaneodoo.ListView.BistroListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
@@ -80,7 +78,6 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, ownerId);
         new getStoreList().execute(callgetStoreList);
 
-
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,16 +85,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 if (onChoice) {
                     v.setBackgroundColor(R.id.dark);
                 } else {
-                    // get item
-                    BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
-                    Store store = new Store();
-                    store.setOwnerId(storeList.get(position).getOwnerId());
-                    store.setId(storeList.get(position).getId());
-                    store.setName(storeList.get(position).getName());
-                    store.setLocation(storeList.get(position).getLocation());
-                    store.setDescription(storeList.get(position).getDescription());
-                    store.setPhone(storeList.get(position).getPhone());
-                    //store.setPhotoUri(storeList.get(position).getPhotoUri());
+                    Store store = (Store) parent.getItemAtPosition(position);
 
                     Intent intent = new Intent(ShowOwnerBistroList.this, ShowOwnerMenuList.class);
                     intent.putExtra("ownerInfo", owner);
@@ -233,12 +221,11 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                         store.setOwnerId(body.get(i).getOwnerId());
                         store.setPhone(body.get(i).getPhone());
                         store.setAddress(body.get(i).getAddress());
-                        //store.setPhotoUri(body.get(i).getPhotoUri());
+                        store.setPhoto(body.get(i).getPhoto());
                         storeList.add(store);
 
                         Log.d("STORE", store.toString());
-                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki),
-                                store.getName(), store.getAddress(), store.getDescription());
+                        adapter.addItem(store);
                         Log.d("store data", "--------------------------------------");
                     }
                 }

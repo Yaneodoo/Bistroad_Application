@@ -9,14 +9,10 @@ public class Store implements Serializable {
     private Location location;
     private String id;
     private String ownerId;
-    private String photoUri;
+    private Photo photo;
     private String address;
 
     public Store() {
-    }
-
-    public String getPhotoUri() {
-        return photoUri;
     }
 
     public Store(String description, Location location, String name, String ownerId, String phone) {
@@ -28,8 +24,12 @@ public class Store implements Serializable {
         //address
     }
 
-    public void setPhotoUri(String photoUri) {
-        this.photoUri = photoUri;
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
     public String getPhone() {

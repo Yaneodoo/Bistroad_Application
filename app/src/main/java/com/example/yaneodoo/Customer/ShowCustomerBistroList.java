@@ -2,8 +2,6 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,15 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.BackPressedForFinish;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
-import com.example.yaneodoo.ListView.BistroListViewItem;
-import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetUserImage;
 import com.example.yaneodoo.RetrofitService;
@@ -33,14 +28,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -89,17 +81,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                BistroListViewItem item = (BistroListViewItem) parent.getItemAtPosition(position);
-                Store store = new Store();
-
-                store.setOwnerId(storeList.get(position).getOwnerId());
-                store.setPhone(storeList.get(position).getPhone());
-                store.setId(storeList.get(position).getId());
-                store.setName(storeList.get(position).getName());
-                store.setLocation(storeList.get(position).getLocation());
-                store.setDescription(storeList.get(position).getDescription());
-                //store.setPhotoUri(storeList.get(position).getPhotoUri());
+                Store store = (Store) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(ShowCustomerBistroList.this, ShowCustomerMenuList.class);
                 intent.putExtra("userInfo", user);
@@ -214,12 +196,11 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                         store.setOwnerId(body.get(i).getOwnerId());
                         store.setPhone(body.get(i).getPhone());
                         store.setAddress(body.get(i).getAddress());
-                        //store.setPhotoUri(body.get(i).getPhotoUri());
+                        store.setPhoto(body.get(i).getPhoto());
                         storeList.add(store);
 
                         Log.d("STORE", store.toString());
-                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.tteokbokki),
-                                store.getName(), store.getAddress(), store.getDescription());
+                        adapter.addItem(store);
                         Log.d("store data", "--------------------------------------");
                     }
                 }

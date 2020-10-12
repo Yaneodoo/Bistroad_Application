@@ -44,20 +44,6 @@ public class MyPageOwner extends AppCompatActivity {
         intent = getIntent();
         owner = (User) intent.getSerializableExtra("ownerInfo");
 
-        GetUserImage getUserImage = new GetUserImage();
-        if(owner.getPhoto()!=null){
-            Bitmap bitmap = null;
-            try {
-                bitmap = getUserImage.execute(owner.getPhoto().getThumbnailUrl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
-            btnMyPage.setImageBitmap(bitmap);
-        }
-
         // 손님 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.mypage_logout_button);
         btnCustomer.setOnClickListener(new TextView.OnClickListener() {

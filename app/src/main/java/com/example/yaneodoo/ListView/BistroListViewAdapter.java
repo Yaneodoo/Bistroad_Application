@@ -1,22 +1,28 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetStoreImage;
+import com.example.yaneodoo.REST.GetUserImage;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class BistroListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<BistroListViewItem> listViewItemList = new ArrayList<BistroListViewItem>();
+    private ArrayList<Store> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
     public BistroListViewAdapter() {
@@ -48,13 +54,25 @@ public class BistroListViewAdapter extends BaseAdapter {
         cb1.setVisibility(View.INVISIBLE);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        BistroListViewItem listViewItem = listViewItemList.get(position);
+        Store listViewItem = listViewItemList.get(position);
+
+        Bitmap bitmap = null;
+        GetStoreImage getStoreImage = new GetStoreImage();
+        if(listViewItem.getPhoto()!=null){
+            try {
+                bitmap = getStoreImage.execute(listViewItem.getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getIcon());
-        titleTextView.setText(listViewItem.getTitle());
-        locationTextView.setText(listViewItem.getLocationStr());
-        descTextView.setText(listViewItem.getDesc());
+        if(bitmap!=null) iconImageView.setImageBitmap(bitmap);
+        titleTextView.setText(listViewItem.getName());
+        locationTextView.setText(listViewItem.getAddress());
+        descTextView.setText(listViewItem.getDescription());
 
         return convertView;
     }
@@ -72,14 +90,8 @@ public class BistroListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable icon, String title, String address, String desc) {
-        BistroListViewItem item = new BistroListViewItem();
-
-        item.setIcon(icon);
-        item.setTitle(title);
-        item.setLocationStr(address);
-        item.setDesc(desc);
-
+    public void addItem(Store store) {
+        Store item = store;
         listViewItemList.add(item);
     }
 }

@@ -69,19 +69,6 @@ public class MyPageCustomer extends AppCompatActivity {
         intent = getIntent();
         user = (User) intent.getSerializableExtra("userInfo");
 
-        GetUserImage getUserImage = new GetUserImage();
-        try {
-            if(user.getPhoto()!=null) {
-                Bitmap bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
-                btnMyPage.setImageBitmap(bitmap);
-            }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         intent = getIntent();
         token = tk.getString("bistrotk", "");
 

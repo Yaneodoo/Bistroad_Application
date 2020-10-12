@@ -85,11 +85,11 @@
             android:scaleType="fitCenter"
             android:src="@drawable/img_upload" />
 
-        <TextView
+        <EditText
             android:id="@+id/bistro_location_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="매장 위치 : 서울시 용산구 새창로 70"
+            android:text="매장 위치 : 서울시 용산구"
             android:textSize="20dp" />
 
         <fragment
