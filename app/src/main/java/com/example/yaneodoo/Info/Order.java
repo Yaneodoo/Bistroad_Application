@@ -1,28 +1,55 @@
 package com.example.yaneodoo.Info;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Order implements Serializable {
     private String id;
-    private String storeId;
+    private Store store;
     private String userId;
-    private List<Request> requests;
-    private String date;
+    private List<Request> orderLines;
     private Integer tableNum;
     private String progress;
+    private Boolean hasReview=false;
+    private LocalDateTime timestamp;
 
     public Order() {
     }
 
-    public Order(String storeId, String userId, List<Request> requests, String date, Integer tableNum, String progress) {
-        this.storeId = storeId;
+    public Order(Store store, String userId, List<Request> requests, LocalDateTime date, Integer tableNum, String progress) {
+        this.store = store;
         this.userId = userId;
-        this.requests = requests;
-        this.date = date;
+        this.orderLines = requests;
+        this.timestamp = date;
         this.tableNum = tableNum;
         this.progress = progress;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setTableNum(Integer tableNum) {
+        this.tableNum = tableNum;
+    }
+
+    public Boolean getHasReview() {
+        return hasReview;
+    }
+
+    public void setHasReview(Boolean hasReview) {
+        this.hasReview = hasReview;
     }
 
     public String getId() {
@@ -33,12 +60,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public Store getStore() {
+        return store;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     public String getUserId() {
@@ -50,19 +77,11 @@ public class Order implements Serializable {
     }
 
     public List<Request> getRequests() {
-        return requests;
+        return orderLines;
     }
 
     public void setRequest(List<Request> requests) {
-        this.requests = requests;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+        this.orderLines = requests;
     }
 
     public int getTableNum() {
@@ -83,6 +102,6 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "[id = " + id + ", storeId = " + storeId + ", userId = " + userId + ", requestList = " + requests + ", date = " + date + ", tableNum = " + tableNum + ", progress = " + progress + "]";
+        return "[id = " + id + ", store = " + store.toString() + ", userId = " + userId + ", requestList = " + orderLines + ", date = " + timestamp + ", tableNum = " + tableNum + ", progress = " + progress + "]";
     }
 }

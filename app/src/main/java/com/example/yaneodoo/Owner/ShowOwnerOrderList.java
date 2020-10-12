@@ -3,6 +3,7 @@ package com.example.yaneodoo.Owner;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -64,7 +66,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                 .build();
         service = mRetrofit.create(RetrofitService.class);
 
-        // ShowOwnerMenuList에서 보낸 titleStr을 받기위해 getIntent()로 초기화
         intent = getIntent();
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
@@ -106,6 +107,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
     }
 
     // 주문접수 토글 버튼 클릭 리스너
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void progressToggle(View v) {
         LinearLayout parentRow = (LinearLayout) v.getParent();
         TextView orderState = (TextView) parentRow.findViewById(R.id.order_progress);
@@ -135,20 +137,26 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
     private void getOrderList(final String token, String storeId) {
         service.getStoreOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful()) {
                     List<Order> body = response.body();
                     if (body != null) {
+                        Log.d("requests", body.toString());
                         for (int i = 0; i < body.size(); i++) {
                             Order order = new Order();
                             order.setId(body.get(i).getId());
                             order.setProgress(body.get(i).getProgress());
                             order.setTableNum(body.get(i).getTableNum());
-                            order.setDate(body.get(i).getDate());
+                            order.setTimestamp(body.get(i).getTimestamp());
                             order.setUserId(body.get(i).getUserId());
                             order.setRequest(body.get(i).getRequests());
+                            order.setUserId(body.get(i).getUserId());
+                            order.setHasReview(body.get(i).getHasReview());
+                            order.setStore(body.get(i).getStore());
                             orderList.add(order);
+
                             RestGetUser restGetUser = new RestGetUser(order.getUserId(),token);
                             String name = "";
                             try {
@@ -166,14 +174,16 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                                 amount = order.getRequests().get(j).getAmount().toString();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
                                 requests += menu + " x " + amount + "\n";
-                                Log.d("requests", requests);
                             }
                             requests = requests.substring(0,requests.length()-1);
+                            Log.d("requests complete", requests);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId(),order.getTableNum());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
+                                        order.getTimestamp().toString(), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
+                                        order.getTimestamp().toString(), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");

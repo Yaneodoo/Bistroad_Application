@@ -18,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +126,8 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("OK",
                                 new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
+                                    public void onClick(DialogInterface dialog, int id) {
                                         curTableNum=Integer.parseInt(userInput.getText().toString());
 
                                         SaveShoppingBasketData(new ArrayList<Menu>()); //장바구니 비우기
@@ -137,11 +140,10 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                                         }
                                         Log.d("SELECTED MENU LIST","-------------------------");
 
-                                        Date date=new Date();
+                                        LocalDateTime date = LocalDateTime.now();
                                         Log.d("DATE",date.toString());
 
-                                        //TODO : DATE 형식 맞춰 보내기
-                                        Order order=new Order(storeId, user.getId(), requestList, "2020-09-26T12:40:11.966+00:00", curTableNum,"REQUESTED");
+                                        Order order=new Order(store, user.getId(), requestList, date, curTableNum,"REQUESTED");
                                         Log.d("CREATE ORDER",order.toString());
 
                                         Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
