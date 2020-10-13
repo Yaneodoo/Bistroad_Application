@@ -1,24 +1,39 @@
 package com.example.yaneodoo.Owner;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
+import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -39,8 +54,11 @@ public class RegisterMenu extends AppCompatActivity {
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
+    private static final int MY_PERMISSION_CAMERA = 1111;
+    private static final int REQUEST_TAKE_ALBUM = 2222;
+    private ImageView upload_btn;
     private static final int REQUEST_CODE = 0;
-    private ImageView uploadbtn;
+    private PhImageCapture mCamera;
 
     private Store store = new Store();
 
@@ -82,7 +100,7 @@ public class RegisterMenu extends AppCompatActivity {
         TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
         bistroNameTxtView.setText(store.getName());
         TextView bistroLocationTxtView = (TextView) findViewById(R.id.bistro_location_txtView);
-        bistroLocationTxtView.setText("매장 위치 [lat: " + store.getLocation().getLat() + " lng: " + store.getLocation().getLng() + "]");
+        bistroLocationTxtView.setText("매장 주소 : "+store.getAddress());
 
         if (menu != null) {
             EditText menuNameTxtView = (EditText) findViewById(R.id.menu_name_txtView);
@@ -93,7 +111,7 @@ public class RegisterMenu extends AppCompatActivity {
             meuDescTxtView.setText(menu.getDescription());
 
             GetImage getMenuImage = new GetImage();
-            if(store.getPhoto()!=null){
+            if(menu.getPhoto()!=null){
                 try {
                     Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
                     ImageView menuImage = (ImageView) findViewById(R.id.upload_btn);
@@ -159,14 +177,36 @@ public class RegisterMenu extends AppCompatActivity {
         });
 
         // 이미지 업로드 버튼 클릭 리스너
-        uploadbtn = findViewById(R.id.upload_btn);
-        uploadbtn.setOnClickListener(new Button.OnClickListener() {
+        upload_btn = findViewById(R.id.upload_btn);
+        upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE);
+                PopupMenu pop = new PopupMenu(getApplicationContext(), view);
+                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
+
+                pop.show();
+                checkPermission();
+
+                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.camera:
+                                final int imageWidth = 150;
+                                final int imageHeight = 150;
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterMenu");
+                                mCamera.onStart(RegisterMenu.this);
+                                break;
+                            case R.id.gallery:
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+                                break;
+                        }
+                        return true;
+                    }
+                });
             }
         });
 
@@ -194,22 +234,17 @@ public class RegisterMenu extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Bitmap img = BitmapFactory.decodeStream(in);
-                    in.close();
-                    uploadbtn.setImageBitmap(img);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
-            }
-        }
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == 1) return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private class postMenu extends AsyncTask<Call, Void, String> {
@@ -254,5 +289,75 @@ public class RegisterMenu extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_TAKE_ALBUM:
+                if (resultCode == Activity.RESULT_OK) {
+
+                    if (data.getData() != null) {
+                        try {
+                            InputStream in = getContentResolver().openInputStream(data.getData());
+
+                            Bitmap img = BitmapFactory.decodeStream(in);
+                            in.close();
+
+                            upload_btn.setImageBitmap(img);
+                        } catch (Exception e) {
+                        }
+                    } else if (resultCode == RESULT_CANCELED) {
+                        Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            default:
+                if (resultCode == Activity.RESULT_OK) {
+                    // Camera action pick 결과 전달
+                    mCamera.onResult(upload_btn);
+                }
+        }
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
+                    (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))) {
+                new AlertDialog.Builder(this).setTitle("알림")
+                        .setMessage("저장소 권한이 거부되었습니다. \n앱을 재실행하여 뜨는 팝업을 통해 권한을 허용하거나, 앱 설정에서 권한을 허용해주세요.")
+                        .setNeutralButton("설정", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.setData(Uri.parse("package: " + getPackageName()));
+                                startActivity(intent);
+                            }
+                        }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }).setCancelable(false).create().show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Toast.makeText(this, "카메라 권한 승인완료", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "카메라 권한 승인 거절", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public interface PhActivityRequest {
+        int IMAGE_CAPTURE = 1001;
     }
 }

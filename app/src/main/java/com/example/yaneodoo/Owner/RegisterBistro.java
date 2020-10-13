@@ -3,6 +3,7 @@ package com.example.yaneodoo.Owner;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,6 +51,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -63,7 +65,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallback {
     private Intent intent;
     private GoogleMap mMap;
-    private static final int REQUEST_TAKE_ALBUM = 1111;
+    private static final int MY_PERMISSION_CAMERA = 1111;
+    private static final int REQUEST_TAKE_ALBUM = 2222;
     private ImageView upload_btn;
     private PhImageCapture mCamera;
 
@@ -143,6 +146,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 PopupMenu pop = new PopupMenu(getApplicationContext(), view);
                 getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
 
+                pop.show();
+                checkPermission();
+
                 pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -150,11 +156,10 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                             case R.id.camera:
                                 final int imageWidth = 150;
                                 final int imageHeight = 150;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight);
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterBistro");
                                 mCamera.onStart(RegisterBistro.this);
                                 break;
                             case R.id.gallery:
-                                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
                                 Intent intent = new Intent(Intent.ACTION_PICK);
                                 intent.setType("image/*");
                                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -164,8 +169,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                         return true;
                     }
                 });
-                pop.show();
-                checkPermission();
+
             }
         });
 
@@ -403,7 +407,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
                     (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))) {
-                new AlertDialog.Builder(this).setTitle("알림").setMessage("저장소 권한이 거부되었습니다. \n앱을 재실행하여 뜨는 팝업을 통해 권한을 허용하거나, 앱 설정에서 권한을 허용해주세요.").setNeutralButton("설정", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this).setTitle("알림")
+                        .setMessage("저장소 권한이 거부되었습니다. \n앱을 재실행하여 뜨는 팝업을 통해 권한을 허용하거나, 앱 설정에서 권한을 허용해주세요.")
+                        .setNeutralButton("설정", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -416,6 +422,19 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                         finish();
                     }
                 }).setCancelable(false).create().show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Toast.makeText(this, "카메라 권한 승인완료", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "카메라 권한 승인 거절", Toast.LENGTH_SHORT).show();
             }
         }
     }

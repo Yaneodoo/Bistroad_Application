@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.example.yaneodoo.Owner.RegisterBistro;
+import com.example.yaneodoo.Owner.RegisterMenu;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,9 +30,12 @@ public class PhImageCapture extends AppCompatActivity {
     // Photo path
     private String mStrPhotoPath;
 
-    public PhImageCapture(int a_reqWidth, int a_reqHeight) {
+    private String usedActivity;
+
+    public PhImageCapture(int a_reqWidth, int a_reqHeight, String usedActivity) {
         mReqWidth = a_reqWidth;
         mReqHeight = a_reqHeight;
+        this.usedActivity=usedActivity;
     }
 
     /**
@@ -75,7 +79,8 @@ public class PhImageCapture extends AppCompatActivity {
             }
         }
 
-        a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
+        if(usedActivity.equals("RegisterMenu")) a_activity.startActivityForResult(pickIntent, RegisterMenu.PhActivityRequest.IMAGE_CAPTURE);
+        else a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
     }
 
     /**
