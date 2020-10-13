@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +39,7 @@ public class PhImageCapture extends AppCompatActivity {
     public PhImageCapture(int a_reqWidth, int a_reqHeight, String usedActivity) {
         mReqWidth = a_reqWidth;
         mReqHeight = a_reqHeight;
-        this.usedActivity=usedActivity;
+        this.usedActivity = usedActivity;
     }
 
     /**
@@ -57,11 +61,15 @@ public class PhImageCapture extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //TODO : photoFile 생성됨
+
         /**
          * File provider 를 이용 파일 공유
          * Android N 부터 file URI 를 이용할 경우 FileUriExposedException 이 발생한다.
          */
         Uri contentUri = FileProvider.getUriForFile(a_activity, BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        Log.d("URI", contentUri.toString());
+
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         mediaScanIntent.setData(contentUri);
         a_activity.sendBroadcast(mediaScanIntent);
@@ -79,8 +87,10 @@ public class PhImageCapture extends AppCompatActivity {
             }
         }
 
-        if(usedActivity.equals("RegisterMenu")) a_activity.startActivityForResult(pickIntent, RegisterMenu.PhActivityRequest.IMAGE_CAPTURE);
-        else a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
+        if (usedActivity.equals("RegisterMenu"))
+            a_activity.startActivityForResult(pickIntent, RegisterMenu.PhActivityRequest.IMAGE_CAPTURE);
+        else
+            a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
     }
 
     /**
@@ -91,9 +101,44 @@ public class PhImageCapture extends AppCompatActivity {
             // Resize bitmap for memory
             Bitmap bitmap = PhUtil.decodeSampledBitmapFromFile(mStrPhotoPath, mReqWidth, mReqHeight);
             bitmap = Bitmap.createScaledBitmap(bitmap, mReqWidth, mReqHeight, true);
+
+            ExifInterface exif = null;
+            try {
+                exif = new ExifInterface(mStrPhotoPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int exifOrientation;
+            int exifDegree;
+            if (exif != null) {
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = exifOrientationToDegrees(exifOrientation);
+            } else { exifDegree = 0; }
+
+            bitmap=rotate(bitmap, exifDegree); //회전각도 적용
+
             a_ivPhoto.setImageBitmap(bitmap);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap src, float degree) { // Matrix 객체 생성
+        Matrix matrix = new Matrix();
+        // 회전 각도 셋팅 m
+        matrix.postRotate(degree);
+        // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 }

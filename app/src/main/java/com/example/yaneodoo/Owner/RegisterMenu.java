@@ -6,8 +6,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -301,9 +304,22 @@ public class RegisterMenu extends AppCompatActivity {
                     if (data.getData() != null) {
                         try {
                             InputStream in = getContentResolver().openInputStream(data.getData());
-
                             Bitmap img = BitmapFactory.decodeStream(in);
                             in.close();
+
+                            Log.d("BITMAP",img.toString());
+                            String imagePath = getRealPathFromURI(data.getData());
+                            // path 경로
+                            ExifInterface exif = null;
+                            try { exif = new ExifInterface(imagePath);
+                            } catch (IOException e) { e.printStackTrace(); }
+                            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                            int exifDegree = exifOrientationToDegrees(exifOrientation);
+
+                            img=rotate(img, exifDegree);//원본 이미지
+
+                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight(),img.getHeight());//1:1 이미지
+                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth());//1:1 이미지
 
                             upload_btn.setImageBitmap(img);
                         } catch (Exception e) {
@@ -319,6 +335,65 @@ public class RegisterMenu extends AppCompatActivity {
                     mCamera.onResult(upload_btn);
                 }
         }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        int column_index=0; String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        }
+        return cursor.getString(column_index);
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap src, float degree) { // Matrix 객체 생성
+        Matrix matrix = new Matrix();
+        // 회전 각도 셋팅 m
+        matrix.postRotate(degree);
+        // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+    }
+
+    public static Bitmap cropCenterBitmap(Bitmap src, int w, int h) {
+        if(src == null)
+            return null;
+
+        int width = src.getWidth();
+        int height = src.getHeight();
+
+        if(width < w && height < h)
+            return src;
+
+        int x = 0;
+        int y = 0;
+
+        if(width > w)
+            x = (width - w)/2;
+
+        if(height > h)
+            y = (height - h)/2;
+
+        int cw = w; // crop width
+        int ch = h; // crop height
+
+        if(w > width)
+            cw = width;
+
+        if(h > height)
+            ch = height;
+
+        return Bitmap.createBitmap(src, x, y, cw, ch);
     }
 
     private void checkPermission() {

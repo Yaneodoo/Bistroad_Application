@@ -74,7 +74,7 @@
 
         <ImageView
             android:id="@+id/bistro_imagebtn"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="150dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -82,14 +82,33 @@
             android:paddingBottom="10dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/img_upload" />
+            android:scaleType="fitXY"
+            android:src="@drawable/no_image_box" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="매장 위치 : "/>
+            <TextView
+                android:id="@+id/bistro_main_address_txtView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="매장 주소"
+                android:maxLength="30"
+                android:textSize="20dp" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/bistro_location_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="매장 위치 : 서울시 용산구"
+            android:hint="상세 매장 주소 입력"
+            android:maxLength="30"
             android:textSize="20dp" />
 
         <fragment
