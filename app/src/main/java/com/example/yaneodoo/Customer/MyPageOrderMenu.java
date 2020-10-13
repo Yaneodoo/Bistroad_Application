@@ -2,6 +2,7 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -64,6 +66,7 @@ public class MyPageOrderMenu extends AppCompatActivity {
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 Log.d("clicked", "clicked!!!!!!!!!!!!!!!!");
@@ -110,6 +113,7 @@ public class MyPageOrderMenu extends AppCompatActivity {
 
     private void getOrderList(final String token, String userId) {
         service.getUserOrders("Bearer " + token, userId).enqueue(new Callback<List<Order>>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 Log.d("onResponse", "onResponse");
@@ -122,7 +126,7 @@ public class MyPageOrderMenu extends AppCompatActivity {
                             order.setId(body.get(i).getId());
                             order.setProgress(body.get(i).getProgress());
                             order.setTableNum(body.get(i).getTableNum());
-                            order.setDate(body.get(i).getDate());
+                            order.setTimestamp(body.get(i).getTimestamp());
                             order.setUserId(body.get(i).getUserId());
                             order.setRequest(body.get(i).getRequests());
                             orderList.add(order);
@@ -139,9 +143,11 @@ public class MyPageOrderMenu extends AppCompatActivity {
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this, R.drawable.requested), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수중",order.getId(),order.getTableNum());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this,
+                                        R.drawable.requested), order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this, R.drawable.accepted), String.valueOf(order.getDate()).substring(4,10)+"\n"+String.valueOf(order.getDate()).substring(11,19), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                adapter.addItem(ContextCompat.getDrawable(MyPageOrderMenu.this,
+                                        R.drawable.accepted), order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");

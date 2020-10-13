@@ -72,7 +72,7 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice());
         descTextView.setText(listViewItem.getDescription());
-        scoreTextView.setText(listViewItem.getStars());
+        scoreTextView.setText("★"+listViewItem.getStars());
         orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());
 
         return convertView;

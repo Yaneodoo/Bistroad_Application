@@ -23,7 +23,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -55,7 +57,8 @@ public class MyPageLeaveReview extends AppCompatActivity {
     private Retrofit mRetrofit;
     private RetrofitService service;
     private PhImageCapture mCamera;
-    private static final int REQUEST_TAKE_ALBUM = 1111;
+    private static final int MY_PERMISSION_CAMERA = 1111;
+    private static final int REQUEST_TAKE_ALBUM = 2222;
     private ImageView upload_btn;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
@@ -102,6 +105,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         // 이미지 업로드 버튼 클릭 리스너
         upload_btn = findViewById(R.id.bistro_imagebtn);
         upload_btn.setOnClickListener(new Button.OnClickListener() {
@@ -117,7 +121,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
                             case R.id.camera:
                                 final int imageWidth = 150;
                                 final int imageHeight = 150;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight);
+                                mCamera = new PhImageCapture(imageWidth, imageHeight,"MyPageLeaveReview");
                                 mCamera.onStart(MyPageLeaveReview.this);
                                 break;
                             case R.id.gallery:
@@ -201,7 +205,25 @@ public class MyPageLeaveReview extends AppCompatActivity {
                         finish();
                     }
                 }).setCancelable(false).create().show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Toast.makeText(this, "카메라 권한 승인완료", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "카메라 권한 승인 거절", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public interface PhActivityRequest {
+        int IMAGE_CAPTURE = 1001;
+    }
+
 }

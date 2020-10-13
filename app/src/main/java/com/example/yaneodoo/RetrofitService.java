@@ -64,8 +64,8 @@ public interface RetrofitService {
     Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId);
 
     //get store orders
-    @GET("orders?size=1")
-    Call<Order> getStoreOrder(@Header("Authorization") String token, @Query("storeId") String storeId);
+    @GET("orders")
+    Call<List<Order>> getStoreOrder(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("sort") String sort, @Query("size") String size);//, @Query("size") String size);
 
     //get order info
     @GET("orders/{id}")
@@ -104,4 +104,23 @@ public interface RetrofitService {
     //Search reviews
     @GET("reviews")
     Call<List<Review>> getReviewList(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("itemId") String itemId);
+
+    @FormUrlEncoded
+    @POST("stores/{storeId}/items")
+    Call<Store> postReview(@Header("Authorization") String token, @Field("review") Review review);
+
+    //----------------order------------------//
+    //Search orders
+    @GET("orders")
+    Call<List<Order>> getOrderList(@Header("Authorization") String token, @Query("storeId") String storeId);
+
+    //--------------store-photo------------------//
+    //Upload a store photo
+    @POST("stores/{id}/photo")
+    Call<Void> postStorePhoto(@Header("Authorization") String token, @Path("id") String id);
+
+    //--------------store-items-photo------------------//
+    //Upload a store item photo
+    @POST("stores/{storeId}/items/{id}/photo")
+    Call<Void> postItemPhoto(@Header("Authorization") String token, @Path("storeId") String storeId, @Path("id") String id);
 }

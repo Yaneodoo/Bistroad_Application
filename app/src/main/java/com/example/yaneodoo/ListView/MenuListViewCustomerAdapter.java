@@ -70,7 +70,7 @@ public class MenuListViewCustomerAdapter extends BaseAdapter {
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice());
         descTextView.setText(listViewItem.getDescription());
-        scoreTextView.setText(listViewItem.getStars());
+        scoreTextView.setText("★"+listViewItem.getStars());
 
         convertView.setTag("" + position);
         return convertView;

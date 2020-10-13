@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -113,6 +114,7 @@ public class GetRealtimeOrderService extends Service {
 
     private void checkOrder(final String token, String storeId, final SharedPreferences sp){
         service.getStoreOrder("Bearer " + token, storeId, "date,desc", "1").enqueue(new Callback<List<Order>>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful()) {

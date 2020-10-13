@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.yaneodoo.Customer.MyPageLeaveReview;
 import com.example.yaneodoo.Owner.RegisterBistro;
 import com.example.yaneodoo.Owner.RegisterMenu;
 
@@ -89,8 +90,10 @@ public class PhImageCapture extends AppCompatActivity {
 
         if (usedActivity.equals("RegisterMenu"))
             a_activity.startActivityForResult(pickIntent, RegisterMenu.PhActivityRequest.IMAGE_CAPTURE);
-        else
+        else if(usedActivity.equals("RegisterBistro"))
             a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
+        else
+            a_activity.startActivityForResult(pickIntent, MyPageLeaveReview.PhActivityRequest.IMAGE_CAPTURE);
     }
 
     /**
