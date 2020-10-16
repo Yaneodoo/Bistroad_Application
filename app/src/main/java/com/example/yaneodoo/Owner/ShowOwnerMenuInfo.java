@@ -153,17 +153,21 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 if (body != null) {
                     for (int i = 0; i < body.size(); i++) {
                         Review review = new Review();
+                        review.setTimestamp(body.get(i).getTimestamp());
                         review.setContents(body.get(i).getContents());
                         review.setId(body.get(i).getId());
                         review.setOrderId(body.get(i).getOrderId());
                         review.setStars(body.get(i).getStars());
                         review.setUser(body.get(i).getUser());
+                        review.setWriter(body.get(i).getWriter());
+                        review.setPhoto(body.get(i).getPhoto());
                         reviewList.add(review);
 
                         Log.d("REVIEW", review.getUser().toString());
 
-                        adapter.addItem("2020.09.19", review.getUser().getUsername(), "★" + review.getStars(), review.getContents());
+                        adapter.addItem(review);
                     }
+                    listview.setAdapter(adapter);
                     Log.d("review data", "--------------------------------------");
                 } else {
                     Log.d("REVIEW", "EMPTY");

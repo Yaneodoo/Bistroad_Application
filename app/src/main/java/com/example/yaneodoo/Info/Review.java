@@ -6,17 +6,43 @@ public class Review implements Serializable {
     private String orderId;
     private String contents;
     private String id;
-    private String itemId;
+    private Menu item;
     private String storeId;
     private String stars;
     private User writer;
+    private Photo photo;
+    private String timestamp;
 
-    public String getItemId() {
-        return itemId;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
+
+    public User getWriter() {
+        return writer;
+    }
+
+    public void setWriter(User writer) {
+        this.writer = writer;
+    }
+
+    public Menu getItem() {
+        return item;
+    }
+
+    public void setItem(Menu item) {
+        this.item = item;
     }
 
     public String getStoreId() {

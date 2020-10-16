@@ -1,19 +1,25 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.R;
+import com.example.yaneodoo.REST.GetImage;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ReviewListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ReviewListViewItem> listViewItemList = new ArrayList<>() ;
+    private ArrayList<Review> listViewItemList = new ArrayList<>() ;
 
     // ListViewAdapter의 생성자
     public ReviewListViewAdapter() {
@@ -38,21 +44,47 @@ public class ReviewListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        //ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView) ;
+        ImageView writerImageView = (ImageView) convertView.findViewById(R.id.review_writer_imageView);
+        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
         TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
         TextView scoreTextView=(TextView) convertView.findViewById(R.id.review_score_txtView);
         TextView reviewTextView=(TextView) convertView.findViewById(R.id.review_text_txtView);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ReviewListViewItem listViewItem = listViewItemList.get(position);
+        Review listViewItem = listViewItemList.get(position);
+
+        Bitmap bitmap = null;
+        GetImage getReviewImage = new GetImage();
+        if(listViewItem.getPhoto()!=null){
+            try {
+                bitmap = getReviewImage.execute(listViewItem.getPhoto().getSourceUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Bitmap nbitmap = null;
+        GetImage getWriterImage = new GetImage();
+        if(listViewItem.getPhoto()!=null){
+            try {
+                nbitmap = getWriterImage.execute(listViewItem.getWriter().getPhoto().getThumbnailUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         // 아이템 내 각 위젯에 데이터 반영
-        //iconImageView.setImageDrawable(listViewItem.getIconDrawable());
-        dateTextView.setText(listViewItem.getDateStr());
-        writerTextView.setText(listViewItem.getWriterStr());
-        scoreTextView.setText(listViewItem.getScoreStr());
-        reviewTextView.setText(listViewItem.getReviewStr());
+        if(bitmap!=null) iconImageView.setImageBitmap(bitmap);
+        if(nbitmap!=null) writerImageView.setImageBitmap(nbitmap);
+        dateTextView.setText(listViewItem.getTimestamp().substring(0,10));
+        writerTextView.setText(listViewItem.getWriter().getFullName());
+        scoreTextView.setText("★"+listViewItem.getStars());
+        reviewTextView.setText(listViewItem.getContents());
 
         return convertView;
     }
@@ -70,15 +102,9 @@ public class ReviewListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String date, String writer, String score, String review) {
-        ReviewListViewItem item = new ReviewListViewItem();
-
-        //item.setIconDrawable(photo);
-        item.setDateStr(date);
-        item.setWriterStr(writer);
-        item.setScoreStr(score);
-        item.setReviewStr(review);
-
+    public void addItem(Review review) {
+        Review item =review;
+        Log.d("ITEM",item.toString());
         listViewItemList.add(item);
     }
 }
