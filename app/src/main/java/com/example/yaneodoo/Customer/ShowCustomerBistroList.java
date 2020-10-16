@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.BackPressedForFinish;
+import com.example.yaneodoo.CheckOutBistro;
+import com.example.yaneodoo.GPSTracker;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
@@ -70,7 +72,17 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
         new getUserMe().execute(callgetUserMe);
 
-        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token);
+        Double lat;//37.5689824
+        Double lon;//126.9844681
+
+        GPSTracker gpsTracker = new GPSTracker(ShowCustomerBistroList.this);
+        lat = gpsTracker.getLatitude();
+        lon = gpsTracker.getLongitude();
+        lat=37.5689824;
+        lon=126.9844681;
+
+        //TODO : GPS 조금만 벗어나도 대부분 검색이 안됨(동일해야만 검색됨 아마도)
+        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,0.5,"name,desc");
         new getNearbyStoreList().execute(getNearbyStoreList);
 
         // 리스트뷰 참조 및 Adapter달기
