@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
@@ -73,8 +72,6 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         intent = getIntent();
         user = (User) intent.getSerializableExtra("userInfo");
         store = (Store) intent.getSerializableExtra("bistroInfo");
-
-        Log.d("bistroInfo2", store.getName());
 
         TextView bistroNameTxtView = (TextView) findViewById(R.id.bistro_name_txtView);
         bistroNameTxtView.setText(store.getName());

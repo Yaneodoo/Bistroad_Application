@@ -67,12 +67,13 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
             }
         }
 
+
         // 아이템 내 각 위젯에 데이터 반영
         if(bitmap!=null) menuImageView.setImageBitmap(bitmap);
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice());
         descTextView.setText(listViewItem.getDescription());
-        scoreTextView.setText("★"+listViewItem.getStars());
+        scoreTextView.setText(listViewItem.getStars());
         orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());
 
         return convertView;

@@ -82,7 +82,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         lon=126.9844681;
 
         //TODO : GPS 조금만 벗어나도 대부분 검색이 안됨(동일해야만 검색됨 아마도)
-        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,0.5,"name,desc");
+        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,0.5,"distance,desc");
         new getNearbyStoreList().execute(getNearbyStoreList);
 
         // 리스트뷰 참조 및 Adapter달기
