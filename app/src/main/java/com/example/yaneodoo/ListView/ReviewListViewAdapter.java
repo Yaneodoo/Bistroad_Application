@@ -68,7 +68,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
         Bitmap nbitmap = null;
         GetImage getWriterImage = new GetImage();
-        if(listViewItem.getPhoto()!=null){
+        if(listViewItem.getWriter().getPhoto()!=null){
             try {
                 nbitmap = getWriterImage.execute(listViewItem.getWriter().getPhoto().getThumbnailUrl()).get();
             } catch (ExecutionException e) {
