@@ -32,12 +32,14 @@
             android:gravity="right">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="떡볶이"
                 android:id="@+id/menu_name_txtView"
                 android:textSize="24dp"
                 android:textColor="#000000"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:gravity="center_vertical" />
 
             // TODO : 둥근 테두리
@@ -49,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:layout_alignParentRight="true"
+                android:background="#C6D3FC"
                 android:layout_centerVertical="true"
                 android:focusable="false"
                 android:onClick="orderMenu" />

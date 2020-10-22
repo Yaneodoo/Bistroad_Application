@@ -6,6 +6,11 @@ public class Photo implements Serializable {
     private String sourceUrl;
     private String thumbnailUrl;
 
+    public Photo(String sourceUrl, String thumbnailUrl) {
+        this.sourceUrl = sourceUrl;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
     public String getSourceUrl() {
         return sourceUrl;
     }

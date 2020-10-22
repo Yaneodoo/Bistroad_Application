@@ -40,6 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="매장 주소"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:id="@+id/bistro_location_txtView"
             android:textSize="16dp"
             android:textColor="#666666" />

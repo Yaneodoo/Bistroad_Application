@@ -35,173 +35,174 @@
             android:src="@drawable/mypage" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/owner_name_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:text="김민주 점주님"
-        android:textStyle="bold"
-        android:textSize="25dp"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="#000000"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/bistro_exist_txtView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="매장 등록"
-            android:textSize="25dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="대표 이미지"
-            android:textSize="20dp"/>
-
-        <ImageView
-            android:id="@+id/bistro_imagebtn"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_image_box" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="매장 위치 : "/>
-            <TextView
-                android:id="@+id/bistro_main_address_txtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="매장 주소"
-                android:maxLength="30"
-                android:textSize="20dp" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/bistro_location_txtView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="상세 매장 주소 입력"
-            android:maxLength="30"
-            android:textSize="20dp" />
-
-        <fragment
-            android:id="@+id/autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:context=".Owner.RegisterBistro" />
-
-        <TableLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <TextView
+            android:id="@+id/owner_name_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:text="김민주 점주님"
+            android:textStyle="bold"
+            android:textSize="25dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="#000000"/>
 
-            <TableRow>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/bistro_exist_txtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="매장 등록"
+                    android:textSize="25dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="상호명 : "
-                    android:textSize="15dp" />
+                    android:text="대표 이미지"
+                    android:textSize="20dp"/>
 
-                <EditText
-                    android:id="@+id/bistro_name_txtView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="10자 이내"
-                    android:maxLength="10"
-                    android:textCursorDrawable="@drawable/cursor" />
-            </TableRow>
+                <ImageView
+                    android:id="@+id/bistro_imagebtn"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/no_image_box" />
 
-            <TableRow>
+                <fragment
+                    android:id="@+id/autocomplete_fragment"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="전화번호 : "
-                    android:textSize="15dp" />
-
-                <EditText
-                    android:id="@+id/bistro_tel_txtView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="숫자만 입력"
-                    android:inputType="number"
-                    android:textCursorDrawable="@drawable/cursor" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="설명 : "
-                    android:textSize="15dp" />
-
-                <EditText
-                    android:id="@+id/bistro_desc_txtView"
-                    android:layout_width="wrap_content"
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="#FF6181E8"
-                    android:hint="30자 이내"
-                    android:maxLength="30"
-                    android:textCursorDrawable="@drawable/cursor" />
-            </TableRow>
-        </TableLayout>
+                    tools:context=".Owner.RegisterBistro" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="매장 주소 : "/>
+                    <EditText
+                        android:id="@+id/bistro_address_txtView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="( 매장 검색시 자동 입력 )"
+                        android:maxLength="50"
+                        android:textSize="20dp" />
+                </LinearLayout>
 
-    </LinearLayout>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
-    <Button
-        android:id="@+id/btn_complete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="#FDDFDB"
-        android:text="등록"/>
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="상호명 : "
+                            android:textSize="15dp" />
+
+                        <EditText
+                            android:id="@+id/bistro_name_txtView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FF6181E8"
+                            android:hint="10자 이내"
+                            android:maxLength="10"
+                            android:textCursorDrawable="@drawable/cursor" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="전화번호 : "
+                            android:textSize="15dp" />
+
+                        <EditText
+                            android:id="@+id/bistro_tel_txtView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FF6181E8"
+                            android:hint="숫자만 입력"
+                            android:inputType="number"
+                            android:textCursorDrawable="@drawable/cursor" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="설명 : "
+                            android:textSize="15dp" />
+
+                        <EditText
+                            android:id="@+id/bistro_desc_txtView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FF6181E8"
+                            android:hint="30자 이내"
+                            android:maxLength="30"
+                            android:textCursorDrawable="@drawable/cursor" />
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="#FDDFDB"
+                android:text="등록"/>
+
+        </LinearLayout>
+
+
 
 
 </LinearLayout>
