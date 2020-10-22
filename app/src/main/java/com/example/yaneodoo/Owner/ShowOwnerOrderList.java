@@ -71,8 +71,9 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         token = tk.getString("bistrotk","");
 
-        getOrderList(token, store.getId());//가게의 주문내역 불러오기
-        //TODO : 날짜 최신순
+        getOrderList(token, store.getId(), "date,desc");//가게의 주문내역 불러오기
+        Log.d("GETORDERLIST", store.getId());
+        //TODO : 날짜 최신순으로 했는데 반영이 안되는듯함
 
         TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
         titleTxtView.setText(owner.getFullName()+" 점주님의\n"+store.getName()+" 주문내역입니다.");
@@ -135,8 +136,9 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         }
     }
 
-    private void getOrderList(final String token, String storeId) {
-        service.getStoreOrders("Bearer " + token, storeId).enqueue(new Callback<List<Order>>() {
+    //TODO : date,asc?
+    private void getOrderList(final String token, String storeId, String sort) {
+        service.getStoreOrders("Bearer " + token, storeId, sort).enqueue(new Callback<List<Order>>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
@@ -180,15 +182,17 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
-                                        order.getTimestamp().toString(), name, requests, "접수중",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
-                                        order.getTimestamp().toString(), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getMenuList end", "======================================");
                         listview.setAdapter(adapter);
                     }
+                    int statusCode  = response.code();
+                    Log.d("GET ORDER CODE",Integer.toString(statusCode));
                 }
             }
 

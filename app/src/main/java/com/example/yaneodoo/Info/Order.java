@@ -5,7 +5,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)

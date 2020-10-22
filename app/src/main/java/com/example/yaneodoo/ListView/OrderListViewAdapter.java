@@ -60,7 +60,7 @@ public class OrderListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setBackgroundDrawable(listViewItem.getProgress());
-        dateTextView.setText(listViewItem.getDateStr());
+        dateTextView.setText(listViewItem.getDateStr().substring(0,10));
         customerTextView.setText(listViewItem.getNameStr());
         tableNumTextView.setText("테이블 번호 : "+listViewItem.getTableNum());
         orderTextView.setText(listViewItem.getOrderStr());
