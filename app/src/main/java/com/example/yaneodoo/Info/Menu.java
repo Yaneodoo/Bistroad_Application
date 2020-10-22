@@ -1,5 +1,6 @@
 package com.example.yaneodoo.Info;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class Menu implements Serializable {
@@ -12,6 +13,7 @@ public class Menu implements Serializable {
     private Integer quantity;
     private Photo photo;
     private Integer orderCount;
+    private File file;
 
     public Menu() {
     }
@@ -27,6 +29,14 @@ public class Menu implements Serializable {
         this.id = id;
         this.storeId = storeId;
         this.quantity = quantity;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public Integer getOrderCount() {

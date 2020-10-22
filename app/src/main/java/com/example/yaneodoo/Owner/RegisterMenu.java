@@ -41,10 +41,14 @@ import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -62,8 +66,11 @@ public class RegisterMenu extends AppCompatActivity {
     private ImageView upload_btn;
     private static final int REQUEST_CODE = 0;
     private PhImageCapture mCamera;
+    private File nFile =null;
 
-    private Store store = new Store();
+    private Store store;
+
+    private String sourceUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +86,7 @@ public class RegisterMenu extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+        store = (Store) intent.getSerializableExtra("bistroInfo");
         final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
@@ -139,7 +146,6 @@ public class RegisterMenu extends AppCompatActivity {
                 if(nameEditTxt.getText().toString().equals("") || priceEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
                     Toast.makeText(getApplicationContext(), "항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 else {
-                    //Drawable uploadedImg = imgBtn.getDrawable();
                     String name = nameEditTxt.getText().toString();
                     String price = priceEditTxt.getText().toString();
                     String desc = descEditTxt.getText().toString();
@@ -195,12 +201,14 @@ public class RegisterMenu extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.camera:
-                                final int imageWidth = 150;
+                                final int imageWidth = 200;
                                 final int imageHeight = 150;
                                 mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterMenu");
                                 mCamera.onStart(RegisterMenu.this);
+                                Log.d("UPLOAD", mCamera.toString());
                                 break;
                             case R.id.gallery:
+                                Log.d("UPLOAD","GALLERY");
                                 Intent intent = new Intent(Intent.ACTION_PICK);
                                 intent.setType("image/*");
                                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -257,18 +265,35 @@ public class RegisterMenu extends AppCompatActivity {
                 Call<Menu> call = params[0];
                 Response<Menu> response = call.execute();
                 Menu body = response.body();
-                Log.d("MENU", body.toString());
+                String menuId=body.getId();
+                Log.d("MENU", body.getName());
 
-                return null;
+                return menuId;
 
             } catch (IOException e) {
+                Log.d("POSTMENU", "fail");
                 e.printStackTrace();
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String menuId) {
+            MultipartBody.Part file = null;
+            if(nFile!=null){
+                RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), nFile);
+                file =
+                        MultipartBody.Part.createFormData("image", nFile.getName(), requestFile);
+            }
+
+            if(file!=null){
+                Log.d("REQUEST FILE", file.toString());
+                Log.d("REQUEST STOREID", store.getId());
+                Log.d("REQUEST MENUID", menuId);
+                Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
+                new postItemPhoto().execute(postItemPhoto);
+            }
         }
     }
 
@@ -294,6 +319,36 @@ public class RegisterMenu extends AppCompatActivity {
         }
     }
 
+    private class postItemPhoto extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Menu> call = params[0];
+                Response<Menu> response = call.execute();
+                Menu body = response.body();
+
+                Log.d("POSTPHOTO CODE",response.toString());
+                if (body != null) {
+                    Log.d("POSTPHOTO", "success");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("POSTPHOTO CODE",Integer.toString(statusCode));
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                Log.d("POSTPHOTO", "fail");
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,12 +358,16 @@ public class RegisterMenu extends AppCompatActivity {
 
                     if (data.getData() != null) {
                         try {
+
+
+                            Uri file1=data.getData();
                             InputStream in = getContentResolver().openInputStream(data.getData());
                             Bitmap img = BitmapFactory.decodeStream(in);
                             in.close();
 
                             Log.d("BITMAP",img.toString());
                             String imagePath = getRealPathFromURI(data.getData());
+                            nFile = new File(imagePath);
                             // path 경로
                             ExifInterface exif = null;
                             try { exif = new ExifInterface(imagePath);
@@ -318,8 +377,8 @@ public class RegisterMenu extends AppCompatActivity {
 
                             img=rotate(img, exifDegree);//원본 이미지
 
-                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight(),img.getHeight());//1:1 이미지
-                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth());//1:1 이미지
+                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight()*4/3,img.getHeight());//4:3 이미지
+                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth()*3/4);//4:3 이미지
 
                             upload_btn.setImageBitmap(img);
                         } catch (Exception e) {
@@ -332,6 +391,7 @@ public class RegisterMenu extends AppCompatActivity {
             default:
                 if (resultCode == Activity.RESULT_OK) {
                     // Camera action pick 결과 전달
+                    nFile =mCamera.getPhotoFile();
                     mCamera.onResult(upload_btn);
                 }
         }

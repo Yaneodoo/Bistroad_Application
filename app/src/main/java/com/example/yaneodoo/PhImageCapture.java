@@ -34,6 +34,7 @@ public class PhImageCapture extends AppCompatActivity {
 
     // Photo path
     private String mStrPhotoPath;
+    private File photoFile = null;
 
     private String usedActivity;
 
@@ -41,6 +42,14 @@ public class PhImageCapture extends AppCompatActivity {
         mReqWidth = a_reqWidth;
         mReqHeight = a_reqHeight;
         this.usedActivity = usedActivity;
+    }
+
+    public File getPhotoFile() {
+        return photoFile;
+    }
+
+    public void setPhotoFile(File photoFile) {
+        this.photoFile = photoFile;
     }
 
     /**
@@ -53,10 +62,11 @@ public class PhImageCapture extends AppCompatActivity {
         }
 
         // 사진 파일
-        File photoFile = null;
+
         File photoPath = a_activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         try {
             photoFile = File.createTempFile(PhUtil.getTempFileName(), ".png", photoPath);
+            setPhotoFile(photoFile);
             mStrPhotoPath = photoFile.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();

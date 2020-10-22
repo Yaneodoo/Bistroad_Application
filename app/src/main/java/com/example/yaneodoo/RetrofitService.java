@@ -67,11 +67,12 @@ public interface RetrofitService {
 
     //get store orders
     @GET("orders")
-    Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId);
+    Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("sort") String sort);
 
     //get store orders
     @GET("orders")
-    Call<List<Order>> getStoreOrder(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("sort") String sort, @Query("size") String size);//, @Query("size") String size);
+    Call<List<Order>> getStoreOrder(@Header("Authorization") String token,
+                      @Query("storeId") String storeId, @Query("sort") String sort, @Query("size") String size);//, @Query("size") String size);
 
     //get order info
     @GET("orders/{id}")
@@ -115,11 +116,6 @@ public interface RetrofitService {
     @POST("stores/{storeId}/items")
     Call<Store> postReview(@Header("Authorization") String token, @Field("review") Review review);
 
-    //----------------order------------------//
-    //Search orders
-    @GET("orders")
-    Call<List<Order>> getOrderList(@Header("Authorization") String token, @Query("storeId") String storeId);
-
     //--------------store-photo------------------//
     //Upload a store photo
     @POST("stores/{id}/photo")
@@ -127,6 +123,7 @@ public interface RetrofitService {
 
     //--------------store-items-photo------------------//
     //Upload a store item photo
+    @Multipart
     @POST("stores/{storeId}/items/{id}/photo")
-    Call<Void> postItemPhoto(@Header("Authorization") String token, @Path("storeId") String storeId, @Path("id") String id);
+    Call<Menu> postItemPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("storeId") String storeId, @Path("id") String id);
 }
