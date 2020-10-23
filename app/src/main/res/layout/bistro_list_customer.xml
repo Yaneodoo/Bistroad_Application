@@ -60,9 +60,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/current_address_txtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="서울특별시 마포구"
+                android:text="주소 미발견"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -70,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="주변 가게 리스트"
                 android:textSize="20dp" />
 

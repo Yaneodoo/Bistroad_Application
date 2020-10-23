@@ -21,7 +21,6 @@ import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
-import com.example.yaneodoo.Owner.ShowOwnerMenuInfo;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -47,8 +46,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
-
-    private String writerName = "";
 
     private Bitmap sbitmap=null;
 
