@@ -39,7 +39,6 @@ public interface RetrofitService {
     Call<List<Store>> getStoreList(@Header("Authorization") String token, @Query("ownerId") String ownerId);
 
     //Search nearby stores
-    //TODO: stores/nearby로
     @GET("stores/nearby")
     Call<List<Store>> getNearbyStoreList(@Header("Authorization") String token, @Query("originLat") Double originLat,
                       @Query("originLng") Double originLng, @Query("radius") Double radius, @Query("sort") String sort);

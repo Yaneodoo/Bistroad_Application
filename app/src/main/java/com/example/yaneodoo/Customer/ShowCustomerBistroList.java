@@ -78,11 +78,8 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         GPSTracker gpsTracker = new GPSTracker(ShowCustomerBistroList.this);
         lat = gpsTracker.getLatitude();
         lon = gpsTracker.getLongitude();
-        lat=37.5689824;
-        lon=126.9844681;
 
-        //TODO : GPS 조금만 벗어나도 대부분 검색이 안됨(동일해야만 검색됨 아마도)
-        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,0.5,"distance,desc");
+        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,1000.00,"distance,desc");
         new getNearbyStoreList().execute(getNearbyStoreList);
 
         // 리스트뷰 참조 및 Adapter달기
