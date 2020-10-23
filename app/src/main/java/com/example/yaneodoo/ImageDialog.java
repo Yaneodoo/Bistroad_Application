@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.example.yaneodoo.Info.Menu;
+import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.REST.GetImage;
 
 import java.util.concurrent.ExecutionException;
@@ -26,14 +27,26 @@ public class ImageDialog extends Activity {
 
         Intent intent=getIntent();
         Menu menu=(Menu)intent.getSerializableExtra("menuInfo");
+        Review review=(Review)intent.getSerializableExtra("reviewInfo");
 
         GetImage getImage = new GetImage();
-        try {
-            bitmap = getImage.execute(menu.getPhoto().getSourceUrl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if(menu!=null) {
+            try {
+                bitmap = getImage.execute(menu.getPhoto().getSourceUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }else if(review!=null){
+            try {
+                bitmap = getImage.execute(review.getPhoto().getSourceUrl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         mDialog = (ImageView)findViewById(R.id.popup_image);

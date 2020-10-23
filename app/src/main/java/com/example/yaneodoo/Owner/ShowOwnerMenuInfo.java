@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.Customer.ShowCustomerMenuInfo;
+import com.example.yaneodoo.Customer.ShowCustomerMenuList;
 import com.example.yaneodoo.ImageDialog;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
@@ -110,9 +113,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
             }
         }
 
-        Button editbutton = (Button) findViewById(R.id.btn_edit);
-
         // 수정 버튼 클릭 리스너
+        Button editbutton = (Button) findViewById(R.id.btn_edit);
         editbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
@@ -152,6 +154,20 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 if(sbitmap!=null){
                     Intent intent = new Intent(ShowOwnerMenuInfo.this, ImageDialog.class);
                     intent.putExtra("menuInfo", menu);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        //리뷰 선택 리스너
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                Review review = (Review) parent.getItemAtPosition(position);
+
+                if(review.getPhoto()!=null) {
+                    Intent intent = new Intent(ShowOwnerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("reviewInfo", review);
                     startActivity(intent);
                 }
             }

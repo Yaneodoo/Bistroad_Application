@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
+import com.example.yaneodoo.Owner.ShowOwnerMenuInfo;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -156,6 +158,20 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                 if(sbitmap!=null){
                     Intent intent = new Intent(ShowCustomerMenuInfo.this, ImageDialog.class);
                     intent.putExtra("menuInfo", menu);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        //리뷰 선택 리스너
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                Review review = (Review) parent.getItemAtPosition(position);
+
+                if(review.getPhoto()!=null){
+                    Intent intent = new Intent(ShowCustomerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("reviewInfo", review);
                     startActivity(intent);
                 }
             }
