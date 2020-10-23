@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.ImageDialog;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
@@ -45,6 +46,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
     private List<Review> reviewList = new ArrayList<>();
     private ListView listview;
     private ReviewListViewAdapter adapter = new ReviewListViewAdapter();
+
+    private Bitmap sbitmap=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         menuAmountTxtView.setText("주문 횟수 : "+menu.getOrderCount().toString());
 
         GetImage getMenuImage = new GetImage();
-        Bitmap sbitmap = null;
         if(menu.getPhoto()!=null){
             try {
                 sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
@@ -141,6 +143,20 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //원본 이미지 팝업 클릭 리스너
+        ImageView menuImgView = (ImageView) findViewById(R.id.menu_image);
+        menuImgView.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sbitmap!=null){
+                    Intent intent = new Intent(ShowOwnerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("menuInfo", menu);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     private class callgetReviewList extends AsyncTask<Call, Void, String> {

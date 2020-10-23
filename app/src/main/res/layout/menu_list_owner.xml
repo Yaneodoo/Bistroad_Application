@@ -71,6 +71,7 @@
                     android:id="@+id/bistro_name_txtView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/btn_edit"
                     android:textSize="24dp"
                     android:textColor="#000000"
                     android:gravity="center_vertical"

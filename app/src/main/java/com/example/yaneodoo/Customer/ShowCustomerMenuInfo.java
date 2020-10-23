@@ -15,11 +15,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.ImageDialog;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.ReviewListViewAdapter;
+import com.example.yaneodoo.Owner.ShowOwnerMenuInfo;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -47,6 +49,8 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
     private String writerName = "";
+
+    private Bitmap sbitmap=null;
 
     private ListView listview;
 
@@ -103,7 +107,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         menuStarsTxtView.setText("★"+menu.getStars());
 
         GetImage getMenuImage = new GetImage();
-        Bitmap sbitmap = null;
         if(menu.getPhoto()!=null){
             try {
                 sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
@@ -145,6 +148,19 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
                 Intent intent = new Intent(ShowCustomerMenuInfo.this, MyPageCustomer.class);
                 intent.putExtra("userInfo", user);
                 startActivity(intent);
+            }
+        });
+
+        //원본 이미지 팝업 클릭 리스너
+        ImageView menuImgView = (ImageView) findViewById(R.id.menu_image);
+        menuImgView.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sbitmap!=null){
+                    Intent intent = new Intent(ShowCustomerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("menuInfo", menu);
+                    startActivity(intent);
+                }
             }
         });
 
