@@ -25,7 +25,7 @@
                 android:fontFamily="@font/rage"
                 android:paddingTop="10sp"
                 android:scaleType="centerInside"
-                android:text="Bistroad"
+                android:text="Bistroad "
                 android:textAllCaps="false"
                 android:textColorLink="#FFFFFF"
                 android:textSize="40sp" />
