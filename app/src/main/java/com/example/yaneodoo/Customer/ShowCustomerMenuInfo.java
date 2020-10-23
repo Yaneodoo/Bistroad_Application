@@ -204,7 +204,6 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
                         adapter.addItem(review);
                     }
-                    listview.setAdapter(adapter);
                     Log.d("review data", "--------------------------------------");
                 } else {
                     Log.d("REVIEW", "EMPTY");
@@ -220,6 +219,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            listview.setAdapter(adapter);
         }
     }
 
