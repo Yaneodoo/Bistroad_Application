@@ -281,7 +281,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                             Menu menu = new Menu();
                             menu.setId(body.get(i).getId());
                             menu.setName(body.get(i).getName());
-                            menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                            menu.setPrice(Integer.valueOf(body.get(i).getPrice().toString().substring(0, body.get(i).getPrice().toString().length() - 2)));
                             menu.setDescription(body.get(i).getDescription());
                             menu.setStars("★" + body.get(i).getStars());
                             menu.setPhoto(body.get(i).getPhoto());

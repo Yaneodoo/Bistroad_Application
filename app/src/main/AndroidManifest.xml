@@ -35,7 +35,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB8ql59j8IKRWbdTDepen2EQCbjCET3guk" />
+            android:value="AIzaSyDEgKY8pV-4tQjfrFH85tv4DctMFA9HhkU" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -76,6 +76,7 @@
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".LoginConfirmed" />
+        <activity android:name=".InfoEdit" />
     </application>
 
 </manifest>

@@ -96,7 +96,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         }
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
-        menuPriceTxtView.setText(menu.getPrice());
+        menuPriceTxtView.setText(menu.getPrice().toString());
         TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
         if(menuQuantity!=null) menuQuantityTxtView.setText(menuQuantity);
         else menuQuantityTxtView.setText("1");

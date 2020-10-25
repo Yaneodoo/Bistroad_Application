@@ -84,7 +84,6 @@ public class MyPageLeaveReview extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = mRetrofit.create(RetrofitService.class);
-        //TODO : 날짜 최신순
 
         // 홈 버튼 클릭 리스너
         TextView btnHome = (TextView) findViewById(R.id.homebtn);

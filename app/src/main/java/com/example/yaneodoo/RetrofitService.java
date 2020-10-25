@@ -39,7 +39,6 @@ public interface RetrofitService {
     Call<List<Store>> getStoreList(@Header("Authorization") String token, @Query("ownerId") String ownerId);
 
     //Search nearby stores
-    //TODO: stores/nearby로
     @GET("stores/nearby")
     Call<List<Store>> getNearbyStoreList(@Header("Authorization") String token, @Query("originLat") Double originLat,
                       @Query("originLng") Double originLng, @Query("radius") Double radius, @Query("sort") String sort);
@@ -63,7 +62,7 @@ public interface RetrofitService {
     //---------------order----------------//
     //get user orders
     @GET("orders")
-    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
+    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userid") String userId);
 
     //get store orders
     @GET("orders")

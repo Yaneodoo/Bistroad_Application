@@ -113,6 +113,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             }
         });
 
+        // 마이페이지 버튼 클릭 리스너
         ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override

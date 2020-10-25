@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.User;
+import com.example.yaneodoo.InfoEdit;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
@@ -69,7 +70,6 @@ public class MyPageCustomer extends AppCompatActivity {
         intent = getIntent();
         token = tk.getString("bistrotk", "");
 
-        //TODO : 날짜 최신순
         getOrderList(token, id);//자신의 주문내역 불러오기
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
@@ -91,12 +91,24 @@ public class MyPageCustomer extends AppCompatActivity {
             }
         });
 
+        // 정보수정 버튼 클릭 리스너
+        Button btnInfoEdit = (Button) findViewById(R.id.mypage_info_edit);
+        btnInfoEdit.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPageCustomer.this, InfoEdit.class);
+                startActivity(intent);
+            }
+        });
+
+        // 로그아웃 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.mypage_logout_button);
         btnCustomer.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
+                editor.putString("bistrotk","");
                 editor.commit();
                 Intent intent = new Intent(MyPageCustomer.this, Login.class);
                 startActivity(intent);
@@ -112,9 +124,15 @@ public class MyPageCustomer extends AppCompatActivity {
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful()) {
                     List<Order> body = response.body();
+                    int statusCode  = response.code();
+                    Log.d("MyOrders CODE",Integer.toString(statusCode));
+                    Log.d("MyOrderToken", token);
+                    Log.d("MyOrderId", id);
                     if (body != null) {
+                        Log.d("MyOrders: ",body.toString());
                         for (int i = 0; i < body.size(); i++) {
                             Order order = new Order();
+                            order.setHasReview(body.get(i).getHasReview());
                             order.setId(body.get(i).getId());
                             order.setProgress(body.get(i).getProgress());
                             order.setTableNum(body.get(i).getTableNum());
@@ -124,12 +142,15 @@ public class MyPageCustomer extends AppCompatActivity {
                             orderList.add(order);
 
                             String requests = "";
-                            String amount = "";
+                            Integer amount;
                             String menu = "";
+                            // Todo: price 문제 해결되면 수정
+                            Integer price = 0; // price 고쳐지면 변경
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount().toString();
+                                amount = order.getRequests().get(j).getAmount();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
-                                requests += menu + " x " + amount + "\n";
+                                // price = order.getRequests().get(j).getPrice() * amount;
+                                requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
                                 Log.d("requests", requests);
                             }
                             requests = requests.substring(0,requests.length()-1);

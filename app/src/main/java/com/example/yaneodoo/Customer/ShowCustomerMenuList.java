@@ -95,7 +95,6 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         }
 
         getMenuList(token, store.getId());//가게의 메뉴 불러오기
-        //TODO : 별점 높은 순
 
         GetImage getImage = new GetImage();
         try {
@@ -243,7 +242,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                             Menu menu = new Menu();
                             menu.setId(body.get(i).getId());
                             menu.setName(body.get(i).getName());
-                            menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                            menu.setPrice(Integer.valueOf(body.get(i).getPrice().toString()));
                             menu.setDescription(body.get(i).getDescription());
                             menu.setStars(body.get(i).getStars());
                             menu.setPhoto(body.get(i).getPhoto());

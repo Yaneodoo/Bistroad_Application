@@ -84,7 +84,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
         for (Menu menu : ReadShoppingBasketData()) {
             selectedMenu.add(menu);
-            adapter.addItem(menu.getName(), menu.getPrice(),menu.getQuantity());
+            adapter.addItem(menu.getName(), menu.getPrice().toString(), menu.getQuantity());
             storeId = menu.getStoreId();
         }
 
@@ -123,7 +123,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                                         List<Request> requestList=new ArrayList<>();
 
                                         for (Menu menu : selectedMenu) {
-                                            requestList.add(new Request(menu.getId(),menu.getQuantity()));
+                                            requestList.add(new Request(menu, menu.getQuantity(), menu.getPrice()));
                                             Log.d("SELECTED MENU",menu.getId()+","+menu.getQuantity());
                                         }
                                         Log.d("SELECTED MENU LIST","-------------------------");
@@ -131,8 +131,8 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                                         LocalDateTime date = LocalDateTime.now();
                                         Log.d("DATE",date.toString());
 
-                                        Order order=new Order(store, user.getId(), requestList, date.toString()+"+09:00", curTableNum,"REQUESTED");
-                                        order.setStoreId(store.getId());
+                                        Order order=new Order( requestList,"REQUESTED", store.getId(), curTableNum, date.toString()+"+09:00", user.getId());
+//                                        order.setStoreId(store.getId());
                                         Log.d("CREATE ORDER",order.toString());
 
                                         Call<Order> callpostOrder = service.postOrder("Bearer " + token, order);
@@ -260,7 +260,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
             totalAmount=0;
             for (Menu menu : selectedMenu) {
-                totalAmount += Integer.parseInt(menu.getPrice().substring(0, menu.getPrice().length() - 1)) * menu.getQuantity();
+                totalAmount += Integer.valueOf(menu.getPrice().toString()) * menu.getQuantity();
             }
             TextView shoppingTotalAmountTxtView = (TextView) findViewById(R.id.shoppingbasket_total_amount_txtView);
             shoppingTotalAmountTxtView.setText(totalAmount + "원");
@@ -295,9 +295,11 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                 Response<Order> response = call.execute();
                 Order body = response.body();
                 Log.d("POSTORDER", "POSTORDER");
-                //Log.d("POSTORDER", body.toString());
+                Log.d("POSTORDER", body.toString());
 
                 if (body != null) {
+                    int statusCode  = response.code();
+                    Log.d("POSTORDER CODE",Integer.toString(statusCode));
 
                 }
                 else {

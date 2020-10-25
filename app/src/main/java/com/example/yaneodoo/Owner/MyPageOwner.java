@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.Customer.MyPageCustomer;
 import com.example.yaneodoo.Info.User;
+import com.example.yaneodoo.InfoEdit;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
@@ -46,10 +48,21 @@ public class MyPageOwner extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
+                editor.putString("bistrotk","");
                 editor.commit();
                 Intent intent = new Intent(MyPageOwner.this, Login.class);
                 startActivity(intent);
                 MyPageOwner.this.finish();
+            }
+        });
+
+        // 정보수정 버튼 클릭 리스너
+        Button btnInfoEdit = (Button) findViewById(R.id.mypage_info_edit);
+        btnInfoEdit.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPageOwner.this, InfoEdit.class);
+                startActivity(intent);
             }
         });
 
