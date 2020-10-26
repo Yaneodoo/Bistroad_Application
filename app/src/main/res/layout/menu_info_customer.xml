@@ -55,8 +55,8 @@
 
                 <ImageView
                     android:id="@+id/menu_image"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="160dp"
+                    android:layout_height="120dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/no_image_box"/>
 

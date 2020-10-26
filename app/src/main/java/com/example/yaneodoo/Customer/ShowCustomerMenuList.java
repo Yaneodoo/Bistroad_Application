@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
+import com.example.yaneodoo.Owner.ShowOwnerMenuList;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -29,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,9 +97,6 @@ public class ShowCustomerMenuList extends AppCompatActivity {
             }
         }
 
-        getMenuList(token, store.getId());//가게의 메뉴 불러오기
-        //TODO : 별점 높은 순
-
         GetImage getImage = new GetImage();
         try {
             if(user.getPhoto()!=null) {
@@ -161,6 +161,14 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.listViewItemList.clear();
+        Call<List<Menu>> getMenuList = service.getMenuList("Bearer " + token, store.getId(),"stars,orderCount");//가게의 메뉴 불러오기
+        new getMenuList().execute(getMenuList);
     }
 
     //주문하기 버튼 클릭 리스너
@@ -232,39 +240,44 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         builder.show();
     }
 
-    private void getMenuList(String token, String storeId) {
-        service.getMenuList("Bearer " + token, storeId).enqueue(new Callback<List<Menu>>() {
-            @Override
-            public void onResponse(Call<List<Menu>> call, Response<List<Menu>> response) {
-                if (response.isSuccessful()) {
-                    List<Menu> body = response.body();
-                    if (body != null) {
-                        for (int i = 0; i < body.size(); i++) {
-                            Menu menu = new Menu();
-                            menu.setId(body.get(i).getId());
-                            menu.setName(body.get(i).getName());
-                            menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
-                            menu.setDescription(body.get(i).getDescription());
-                            menu.setStars(body.get(i).getStars());
-                            menu.setPhoto(body.get(i).getPhoto());
-                            menu.setStoreId(body.get(i).getStoreId());
-                            menuList.add(menu);
+    private class getMenuList extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Menu>> call = params[0];
+                Response<List<Menu>> response = call.execute();
+                List<Menu> body = response.body();
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Menu menu = new Menu();
+                        menu.setId(body.get(i).getId());
+                        menu.setName(body.get(i).getName());
+                        menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                        menu.setDescription(body.get(i).getDescription());
+                        menu.setStars(body.get(i).getStars());
+                        menu.setPhoto(body.get(i).getPhoto());
+                        menu.setStoreId(body.get(i).getStoreId());
+                        menuList.add(menu);
 
-                            adapter.addItem(menu);
-                            Log.d("menu data", "--------------------------------------");
-                        }
-                        Log.d("getMenuList end", "======================================");
-                        listview.setAdapter(adapter);
+                        adapter.addItem(menu);
+                        Log.d("menu data", "--------------------------------------");
                     }
+                    Log.d("getMenuList end", "======================================");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Menu>> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("fail", "======================================");
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+            listview.setAdapter(adapter);
+        }
     }
 
     private ArrayList<Menu> ReadShoppingBasketData() {

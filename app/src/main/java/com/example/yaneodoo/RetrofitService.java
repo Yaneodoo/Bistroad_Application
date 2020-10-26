@@ -92,7 +92,7 @@ public interface RetrofitService {
     //---------------store-items-------------//
     //Search items
     @GET("stores/{storeId}/items")
-    Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId);
+    Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId, @Query("sort") String sort);
 
     //Create an item
     @POST("stores/{storeId}/items")

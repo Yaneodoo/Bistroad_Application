@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.yaneodoo.Customer.ShowCustomerMenuInfo;
-import com.example.yaneodoo.Customer.ShowCustomerMenuList;
 import com.example.yaneodoo.ImageDialog;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
@@ -50,8 +48,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
     private ListView listview;
     private ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
-    private Menu menu=null;
-
     private Bitmap sbitmap=null;
 
     @Override
@@ -70,7 +66,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        menu = (Menu) intent.getSerializableExtra("menuInfo");
+        final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
 

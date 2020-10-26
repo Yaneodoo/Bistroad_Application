@@ -231,7 +231,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         adapter.listViewItemList.clear();
-        Call<List<Menu>> getMenuList = service.getMenuList("Bearer " + token, store.getId());//가게의 메뉴 불러오기
+        Call<List<Menu>> getMenuList = service.getMenuList("Bearer " + token, store.getId(),"stars,orderCount");//가게의 메뉴 불러오기
         new getMenuList().execute(getMenuList);
     }
 

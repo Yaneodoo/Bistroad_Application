@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MenuListViewCustomerAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<Menu> listViewItemList = new ArrayList<>();
+    public ArrayList<Menu> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
     public MenuListViewCustomerAdapter() {

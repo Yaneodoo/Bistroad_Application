@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text=""
+                        android:text="매장 불러오는 중.."
                         android:textColor="#000000"
                         android:textSize="24dp" />
 
@@ -116,12 +116,14 @@
                 android:divider="#00000000"
                 android:dividerHeight="10dp"></ListView>
 
+<!--
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_centerInParent="true"
                 android:background="#FF948B8B"
                 android:paddingTop="2dp" />
+-->
 
             <TextView
                 android:layout_width="match_parent"
