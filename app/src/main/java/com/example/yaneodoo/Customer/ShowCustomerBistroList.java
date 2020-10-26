@@ -115,7 +115,7 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         });
 
         // 마이페이지 버튼 클릭 리스너
-        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
