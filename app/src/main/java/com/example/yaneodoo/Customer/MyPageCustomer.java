@@ -130,11 +130,9 @@ public class MyPageCustomer extends AppCompatActivity {
                     List<Order> body = response.body();
                     int statusCode  = response.code();
                     Log.d("MyOrders CODE",Integer.toString(statusCode));
-                    Log.d("MyOrderToken", token);
-                    Log.d("MyOrderId", id);
                     if (body != null) {
                         Log.d("MyOrders: ",body.toString());
-                        for (int i = 0; i < body.size(); i++) {
+                        for (int i = body.size()-1; i >= 0; i--) {
                             Order order = new Order();
                             order.setHasReview(body.get(i).getHasReview());
                             order.setId(body.get(i).getId());
@@ -148,8 +146,7 @@ public class MyPageCustomer extends AppCompatActivity {
                             String requests = "";
                             Integer amount;
                             String menu = "";
-                            // Todo: price 문제 해결되면 수정
-                            Integer price = 0; // price 고쳐지면 변경
+                            Integer price = 0;
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
                                 amount = order.getRequests().get(j).getAmount();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());

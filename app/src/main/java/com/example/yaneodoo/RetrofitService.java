@@ -61,7 +61,7 @@ public interface RetrofitService {
 
     //---------------order----------------//
     //get user orders
-    @GET("orders")
+    @GET("orders") //Todo userid->userId
     Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userid") String userId);
 
     //get store orders

@@ -112,7 +112,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
             btnMyPage.setImageBitmap(bitmap);
         }
 

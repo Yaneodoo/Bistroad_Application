@@ -56,9 +56,10 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
                 role = jsonLogin.getString("role");
                 id = jsonLogin.getString("id");
                 phone = jsonLogin.getString("phone");
-                photo = jsonLogin.getString("photo");
-                JSONObject jsonPhoto = new JSONObject(photo);
-                profileUrl = jsonPhoto.getString("sourceUrl");
+                //Todo photo객체 가져오기
+                //photo = jsonLogin.getString("photo");
+                //JSONObject jsonPhoto = new JSONObject(photo);
+                //profileUrl = jsonPhoto.getString("sourceUrl");
 
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("phone", phone);

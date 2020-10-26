@@ -87,7 +87,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         try {
             if(user.getPhoto()!=null) {
                 bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
         } catch (ExecutionException e) {
