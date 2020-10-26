@@ -121,6 +121,8 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
             else{
+                Intent sIntent = new Intent(getApplicationContext(), GetCurrentGPSService.class);
+                startService(sIntent);
                 Intent intent = new Intent(Login.this, ShowCustomerBistroList.class);
                 startActivity(intent);
             }

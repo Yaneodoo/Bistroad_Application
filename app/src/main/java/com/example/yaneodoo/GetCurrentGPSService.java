@@ -124,7 +124,7 @@ public class GetCurrentGPSService extends Service {
                     RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
                     try {
                         sName = restGetNearestStore.execute().get();
-                        //Log.d("Store", sName);
+                        Log.d("Store", sName);
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {

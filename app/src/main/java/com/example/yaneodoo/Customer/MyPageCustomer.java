@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyPageCustomer extends AppCompatActivity {
     private Intent intent;
-    private String token, id, name, orderInfo;
+    private String token, id, name, phone, realname, profileUrl;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -55,6 +55,10 @@ public class MyPageCustomer extends AppCompatActivity {
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
         id = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
+        realname = getSharedPreferences("sFile", MODE_PRIVATE).getString("realname", "");
+        phone = getSharedPreferences("sFile", MODE_PRIVATE).getString("phone", "");
+
+
         final TextView nameText = (TextView)findViewById(R.id.cutomer_name_textView);
         nameText.setText(name+" 고객님");
 
@@ -149,7 +153,7 @@ public class MyPageCustomer extends AppCompatActivity {
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
                                 amount = order.getRequests().get(j).getAmount();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
-                                // price = order.getRequests().get(j).getPrice() * amount;
+                                price = order.getRequests().get(j).getMenu().getPrice() * amount;
                                 requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
                                 Log.d("requests", requests);
                             }
@@ -157,10 +161,10 @@ public class MyPageCustomer extends AppCompatActivity {
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested),
-                                        order.getTimestamp().toString(), name, requests, "접수중",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted),
-                                        order.getTimestamp().toString(), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");

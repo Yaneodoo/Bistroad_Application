@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Owner.RegisterBistro;
+import com.example.yaneodoo.REST.RestPatchUser;
 import com.example.yaneodoo.REST.RestPostUser;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
@@ -47,7 +49,7 @@ public class InfoEdit extends AppCompatActivity {
     private static final int MY_PERMISSION_CAMERA = 1111;
     private static final int REQUEST_TAKE_ALBUM = 2222;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 3333;
-    String role;
+    String role, token, userId, realname, phoneNum, idName, curPwd;
     int rc;
     private de.hdodenhof.circleimageview.CircleImageView upload_btn;
     private PhImageCapture mCamera;
@@ -61,11 +63,24 @@ public class InfoEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_edit);
-        final EditText id = (EditText)findViewById(R.id.info_id_textinput);
+        final TextView id = (TextView)findViewById(R.id.info_id_text);
         final EditText pw = (EditText)findViewById(R.id.info_password_textinput);
         final EditText confirmPw = (EditText)findViewById(R.id.info_password_confirm_textinput);
-        final EditText name = (EditText)findViewById(R.id.info_name_textinput);
+        final TextView name = (TextView)findViewById(R.id.info_name_text);
         final EditText phone = (EditText)findViewById(R.id.info_mobile_number_textinput);
+        final EditText curPw = (EditText)findViewById(R.id.info_current_password_textinput);
+
+        final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
+        token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
+        idName = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
+        realname = getSharedPreferences("sFile", MODE_PRIVATE).getString("realname", "");
+        phoneNum = getSharedPreferences("sFile", MODE_PRIVATE).getString("phone", "");
+        userId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
+        curPwd = getSharedPreferences("sFile", MODE_PRIVATE).getString("bPwd", "");
+
+        id.setText(idName);
+        name.setText(realname);
+        phone.setText(phoneNum);
 
         // 이미지 업로드 버튼 클릭 리스너
         upload_btn = findViewById(R.id.profile_image);
@@ -98,7 +113,6 @@ public class InfoEdit extends AppCompatActivity {
                         return true;
                     }
                 });
-
             }
         });
 
@@ -107,12 +121,8 @@ public class InfoEdit extends AppCompatActivity {
         btnSignup.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(name.getText().toString().length() == 0){
-                    Toast noIdToast = Toast.makeText(getApplicationContext(), "이름을 입력해 주세요.", Toast.LENGTH_LONG);
-                    noIdToast.show();
-                }
-                else if(id.getText().toString().length() == 0){
-                    Toast noIdToast = Toast.makeText(getApplicationContext(), "ID를 입력해 주세요.", Toast.LENGTH_LONG);
+                if(!curPw.getText().toString().equals(curPwd)){
+                    Toast noIdToast = Toast.makeText(getApplicationContext(), "현재비밀번호가 틀렸습니다.", Toast.LENGTH_LONG);
                     noIdToast.show();
                 }
                 else if(pw.getText().toString().length() == 0){
@@ -133,7 +143,7 @@ public class InfoEdit extends AppCompatActivity {
                 }
                 else {
                     try {
-                        RestPostUser restPostUser = new RestPostUser(id.getText().toString(), pw.getText().toString(), name.getText().toString(), role, phone.getText().toString());
+                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), pw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId);
                         try {
                             rc = restPostUser.execute().get();
                         } catch (ExecutionException e) {
@@ -142,8 +152,8 @@ public class InfoEdit extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         Log.d("Login rc", String.valueOf(rc));
-                        if (rc == 201) {
-                            String signupSuccess = id.getText().toString() + "님 앞으로 맛있는 시간 되세요!";
+                        if (rc == 200 || rc == 201) {
+                            String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
                             Intent intent = new Intent(InfoEdit.this, Login.class);
@@ -202,8 +212,8 @@ public class InfoEdit extends AppCompatActivity {
 
                             img=rotate(img, exifDegree);//원본 이미지
 
-                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight()*4/3,img.getHeight());//4:3 이미지
-                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth()*3/4);//4:3 이미지
+                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight(),img.getHeight());//4:3 이미지
+                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth());//4:3 이미지
 
                             upload_btn.setImageBitmap(img);
                         } catch (Exception e) {
