@@ -82,7 +82,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         if(bitmap!=null) iconImageView.setImageBitmap(bitmap);
         if(nbitmap!=null) writerImageView.setImageBitmap(nbitmap);
         dateTextView.setText(listViewItem.getTimestamp().substring(0,10));
-        writerTextView.setText(listViewItem.getWriter().getFullName());
+        writerTextView.setText(listViewItem.getWriter().getUsername());
         scoreTextView.setText("★"+listViewItem.getStars());
         reviewTextView.setText(listViewItem.getContents());
 

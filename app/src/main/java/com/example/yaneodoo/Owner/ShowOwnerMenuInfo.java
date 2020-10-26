@@ -50,6 +50,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
     private ListView listview;
     private ReviewListViewAdapter adapter = new ReviewListViewAdapter();
 
+    private Menu menu=null;
+
     private Bitmap sbitmap=null;
 
     @Override
@@ -68,7 +70,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
+        menu = (Menu) intent.getSerializableExtra("menuInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
 
@@ -103,7 +105,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         GetImage getMenuImage = new GetImage();
         if(menu.getPhoto()!=null){
             try {
-                sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                sbitmap = getMenuImage.execute(menu.getPhoto().getThumbnailUrl()).get();
                 ImageView menuRepresentImage=(ImageView) findViewById(R.id.menu_image);
                 menuRepresentImage.setImageBitmap(sbitmap);
             } catch (ExecutionException e) {
@@ -121,6 +123,7 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 intent.putExtra("menuInfo", menu);
                 intent.putExtra("ownerInfo", owner);
                 intent.putExtra("bistroInfo", store);
+                finish();
                 startActivity(intent);
             }
         });

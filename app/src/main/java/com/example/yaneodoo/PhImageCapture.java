@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
@@ -62,7 +61,6 @@ public class PhImageCapture extends AppCompatActivity {
         }
 
         // 사진 파일
-
         File photoPath = a_activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         try {
             photoFile = File.createTempFile(PhUtil.getTempFileName(), ".png", photoPath);
@@ -71,8 +69,6 @@ public class PhImageCapture extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //TODO : photoFile 생성됨
 
         /**
          * File provider 를 이용 파일 공유

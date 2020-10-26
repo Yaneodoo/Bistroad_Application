@@ -108,7 +108,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         GetImage getMenuImage = new GetImage();
         if(menu.getPhoto()!=null){
             try {
-                sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                sbitmap = getMenuImage.execute(menu.getPhoto().getThumbnailUrl()).get();
                 ImageView menuRepresentImage=(ImageView) findViewById(R.id.menu_image);
                 menuRepresentImage.setImageBitmap(sbitmap);
             } catch (ExecutionException e) {

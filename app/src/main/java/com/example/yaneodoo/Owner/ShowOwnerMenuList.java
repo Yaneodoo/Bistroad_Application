@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -99,8 +98,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-        getMenuList(token, store.getId());//가게의 메뉴 불러오기
 
         GetImage getImage = new GetImage();
         if(owner.getPhoto()!=null){
@@ -230,6 +227,14 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.listViewItemList.clear();
+        Call<List<Menu>> getMenuList = service.getMenuList("Bearer " + token, store.getId());//가게의 메뉴 불러오기
+        new getMenuList().execute(getMenuList);
+    }
+
     void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("삭제 확인");
@@ -270,40 +275,45 @@ public class ShowOwnerMenuList extends AppCompatActivity {
         builder.show();
     }
 
-    private void getMenuList(String token, String storeId) {
-        service.getMenuList("Bearer " + token, storeId).enqueue(new Callback<List<Menu>>() {
-            @Override
-            public void onResponse(Call<List<Menu>> call, Response<List<Menu>> response) {
-                if (response.isSuccessful()) {
-                    List<Menu> body = response.body();
-                    if (body != null) {
-                        for (int i = 0; i < body.size(); i++) {
-                            Menu menu = new Menu();
-                            menu.setId(body.get(i).getId());
-                            menu.setName(body.get(i).getName());
-                            menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
-                            menu.setDescription(body.get(i).getDescription());
-                            menu.setStars("★" + body.get(i).getStars());
-                            menu.setPhoto(body.get(i).getPhoto());
-                            menu.setStoreId(body.get(i).getStoreId());
-                            menu.setOrderCount(body.get(i).getOrderCount());
-                            menuList.add(menu);
+    private class getMenuList extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Menu>> call = params[0];
+                Response<List<Menu>> response = call.execute();
+                List<Menu> body = response.body();
+                if (body != null) {
+                    for (int i = 0; i < body.size(); i++) {
+                        Menu menu = new Menu();
+                        menu.setId(body.get(i).getId());
+                        menu.setName(body.get(i).getName());
+                        menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                        menu.setDescription(body.get(i).getDescription());
+                        menu.setStars("★" + body.get(i).getStars());
+                        menu.setPhoto(body.get(i).getPhoto());
+                        menu.setStoreId(body.get(i).getStoreId());
+                        menu.setOrderCount(body.get(i).getOrderCount());
+                        menuList.add(menu);
 
-                            adapter.addItem(menu);
-                            Log.d("menu data", "--------------------------------------");
-                        }
-                        Log.d("getMenuList end", "======================================");
-                        listview.setAdapter(adapter);
+                        adapter.addItem(menu);
+                        Log.d("menu data", "--------------------------------------");
                     }
+                    Log.d("getMenuList end", "======================================");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Menu>> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("fail", "======================================");
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+            listview.setAdapter(adapter);
+        }
     }
 
     private class deleteMenu extends AsyncTask<Call, Void, String> {

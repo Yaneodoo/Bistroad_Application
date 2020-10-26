@@ -13,6 +13,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -44,6 +46,7 @@ import com.example.yaneodoo.RetrofitService;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
@@ -69,8 +72,6 @@ public class RegisterMenu extends AppCompatActivity {
     private File nFile =null;
 
     private Store store;
-
-    private String sourceUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,11 +178,7 @@ public class RegisterMenu extends AppCompatActivity {
                     }
                 }
 
-                Intent intent = new Intent(RegisterMenu.this, ShowOwnerMenuList.class);
-                intent.putExtra("ownerInfo", owner);
-                intent.putExtra("bistroInfo", store);
-                RegisterMenu.this.finish();
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -266,7 +263,7 @@ public class RegisterMenu extends AppCompatActivity {
                 Response<Menu> response = call.execute();
                 Menu body = response.body();
                 String menuId=body.getId();
-                Log.d("MENU", body.getName());
+                Log.d("POST MENU",body.getName());
 
                 return menuId;
 
@@ -277,22 +274,25 @@ public class RegisterMenu extends AppCompatActivity {
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String menuId) {
             MultipartBody.Part file = null;
             if(nFile!=null){
-                RequestBody requestFile =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), nFile);
-                file =
-                        MultipartBody.Part.createFormData("image", nFile.getName(), requestFile);
-            }
+                try {
+                    String mime=Files.probeContentType(nFile.toPath());
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse(mime), nFile);
+                    file =
+                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            if(file!=null){
-                Log.d("REQUEST FILE", file.toString());
-                Log.d("REQUEST STOREID", store.getId());
-                Log.d("REQUEST MENUID", menuId);
-                Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
-                new postItemPhoto().execute(postItemPhoto);
+                if(file!=null){
+                    Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
+                    new postItemPhoto().execute(postItemPhoto);
+                }
             }
         }
     }
@@ -304,9 +304,10 @@ public class RegisterMenu extends AppCompatActivity {
                 Call<Menu> call = params[0];
                 Response<Menu> response = call.execute();
                 Menu body = response.body();
-                Log.d("MENU", body.toString());
+                String menuId=body.getId();
+                Log.d("PATCH MENU",body.getName());
 
-                return null;
+                return menuId;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -314,8 +315,26 @@ public class RegisterMenu extends AppCompatActivity {
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String menuId) {
+            MultipartBody.Part file = null;
+            if(nFile!=null){
+                try {
+                    String mime=Files.probeContentType(nFile.toPath());
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse(mime), nFile);
+                    file =
+                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(file!=null){
+                    Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
+                    new postItemPhoto().execute(postItemPhoto);
+                }
+            }
         }
     }
 
@@ -327,7 +346,6 @@ public class RegisterMenu extends AppCompatActivity {
                 Response<Menu> response = call.execute();
                 Menu body = response.body();
 
-                Log.d("POSTPHOTO CODE",response.toString());
                 if (body != null) {
                     Log.d("POSTPHOTO", "success");
                 } else {
@@ -349,6 +367,7 @@ public class RegisterMenu extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -358,9 +377,6 @@ public class RegisterMenu extends AppCompatActivity {
 
                     if (data.getData() != null) {
                         try {
-
-
-                            Uri file1=data.getData();
                             InputStream in = getContentResolver().openInputStream(data.getData());
                             Bitmap img = BitmapFactory.decodeStream(in);
                             in.close();
@@ -368,6 +384,8 @@ public class RegisterMenu extends AppCompatActivity {
                             Log.d("BITMAP",img.toString());
                             String imagePath = getRealPathFromURI(data.getData());
                             nFile = new File(imagePath);
+
+                            Log.d("nFile",nFile.toString());
                             // path 경로
                             ExifInterface exif = null;
                             try { exif = new ExifInterface(imagePath);
