@@ -9,11 +9,8 @@
         android:id="@+id/menu_imgView"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        android:scaleType="fitCenter"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/no_image_box" />
 
     <LinearLayout
