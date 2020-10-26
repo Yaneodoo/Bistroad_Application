@@ -85,6 +85,8 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
+    private Store store=null;
+
     private Place mPlace;
 
     private static final int AUTOCOMPLETE_REQUEST_CODE = 3333;
@@ -102,7 +104,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
         service = mRetrofit.create(RetrofitService.class);
 
         intent = getIntent();
-        final Store store = (Store) intent.getSerializableExtra("bistroInfo");
+        store = (Store) intent.getSerializableExtra("bistroInfo");
         final User owner = (User) intent.getSerializableExtra("ownerInfo");
 
         GetImage getImage = new GetImage();
@@ -209,7 +211,8 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     nStore.setOwnerId(owner.getId());
                     nStore.setName(name);
                     nStore.setDescription(desc);
-                    nStore.setLocation(new Location(String.valueOf(mPlace.getLatLng().latitude), String.valueOf(mPlace.getLatLng().longitude)));
+                    if(mPlace==null) nStore.setLocation(store.getLocation());
+                    else nStore.setLocation(new Location(String.valueOf(mPlace.getLatLng().latitude), String.valueOf(mPlace.getLatLng().longitude)));
                     nStore.setPhone(phone);
                     nStore.setAddress(address);
                     //nStore.setPhoto();
@@ -290,7 +293,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 mMap.addMarker(makerOptions);
 
                 EditText bistroAddressTxtView = (EditText) findViewById(R.id.bistro_address_txtView);
-                bistroAddressTxtView.setText(mPlace.getAddress().substring(5));
+                bistroAddressTxtView.setText(mPlace.getAddress());
             }
 
             @Override
@@ -385,13 +388,27 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 
-        // 현재 위치 설정
-        GPSTracker gpsTracker = new GPSTracker(RegisterBistro.this);
-        Double lat = gpsTracker.getLatitude();
-        Double lon = gpsTracker.getLongitude();
-        LatLng location = new LatLng(lat, lon);
+        LatLng location=null;
 
-        //카메라를 현재 위치로 옮긴다.
+        if(store==null){ //새로운 가게 등록 시
+            // 현재 위치 설정
+            GPSTracker gpsTracker = new GPSTracker(RegisterBistro.this);
+            Double lat = gpsTracker.getLatitude();
+            Double lon = gpsTracker.getLongitude();
+            location = new LatLng(lat, lon);
+        }
+        else{ //존재하는 가게 수정 시
+            location = new LatLng(Double.valueOf(store.getLocation().getLat()), Double.valueOf(store.getLocation().getLng()));
+
+            MarkerOptions makerOptions = new MarkerOptions();
+            makerOptions
+                    .position(location)
+                    .title("매장 위치");
+
+            mMap.addMarker(makerOptions);
+        }
+
+        //카메라를 적절한 위치로 옮긴다.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17));
     }
 

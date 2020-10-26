@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yaneodoo.Customer.ShowCustomerMenuInfo;
+import com.example.yaneodoo.Customer.ShowCustomerMenuList;
+import com.example.yaneodoo.ImageDialog;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
@@ -45,6 +49,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
     private List<Review> reviewList = new ArrayList<>();
     private ListView listview;
     private ReviewListViewAdapter adapter = new ReviewListViewAdapter();
+
+    private Bitmap sbitmap=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +101,6 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
         menuAmountTxtView.setText("주문 횟수 : "+menu.getOrderCount().toString());
 
         GetImage getMenuImage = new GetImage();
-        Bitmap sbitmap = null;
         if(menu.getPhoto()!=null){
             try {
                 sbitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
@@ -108,9 +113,8 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
             }
         }
 
-        Button editbutton = (Button) findViewById(R.id.btn_edit);
-
         // 수정 버튼 클릭 리스너
+        Button editbutton = (Button) findViewById(R.id.btn_edit);
         editbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowOwnerMenuInfo.this, RegisterMenu.class);
@@ -141,6 +145,34 @@ public class ShowOwnerMenuInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //원본 이미지 팝업 클릭 리스너
+        ImageView menuImgView = (ImageView) findViewById(R.id.menu_image);
+        menuImgView.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sbitmap!=null){
+                    Intent intent = new Intent(ShowOwnerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("menuInfo", menu);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        //리뷰 선택 리스너
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                Review review = (Review) parent.getItemAtPosition(position);
+
+                if(review.getPhoto()!=null) {
+                    Intent intent = new Intent(ShowOwnerMenuInfo.this, ImageDialog.class);
+                    intent.putExtra("reviewInfo", review);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     private class callgetReviewList extends AsyncTask<Call, Void, String> {

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
-            android:text="Bistroad"
+            android:text="Bistroad "
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
             android:paddingTop="10sp"
@@ -31,7 +31,7 @@
             android:paddingRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:src="@drawable/mypage" />
     </RelativeLayout>
     <TextView
@@ -53,9 +53,10 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
         <ImageView
-            android:layout_width="130dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:id="@+id/bistro_represent_image"
+            android:scaleType="centerCrop"
             android:src="@drawable/no_image_box"/>
 
         <LinearLayout
@@ -71,8 +72,11 @@
                     android:id="@+id/bistro_name_txtView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/btn_edit"
                     android:textSize="24dp"
                     android:textColor="#000000"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:gravity="center_vertical"
                     android:layout_weight="1" />
                 <Button

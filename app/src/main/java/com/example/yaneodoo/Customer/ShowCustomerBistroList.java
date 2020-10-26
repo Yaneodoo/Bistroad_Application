@@ -2,6 +2,8 @@ package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
@@ -72,18 +75,16 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
         new getUserMe().execute(callgetUserMe);
 
-        Double lat;//37.5689824
-        Double lon;//126.9844681
-
         GPSTracker gpsTracker = new GPSTracker(ShowCustomerBistroList.this);
-        lat = gpsTracker.getLatitude();
-        lon = gpsTracker.getLongitude();
-        lat=37.5689824;
-        lon=126.9844681;
+        Double lat = gpsTracker.getLatitude();
+        Double lon = gpsTracker.getLongitude();
 
-        //TODO : GPS 조금만 벗어나도 대부분 검색이 안됨(동일해야만 검색됨 아마도)
-        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,0.5,"distance,desc");
+        Call<List<Store>> getNearbyStoreList = service.getNearbyStoreList("Bearer " + token,lat,lon,1000.00,"distance,desc");
         new getNearbyStoreList().execute(getNearbyStoreList);
+
+        String address = getCurrentAddress(lat, lon);
+        TextView currentAddressTxtView = (TextView) findViewById(R.id.current_address_txtView);
+        currentAddressTxtView.setText(address);
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.bistro_list_view_customer);
@@ -138,6 +139,35 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public String getCurrentAddress( double latitude, double longitude) { //GPS를 주소로 변환
+        //출처: https://shihis123.tistory.com/entry/Android-GPS-현재-위치-가져오기LocationLatitudeLongitude [Gomdori]
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+
+        try {
+            addresses = geocoder.getFromLocation(
+                    latitude,
+                    longitude,
+                    1);
+        } catch (IOException ioException) {
+            //네트워크 문제
+            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+            return "지오코더 서비스 사용불가";
+        } catch (IllegalArgumentException illegalArgumentException) {
+            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+            return "잘못된 GPS 좌표";
+        }
+
+        if (addresses == null || addresses.size() == 0) {
+            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
+            return "주소 미발견";
+        }
+
+        //시 구 동
+        String address = addresses.get(0).getAdminArea()+" "+addresses.get(0).getSubLocality()+" "+addresses.get(0).getThoroughfare();
+        return address;
     }
 
     private ArrayList<Menu> ReadShoppingBasketData() {

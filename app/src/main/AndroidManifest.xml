@@ -18,7 +18,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
-        android:label="@string/app_name"
+        android:label="Bistroad"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -73,6 +73,8 @@
         <activity android:name=".Owner.ShowOwnerMenuList" />
         <activity android:name=".Owner.ShowOwnerMenuInfo" />
         <activity android:name=".Owner.MyPageOwner" />
+        <activity android:name=".ImageDialog"
+            android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".LoginConfirmed" />
