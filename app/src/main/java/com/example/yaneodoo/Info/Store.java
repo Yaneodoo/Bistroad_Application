@@ -12,6 +12,8 @@ public class Store implements Serializable {
     private Photo photo;
     private String address;
 
+    private boolean checked;
+
     public Store() {
     }
 
@@ -86,6 +88,15 @@ public class Store implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @Override

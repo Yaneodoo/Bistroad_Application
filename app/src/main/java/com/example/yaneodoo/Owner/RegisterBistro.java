@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -60,13 +62,18 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -79,6 +86,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
     private static final int REQUEST_TAKE_ALBUM = 2222;
     private ImageView upload_btn;
     private PhImageCapture mCamera;
+    private File nFile =null;
 
     private String token;
     private Retrofit mRetrofit;
@@ -129,7 +137,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             bistroExistTxtView.setText("매장 수정");
 
             EditText bistroAddressTxtView = (EditText) findViewById(R.id.bistro_address_txtView);
-            bistroAddressTxtView.setText(store.getAddress().substring(5));
+            bistroAddressTxtView.setText(store.getAddress());
             EditText bistroNameTxtView = (EditText) findViewById(R.id.bistro_name_txtView);
             bistroNameTxtView.setText(store.getName());
             EditText bistroTelTxtView = (EditText) findViewById(R.id.bistro_tel_txtView);
@@ -159,8 +167,8 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 PopupMenu pop = new PopupMenu(getApplicationContext(), view);
                 getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
 
-                pop.show();
                 checkPermission();
+                pop.show();
 
                 pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -201,7 +209,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                         || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
                     Toast.makeText(getApplicationContext(), "주소, 상호명, 전화번호, 설명의 항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
                 else{
-                    Drawable uploadedImg = imgBtn.getDrawable();
                     String address=addressEditTxt.getText().toString();
                     String name = nameEditTxt.getText().toString();
                     String phone = telEditTxt.getText().toString();
@@ -215,7 +222,6 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                     else nStore.setLocation(new Location(String.valueOf(mPlace.getLatLng().latitude), String.valueOf(mPlace.getLatLng().longitude)));
                     nStore.setPhone(phone);
                     nStore.setAddress(address);
-                    //nStore.setPhoto();
 
                     if(store==null){ //새로운 가게 등록
                         Call<Store> callpostStore = service.postStore("Bearer " + token, nStore);
@@ -226,9 +232,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                         new callpatchStore().execute(callpatchStore);
                     }
 
-                    Intent intent = new Intent(RegisterBistro.this, ShowOwnerBistroList.class);
-                    RegisterBistro.this.finish();
-                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -294,6 +298,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
                 EditText bistroAddressTxtView = (EditText) findViewById(R.id.bistro_address_txtView);
                 bistroAddressTxtView.setText(mPlace.getAddress());
+
+                EditText nameEditTxt = (EditText) findViewById(R.id.bistro_name_txtView);
+                nameEditTxt.setText(mPlace.getName());
             }
 
             @Override
@@ -315,6 +322,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 Call<Store> call = params[0];
                 Response<Store> response = call.execute();
                 Store body = response.body();
+                String storeId=body.getId();
 
                 if (body != null) {
                     Store store = new Store();
@@ -332,7 +340,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 int statusCode  = response.code();
                 Log.d("CODE",Integer.toString(statusCode));
                 }
-                return null;
+                return storeId;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -340,9 +348,26 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        protected void onPostExecute(String result){
-            super.onPostExecute(result);
+        protected void onPostExecute(String storeId) {
+            MultipartBody.Part file = null;
+            if(nFile!=null){
+                try {
+                    String mime= Files.probeContentType(nFile.toPath());
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse(mime), nFile);
+                    file =
+                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(file!=null){
+                    Call<Store> postStorePhoto = service.postStorePhoto("Bearer " + token, file, storeId);
+                    new postStorePhoto().execute(postStorePhoto);
+                }
+            }
         }
     }
 
@@ -378,9 +403,55 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String result){
-            super.onPostExecute(result);
+            MultipartBody.Part file = null;
+            if(nFile!=null){
+                try {
+                    String mime= Files.probeContentType(nFile.toPath());
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse(mime), nFile);
+                    file =
+                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(file!=null){
+                    Call<Store> postStorePhoto = service.postStorePhoto("Bearer " + token, file, store.getId());
+                    new postStorePhoto().execute(postStorePhoto);
+                }
+            }
+        }
+    }
+
+    private class postStorePhoto extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Store> call = params[0];
+                Response<Store> response = call.execute();
+                Store body = response.body();
+
+                if (body != null) {
+                    Log.d("POSTPHOTO", "success");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("POSTPHOTO CODE",Integer.toString(statusCode));
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                Log.d("POSTPHOTO", "fail");
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
         }
     }
 
@@ -403,7 +474,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             MarkerOptions makerOptions = new MarkerOptions();
             makerOptions
                     .position(location)
-                    .title("매장 위치");
+                    .title(store.getName());
 
             mMap.addMarker(makerOptions);
         }
@@ -441,6 +512,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
                             Log.d("BITMAP",img.toString());
                             String imagePath = getRealPathFromURI(data.getData());
+                            nFile = new File(imagePath);
+
+                            Log.d("nFile",nFile.toString());
                             // path 경로
                             ExifInterface exif = null;
                             try { exif = new ExifInterface(imagePath);
@@ -478,7 +552,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
 
             case 1001: // 카메라
                 if (resultCode == Activity.RESULT_OK) {
-                    // Camera action pick 결과 전달
+                    nFile =mCamera.getPhotoFile();
                     mCamera.onResult(upload_btn);
                 }
                 break;

@@ -44,6 +44,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
     private User owner = new User();
     private String token;
+    private String ownerId=null;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -64,7 +65,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.bistro_list_view_owner);
 
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
-        String ownerId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
+        ownerId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -75,15 +76,22 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         Call<User> callgetUserMe = service.getUserMe("Bearer " + token);
         new getUserMe().execute(callgetUserMe);
 
-        final Call<List<Store>> callgetStoreList = service.getStoreList("Bearer " + token, ownerId);
-        new getStoreList().execute(callgetStoreList);
-
         //가게 선택 리스너
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 if (onChoice) {
-                    v.setBackgroundColor(R.id.dark);
+                    checkedItems = listview.getCheckedItemPositions();
+                    Store s = storeList.get(position);
+                    if(!checkedItems.get(position)){ //체크된 상태
+                        s.setChecked(false);
+                    }
+                    else{
+                        s.setChecked(true);
+                    }
+                    adapter.setItem(position,s);
+                    adapter.notifyDataSetChanged();
+
                 } else {
                     Store store = (Store) parent.getItemAtPosition(position);
 
@@ -160,6 +168,14 @@ public class ShowOwnerBistroList extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.listViewItemList.clear();
+        final Call<List<Store>> getStoreList = service.getStoreList("Bearer " + token, ownerId);
+        new getStoreList().execute(getStoreList);
+    }
+
     private class getUserMe extends AsyncTask<Call, Void, String> {
         @Override
         protected String doInBackground(Call[] params) {
@@ -223,6 +239,8 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                         store.setPhone(body.get(i).getPhone());
                         store.setAddress(body.get(i).getAddress());
                         store.setPhoto(body.get(i).getPhoto());
+
+                        store.setChecked(false);
                         storeList.add(store);
 
                         Log.d("STORE", store.toString());
@@ -240,6 +258,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
             listview.setAdapter(adapter);
         }
     }

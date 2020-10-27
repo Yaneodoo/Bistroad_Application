@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 public class BistroListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<Store> listViewItemList = new ArrayList<>();
+    public ArrayList<Store> listViewItemList = new ArrayList<>();
 
     // ListViewAdapter의 생성자
     public BistroListViewAdapter() {
@@ -67,9 +67,13 @@ public class BistroListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         if(bitmap!=null) iconImageView.setImageBitmap(bitmap);
+        else iconImageView.setImageResource(R.drawable.no_image_box);
         titleTextView.setText(listViewItem.getName());
         locationTextView.setText(listViewItem.getAddress());
         descTextView.setText(listViewItem.getDescription());
+
+        if(!listViewItem.isChecked()) convertView.setBackgroundResource(R.drawable.list_item_border);
+        else convertView.setBackgroundColor(R.id.dark);
 
         return convertView;
     }
@@ -90,5 +94,9 @@ public class BistroListViewAdapter extends BaseAdapter {
     public void addItem(Store store) {
         Store item = store;
         listViewItemList.add(item);
+    }
+
+    public void setItem(int position, Store store){
+        listViewItemList.set(position, store);
     }
 }

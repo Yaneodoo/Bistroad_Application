@@ -176,9 +176,9 @@ public class RegisterMenu extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                }
 
-                finish();
+                    finish();
+                }
             }
         });
 
@@ -290,7 +290,7 @@ public class RegisterMenu extends AppCompatActivity {
                 }
 
                 if(file!=null){
-                    Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
+                    Call<Menu> postItemPhoto = service.postMenuPhoto("Bearer " + token, file, store.getId(), menuId);
                     new postItemPhoto().execute(postItemPhoto);
                 }
             }
@@ -331,7 +331,7 @@ public class RegisterMenu extends AppCompatActivity {
                 }
 
                 if(file!=null){
-                    Call<Menu> postItemPhoto = service.postItemPhoto("Bearer " + token, file, store.getId(), menuId);
+                    Call<Menu> postItemPhoto = service.postMenuPhoto("Bearer " + token, file, store.getId(), menuId);
                     new postItemPhoto().execute(postItemPhoto);
                 }
             }

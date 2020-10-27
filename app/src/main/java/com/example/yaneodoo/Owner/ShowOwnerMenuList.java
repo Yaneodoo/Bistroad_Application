@@ -131,6 +131,17 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 if (onChoice) {
                     v.setBackgroundColor(R.id.dark);
+                    checkedItems = listview.getCheckedItemPositions();
+                    Menu m = menuList.get(position);
+                    if(!checkedItems.get(position)){ //체크된 상태
+                        m.setChecked(false);
+                    }
+                    else{
+                        m.setChecked(true);
+                    }
+                    adapter.setItem(position,m);
+                    adapter.notifyDataSetChanged();
+
                 } else {
                     Menu menu = (Menu) parent.getItemAtPosition(position);
 
@@ -151,6 +162,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                 Intent intent = new Intent(ShowOwnerMenuList.this, RegisterBistro.class);
                 intent.putExtra("bistroInfo", store);
                 intent.putExtra("ownerInfo", owner);
+                finish();
                 startActivity(intent);
             }
         });
@@ -188,12 +200,6 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                     addbtn.setTextSize(14);
                     addbtn.setText("");
                 } else {
-/*                    delbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                    delbtn.setTextSize(14);
-                    delbtn.setText("삭제");
-                    Button addbtn = (Button) findViewById(R.id.btn_add);
-                    addbtn.setTextSize(14);
-                    addbtn.setText("추가");*/
                     checkedItems = listview.getCheckedItemPositions();   //item별 checked 상태 0 or 1
                     if (checkedItems.size() > 0) showAlertDialog(); //삭제 확인 AlertDialog
                     else {
@@ -293,6 +299,8 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                         menu.setPhoto(body.get(i).getPhoto());
                         menu.setStoreId(body.get(i).getStoreId());
                         menu.setOrderCount(body.get(i).getOrderCount());
+
+                        menu.setChecked(false);
                         menuList.add(menu);
 
                         adapter.addItem(menu);

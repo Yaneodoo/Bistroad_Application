@@ -67,14 +67,17 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
             }
         }
 
-
         // 아이템 내 각 위젯에 데이터 반영
         if(bitmap!=null) menuImageView.setImageBitmap(bitmap);
+        else menuImageView.setImageResource(R.drawable.no_image_box);
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice());
         descTextView.setText(listViewItem.getDescription());
         scoreTextView.setText(listViewItem.getStars());
         orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());
+
+        if(!listViewItem.isChecked()) convertView.setBackgroundResource(R.drawable.list_item_border);
+        else convertView.setBackgroundColor(R.id.dark);
 
         return convertView;
     }
@@ -94,7 +97,10 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
     // 아이템 데이터 추가를 위한 함수.
     public void addItem(Menu menu) {
         Menu item = menu;
-
         listViewItemList.add(item);
+    }
+
+    public void setItem(int position, Menu menu){
+        listViewItemList.set(position, menu);
     }
 }

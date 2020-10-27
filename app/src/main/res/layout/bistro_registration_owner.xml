@@ -105,25 +105,30 @@
                     android:layout_weight="1"
                     tools:context=".Owner.RegisterBistro" />
 
-                <TableLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장 주소 : "/>
+                    <EditText
+                        android:id="@+id/bistro_address_txtView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="매장 검색시 자동 입력"
+                        android:maxLength="50"/>
+                </LinearLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingBottom="10dp">
 
                     <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="20dp"
-                            android:text="매장 주소 : "/>
-                        <EditText
-                            android:id="@+id/bistro_address_txtView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="( 매장 검색시 자동 입력 )"
-                            android:maxLength="50"
-                            android:textSize="20dp" />
+
                     </TableRow>
 
                     <TableRow>

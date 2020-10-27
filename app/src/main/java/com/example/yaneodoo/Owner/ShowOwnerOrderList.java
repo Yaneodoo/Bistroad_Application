@@ -73,7 +73,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         getOrderList(token, store.getId(), "date,desc");//가게의 주문내역 불러오기
         Log.d("GETORDERLIST", store.getId());
-        //TODO : 날짜 최신순으로 했는데 반영이 안되는듯함
 
         TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
         titleTxtView.setText(owner.getFullName()+" 점주님의\n"+store.getName()+" 주문내역입니다.");
@@ -136,7 +135,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         }
     }
 
-    //TODO : date,asc?
     private void getOrderList(final String token, String storeId, String sort) {
         service.getStoreOrders("Bearer " + token, storeId, sort).enqueue(new Callback<List<Order>>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -154,7 +152,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             order.setTimestamp(body.get(i).getTimestamp());
                             order.setUserId(body.get(i).getUserId());
                             order.setRequest(body.get(i).getRequests());
-                            order.setUserId(body.get(i).getUserId());
                             order.setHasReview(body.get(i).getHasReview());
                             order.setStore(body.get(i).getStore());
                             orderList.add(order);

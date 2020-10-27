@@ -15,6 +15,8 @@ public class Menu implements Serializable {
     private Integer orderCount;
     private File file;
 
+    private boolean checked;
+
     public Menu() {
     }
 
@@ -109,6 +111,14 @@ public class Menu implements Serializable {
 
     public void setStoreId(String storeId) {
         this.storeId = storeId;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @Override

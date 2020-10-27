@@ -117,12 +117,13 @@ public interface RetrofitService {
 
     //--------------store-photo------------------//
     //Upload a store photo
+    @Multipart
     @POST("stores/{id}/photo")
-    Call<Void> postStorePhoto(@Header("Authorization") String token, @Path("id") String id);
+    Call<Store> postStorePhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
 
     //--------------store-items-photo------------------//
     //Upload a store item photo
     @Multipart
     @POST("stores/{storeId}/items/{id}/photo")
-    Call<Menu> postItemPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("storeId") String storeId, @Path("id") String id);
+    Call<Menu> postMenuPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("storeId") String storeId, @Path("id") String id);
 }
