@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String mURL, mToken, name, role, loginInfo, id;
+    protected String mURL, mToken, name, role, loginInfo, id, phone, profileUrl, realname, photo;
     SharedPreferences tk;
     int rc;
 
@@ -49,12 +49,22 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
             if(rc == 200){
                 InputStream is = conn.getInputStream();
                 loginInfo = convertStreamToString(is);
-                //Log.d("POST", loginInfo);
+                Log.d("POST", loginInfo);
                 JSONObject jsonLogin = new JSONObject(loginInfo);
                 name = jsonLogin.getString("fullName");
+                realname = jsonLogin.getString("username");
                 role = jsonLogin.getString("role");
                 id = jsonLogin.getString("id");
+                phone = jsonLogin.getString("phone");
+                //Todo photo객체 가져오기
+                //photo = jsonLogin.getString("photo");
+                //JSONObject jsonPhoto = new JSONObject(photo);
+                //profileUrl = jsonPhoto.getString("sourceUrl");
+
                 SharedPreferences.Editor editor = tk.edit();
+                editor.putString("phone", phone);
+                editor.putString("realname", realname);
+                editor.putString("profileUrl", profileUrl);
                 editor.putString("fullName", name); //
                 editor.putString("role", role); //
                 editor.putString("id", id);

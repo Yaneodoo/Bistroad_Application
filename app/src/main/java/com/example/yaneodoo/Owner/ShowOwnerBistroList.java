@@ -157,7 +157,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,7 +214,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
         }

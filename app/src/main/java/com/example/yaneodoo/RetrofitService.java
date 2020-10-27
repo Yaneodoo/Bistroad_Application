@@ -61,8 +61,8 @@ public interface RetrofitService {
 
     //---------------order----------------//
     //get user orders
-    @GET("orders")
-    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
+    @GET("orders") //Todo userid->userId
+    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userid") String userId);
 
     //get store orders
     @GET("orders")
@@ -114,6 +114,12 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST("stores/{storeId}/items")
     Call<Store> postReview(@Header("Authorization") String token, @Field("review") Review review);
+
+    //--------------user-photo------------------//
+    //Upload a store photo
+    @Multipart
+    @POST("users/{id}/photo")
+    Call<Void> postUserPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
 
     //--------------store-photo------------------//
     //Upload a store photo

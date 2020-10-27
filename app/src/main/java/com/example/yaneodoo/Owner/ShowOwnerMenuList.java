@@ -109,7 +109,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
             btnMyPage.setImageBitmap(bitmap);
         }
 
@@ -222,7 +222,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -293,7 +293,7 @@ public class ShowOwnerMenuList extends AppCompatActivity {
                         Menu menu = new Menu();
                         menu.setId(body.get(i).getId());
                         menu.setName(body.get(i).getName());
-                        menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                        menu.setPrice(Integer.valueOf(body.get(i).getPrice().toString().substring(0, body.get(i).getPrice().toString().length() - 2)));
                         menu.setDescription(body.get(i).getDescription());
                         menu.setStars("★" + body.get(i).getStars());
                         menu.setPhoto(body.get(i).getPhoto());

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.User;
+import com.example.yaneodoo.InfoEdit;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
@@ -33,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyPageCustomer extends AppCompatActivity {
     private Intent intent;
-    private String token, id, name, orderInfo;
+    private String token, id, name, phone, realname, profileUrl;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private String baseUrl = "https://api.bistroad.kr/v1/";
@@ -54,6 +55,10 @@ public class MyPageCustomer extends AppCompatActivity {
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
         id = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
+        realname = getSharedPreferences("sFile", MODE_PRIVATE).getString("realname", "");
+        phone = getSharedPreferences("sFile", MODE_PRIVATE).getString("phone", "");
+
+
         final TextView nameText = (TextView)findViewById(R.id.cutomer_name_textView);
         nameText.setText(name+" 고객님");
 
@@ -69,7 +74,6 @@ public class MyPageCustomer extends AppCompatActivity {
         intent = getIntent();
         token = tk.getString("bistrotk", "");
 
-        //TODO : 날짜 최신순
         getOrderList(token, id);//자신의 주문내역 불러오기
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
@@ -91,12 +95,24 @@ public class MyPageCustomer extends AppCompatActivity {
             }
         });
 
+        // 정보수정 버튼 클릭 리스너
+        Button btnInfoEdit = (Button) findViewById(R.id.mypage_info_edit);
+        btnInfoEdit.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyPageCustomer.this, InfoEdit.class);
+                startActivity(intent);
+            }
+        });
+
+        // 로그아웃 버튼 클릭 리스너
         Button btnCustomer = (Button) findViewById(R.id.mypage_logout_button);
         btnCustomer.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = tk.edit();
                 editor.putString("bId", ""); //
+                editor.putString("bistrotk","");
                 editor.commit();
                 Intent intent = new Intent(MyPageCustomer.this, Login.class);
                 startActivity(intent);
@@ -112,9 +128,13 @@ public class MyPageCustomer extends AppCompatActivity {
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful()) {
                     List<Order> body = response.body();
+                    int statusCode  = response.code();
+                    Log.d("MyOrders CODE",Integer.toString(statusCode));
                     if (body != null) {
-                        for (int i = 0; i < body.size(); i++) {
+                        Log.d("MyOrders: ",body.toString());
+                        for (int i = body.size()-1; i >= 0; i--) {
                             Order order = new Order();
+                            order.setHasReview(body.get(i).getHasReview());
                             order.setId(body.get(i).getId());
                             order.setProgress(body.get(i).getProgress());
                             order.setTableNum(body.get(i).getTableNum());
@@ -124,22 +144,24 @@ public class MyPageCustomer extends AppCompatActivity {
                             orderList.add(order);
 
                             String requests = "";
-                            String amount = "";
+                            Integer amount;
                             String menu = "";
+                            Integer price = 0;
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount().toString();
+                                amount = order.getRequests().get(j).getAmount();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
-                                requests += menu + " x " + amount + "\n";
+                                price = order.getRequests().get(j).getMenu().getPrice() * amount;
+                                requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
                                 Log.d("requests", requests);
                             }
                             requests = requests.substring(0,requests.length()-1);
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested),
-                                        order.getTimestamp().toString(), name, requests, "접수중",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
                             else
                                 adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted),
-                                        order.getTimestamp().toString(), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                        order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");

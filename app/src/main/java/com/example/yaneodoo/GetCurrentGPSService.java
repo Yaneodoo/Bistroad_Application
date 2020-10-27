@@ -79,7 +79,6 @@ public class GetCurrentGPSService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -125,7 +124,7 @@ public class GetCurrentGPSService extends Service {
                     RestGetNearestStore restGetNearestStore = new RestGetNearestStore(lat, lon);
                     try {
                         sName = restGetNearestStore.execute().get();
-                        //Log.d("Store", sName);
+                        Log.d("Store", sName);
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {

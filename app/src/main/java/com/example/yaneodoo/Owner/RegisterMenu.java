@@ -101,7 +101,7 @@ public class RegisterMenu extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
             btnMyPage.setImageBitmap(bitmap);
         }
 
@@ -117,7 +117,7 @@ public class RegisterMenu extends AppCompatActivity {
             EditText menuNameTxtView = (EditText) findViewById(R.id.menu_name_txtView);
             menuNameTxtView.setText(menu.getName());
             EditText menuPriceTxtView = (EditText) findViewById(R.id.menu_price_txtView);
-            menuPriceTxtView.setText(menu.getPrice().substring(0,menu.getPrice().length()-1));
+            menuPriceTxtView.setText(menu.getPrice().toString().substring(0,menu.getPrice().toString().length()-1) + "원");
             EditText meuDescTxtView = (EditText) findViewById(R.id.menu_desc_txtView);
             meuDescTxtView.setText(menu.getDescription());
 
@@ -154,7 +154,7 @@ public class RegisterMenu extends AppCompatActivity {
                     Menu nMenu=new Menu();
                     nMenu.setDescription(desc);
                     nMenu.setName(name);
-                    nMenu.setPrice(price);
+                    nMenu.setPrice(Integer.valueOf(price));
 
                     if (menu == null) { //새로운 메뉴 등록
                         Call<Menu> callpostMenu = service.postMenu("Bearer " + token, nMenu, store.getId());
@@ -229,7 +229,7 @@ public class RegisterMenu extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

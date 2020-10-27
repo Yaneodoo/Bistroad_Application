@@ -22,11 +22,22 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Store store, String userId, List<Request> requests, String date, Integer tableNum, String progress) {
-        this.store = store;
+    public Order(List<Request> requests, String progress, String storeId, Integer tableNum, String timestamp, String userId) {
+        this.storeId = storeId;
         this.userId = userId;
         this.orderLines = requests;
-        this.timestamp = date;
+        this.timestamp = timestamp;
+        this.tableNum = tableNum;
+        this.progress = progress;
+    }
+
+    public Order(Boolean hasReview, String id, List<Request> orderLines, String progress, Store store, Integer tableNum, String timestamp, String userId) {
+        this.store = store;
+        this.hasReview = hasReview;
+        this.id = id;
+        this.userId = userId;
+        this.orderLines = orderLines;
+        this.timestamp = timestamp;
         this.tableNum = tableNum;
         this.progress = progress;
     }
@@ -77,7 +88,7 @@ public class Order implements Serializable {
 
     public String getUserId() {
         return userId;
-    } 
+    }
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -109,6 +120,6 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "[id = " + id + ", store = " + store.toString() + ", userId = " + userId + ", requestList = " + orderLines + ", date = " + timestamp + ", tableNum = " + tableNum + ", progress = " + progress + "]";
+        return "[ hasReview = "+ hasReview + ", id = " + id + ", storeId = " + storeId + ", userId = " + userId + ", orderLines = " + orderLines + ", date = " + timestamp + ", tableNum = " + tableNum + ", progress = " + progress + "]";
     }
 }

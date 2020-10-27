@@ -30,7 +30,7 @@
                 android:textColorLink="#FFFFFF"
                 android:textSize="40sp" />
 
-            <ImageButton
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/mypagebtn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -38,7 +38,7 @@
                 android:layout_centerVertical="true"
                 android:background="#C6D3FC"
                 android:paddingRight="10dp"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 android:src="@drawable/mypage" />
         </RelativeLayout>
 

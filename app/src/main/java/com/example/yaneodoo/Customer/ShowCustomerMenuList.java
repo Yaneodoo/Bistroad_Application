@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,7 +22,6 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.MenuListViewCustomerAdapter;
-import com.example.yaneodoo.Owner.ShowOwnerMenuList;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -38,7 +36,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -101,7 +98,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         try {
             if(user.getPhoto()!=null) {
                 Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
         } catch (ExecutionException e) {
@@ -137,7 +134,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,7 +249,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                         Menu menu = new Menu();
                         menu.setId(body.get(i).getId());
                         menu.setName(body.get(i).getName());
-                        menu.setPrice(body.get(i).getPrice().substring(0, body.get(i).getPrice().length() - 2) + "원");
+                        menu.setPrice(Integer.valueOf(body.get(i).getPrice().toString()));
                         menu.setDescription(body.get(i).getDescription());
                         menu.setStars(body.get(i).getStars());
                         menu.setPhoto(body.get(i).getPhoto());

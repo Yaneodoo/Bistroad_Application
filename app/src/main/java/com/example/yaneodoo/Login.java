@@ -1,6 +1,7 @@
 package com.example.yaneodoo;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
+import com.example.yaneodoo.Owner.ShowOwnerBistroList;
 import com.example.yaneodoo.REST.RestPostAuth;
 
 import java.util.concurrent.ExecutionException;
@@ -33,17 +36,20 @@ public class Login extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
+    private BackPressedForFinish backPressedForFinish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        Button btnLogin = (Button) findViewById(R.id.login_button);
+        final Button btnLogin = (Button) findViewById(R.id.login_button);
         Button btnSignup = (Button) findViewById(R.id.login_signup_button);
         final EditText id = (EditText)findViewById(R.id.login_id_textinput);
         final EditText password = (EditText)findViewById(R.id.login_password_textinput);
         final SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         String bPwd = "";
         String bId = tk.getString("bId","");
+        String token = tk.getString("bistrotk", "");
+        String role = tk.getString("role", "");
         Log.d("GetBId",bId);
 
         if(checkLocationServicesStatus())
@@ -63,37 +69,9 @@ public class Login extends AppCompatActivity {
         password.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                switch (keyCode){
-                    case KeyEvent.KEYCODE_ENTER:
-                        try {
-                            RestPostAuth restGetAuth = new RestPostAuth(id.getText().toString(), password.getText().toString(), tk);
-                            try {
-                                rc = restGetAuth.execute().get();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            Log.d("Login rc", String.valueOf(rc));
-                            if(rc == 200){
-                                Intent intent = new Intent(Login.this, LoginConfirmed.class);
-                                startActivity(intent);
-                            }
-                            else if(rc == 404){
-                                Toast noIdToast = Toast.makeText(getApplicationContext(), "계정이 존재하지 않습니다.", Toast.LENGTH_LONG);
-                                noIdToast.show();
-                            } else if (rc == 401) {
-                                Toast diffPwToast = Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다.", Toast.LENGTH_LONG);
-                                diffPwToast.show();
-                            } else {
-                                Log.e("POST", "Failed.");
-                            }
-                        }
-                        catch (Exception e) {
-                            // Error calling the rest api
-                            Log.e("REST_API", "POST method failed: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+                    Log.d("keyCode", String.valueOf(keyCode));
+                    btnLogin.performClick();
                 }
                 return false;
             }
@@ -116,6 +94,7 @@ public class Login extends AppCompatActivity {
                     if(rc == 200){
                         Intent intent = new Intent(Login.this, LoginConfirmed.class);
                         startActivity(intent);
+                        Login.this.finish();
                     }
                     else if(rc == 404){
                         Toast noIdToast = Toast.makeText(getApplicationContext(), "계정이 존재하지 않습니다.", Toast.LENGTH_LONG);
@@ -136,13 +115,25 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        if(bId != ""){
-            bPwd = tk.getString("bPwd","");
-            id.setText(bId);
-            password.setText(bPwd);
-            btnLogin.performClick();
-            this.finish();
+        if(token != ""){
+            if(role.equals("ROLE_STORE_OWNER")){
+                Intent intent = new Intent(Login.this, ShowOwnerBistroList.class);
+                startActivity(intent);
+            }
+            else{
+                Intent sIntent = new Intent(getApplicationContext(), GetCurrentGPSService.class);
+                startService(sIntent);
+                Intent intent = new Intent(Login.this, ShowCustomerBistroList.class);
+                startActivity(intent);
+            }
         }
+
+//        if(bId != ""){
+//            bPwd = tk.getString("bPwd","");
+//            id.setText(bId);
+//            password.setText(bPwd);
+//            btnLogin.performClick();
+//        }
     }
 
 
@@ -289,5 +280,10 @@ public class Login extends AppCompatActivity {
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    @Override
+    public void onBackPressed() {
+        backPressedForFinish.onBackPressed(this);
     }
 }

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class Menu implements Serializable {
-    private String price;
+    private Integer price;
     private String name;
     private String description;
     private String id;
@@ -25,7 +25,7 @@ public class Menu implements Serializable {
         this.quantity = quantity;
     }
 
-    public Menu(String price, String name, String id, String storeId, Integer quantity) {
+    public Menu(Integer price, String name, String id, String storeId, Integer quantity) {
         this.price = price;
         this.name = name;
         this.id = id;
@@ -65,11 +65,11 @@ public class Menu implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -123,7 +123,7 @@ public class Menu implements Serializable {
 
     @Override
     public String toString() {
-        return "[price = " + price + ", name = " + name + ", description = " + description + ", id = " + id + ", stars = " + stars + ", storeId = " + storeId +
+        return "[price = " + price.toString() + ", name = " + name + ", description = " + description + ", id = " + id + ", stars = " + stars + ", storeId = " + storeId +
                 ", quantity = " +quantity+", photo = "+photo.getThumbnailUrl().toString()+", orderCount = "+orderCount+"]";
     }
 }

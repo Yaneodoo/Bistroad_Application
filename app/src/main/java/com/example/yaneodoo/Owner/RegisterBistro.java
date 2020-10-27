@@ -125,7 +125,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+            de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
             btnMyPage.setImageBitmap(bitmap);
         }
 
@@ -248,7 +248,7 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

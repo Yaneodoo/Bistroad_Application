@@ -30,7 +30,7 @@
                 android:textColorLink="#FFFFFF"
                 android:textSize="40sp" />
 
-            <ImageButton
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/mypagebtn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

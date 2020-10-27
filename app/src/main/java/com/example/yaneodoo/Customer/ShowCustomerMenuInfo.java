@@ -86,7 +86,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         try {
             if(user.getPhoto()!=null) {
                 bitmap = getUserImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
         } catch (ExecutionException e) {
@@ -98,7 +98,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         TextView menuNameTxtView = (TextView) findViewById(R.id.menu_name_txtView);
         menuNameTxtView.setText(menu.getName());
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
-        menuPriceTxtView.setText(menu.getPrice());
+        menuPriceTxtView.setText(menu.getPrice().toString()+"원");
         TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
@@ -139,7 +139,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

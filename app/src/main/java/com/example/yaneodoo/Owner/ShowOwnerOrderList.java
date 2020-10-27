@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Customer.MyPageCustomer;
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
@@ -95,7 +96,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +145,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                     List<Order> body = response.body();
                     if (body != null) {
                         Log.d("requests", body.toString());
-                        for (int i = 0; i < body.size(); i++) {
+                        for (int i = body.size()-1; i >= 0; i--) {
                             Order order = new Order();
                             order.setId(body.get(i).getId());
                             order.setProgress(body.get(i).getProgress());
@@ -167,15 +168,17 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                             }
 
                             String requests = "";
-                            String amount = "";
+                            Integer amount;
                             String menu = "";
+                            Integer price = 0;
                             for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount().toString();
+                                amount = order.getRequests().get(j).getAmount();
                                 menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
-                                requests += menu + " x " + amount + "\n";
+                                price = order.getRequests().get(j).getMenu().getPrice() * amount;
+                                requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
+                                Log.d("requests", requests);
                             }
                             requests = requests.substring(0,requests.length()-1);
-                            Log.d("requests complete", requests);
 
                             if(order.getProgress().equals("REQUESTED"))
                                 adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),

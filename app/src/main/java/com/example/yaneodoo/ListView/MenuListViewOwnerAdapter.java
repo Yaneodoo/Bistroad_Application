@@ -71,7 +71,7 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
         if(bitmap!=null) menuImageView.setImageBitmap(bitmap);
         else menuImageView.setImageResource(R.drawable.no_image_box);
         menuTextView.setText(listViewItem.getName());
-        priceTextView.setText(listViewItem.getPrice());
+        priceTextView.setText(listViewItem.getPrice().toString()+"원");
         descTextView.setText(listViewItem.getDescription());
         scoreTextView.setText(listViewItem.getStars());
         orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());

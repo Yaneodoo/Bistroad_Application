@@ -1,22 +1,26 @@
 package com.example.yaneodoo;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Owner.ShowOwnerBistroList;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.REST.RestGetUserInfo;
 
 import java.util.concurrent.ExecutionException;
 
 public class LoginConfirmed extends AppCompatActivity {
     private String token;
-    private String id;
+    private String profileUrl;
     private String name;
     private String role;
     private int rc;
@@ -30,11 +34,23 @@ public class LoginConfirmed extends AppCompatActivity {
 
         SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         token = tk.getString("bistrotk","");
+        profileUrl = tk.getString("profileUrl","");
         Log.d("TOKEN", token);
         final TextView loginText = (TextView)findViewById(R.id.login_profile_text);
         RestGetUserInfo restGetUserInfo = new RestGetUserInfo(url, token, tk);
         try {
             String rs = restGetUserInfo.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        GetImage getStoreImage = new GetImage();
+        try {
+            Bitmap sbitmap = getStoreImage.execute(profileUrl).get();
+            de.hdodenhof.circleimageview.CircleImageView bistroRepresentImage=(de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.login_confirmed_profile_image);
+            bistroRepresentImage.setImageBitmap(sbitmap);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

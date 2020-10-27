@@ -64,7 +64,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         try {
             if(user.getPhoto()!=null) {
                 Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
-                ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
                 btnMyPage.setImageBitmap(bitmap);
             }
         } catch (ExecutionException e) {
@@ -96,7 +96,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         }
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
-        menuPriceTxtView.setText(menu.getPrice());
+        menuPriceTxtView.setText(menu.getPrice().toString());
         TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
         if(menuQuantity!=null) menuQuantityTxtView.setText(menuQuantity);
         else menuQuantityTxtView.setText("1");
@@ -131,7 +131,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton) findViewById(R.id.mypagebtn);
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -86,6 +86,19 @@ public class ShowCustomerBistroList extends AppCompatActivity {
         TextView currentAddressTxtView = (TextView) findViewById(R.id.current_address_txtView);
         currentAddressTxtView.setText(address);
 
+        GetImage getImage = new GetImage();
+        try {
+            if(user.getPhoto()!=null) {
+                Bitmap bitmap = getImage.execute(user.getPhoto().getThumbnailUrl()).get();
+                de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.mypagebtn);
+                btnMyPage.setImageBitmap(bitmap);
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.bistro_list_view_customer);
         listview.setAdapter(adapter);
@@ -114,7 +127,8 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             }
         });
 
-        ImageButton btnMyPage = (ImageButton)findViewById(R.id.mypagebtn);
+        // 마이페이지 버튼 클릭 리스너
+        de.hdodenhof.circleimageview.CircleImageView btnMyPage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.mypagebtn);
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
