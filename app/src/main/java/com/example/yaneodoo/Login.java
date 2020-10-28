@@ -194,10 +194,13 @@ public class Login extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(Login.this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
+        int hasBackgroundLocationPermission = ContextCompat.checkSelfPermission(Login.this,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION);
 
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasBackgroundLocationPermission == PackageManager.PERMISSION_GRANTED) {
 
             // 2. 이미 퍼미션을 가지고 있다면
             // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
