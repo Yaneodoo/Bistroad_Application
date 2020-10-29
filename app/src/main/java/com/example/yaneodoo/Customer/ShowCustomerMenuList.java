@@ -84,7 +84,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
         GetImage getStoreImage = new GetImage();
         if(store.getPhoto()!=null){
             try {
-                sbitmap = getStoreImage.execute(store.getPhoto().getSourceUrl()).get();
+                sbitmap = getStoreImage.execute(store.getPhoto().getThumbnailUrl()).get();
                 ImageView bistroRepresentImage=(ImageView) findViewById(R.id.bistro_represent_image);
                 bistroRepresentImage.setImageBitmap(sbitmap);
             } catch (ExecutionException e) {
@@ -249,7 +249,7 @@ public class ShowCustomerMenuList extends AppCompatActivity {
                         Menu menu = new Menu();
                         menu.setId(body.get(i).getId());
                         menu.setName(body.get(i).getName());
-                        menu.setPrice(Integer.valueOf(body.get(i).getPrice().toString()));
+                        menu.setPrice(body.get(i).getPrice());
                         menu.setDescription(body.get(i).getDescription());
                         menu.setStars(body.get(i).getStars());
                         menu.setPhoto(body.get(i).getPhoto());
