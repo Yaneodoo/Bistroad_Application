@@ -42,11 +42,14 @@ import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
@@ -187,34 +190,7 @@ public class RegisterMenu extends AppCompatActivity {
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu pop = new PopupMenu(getApplicationContext(), view);
-                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
-
-                pop.show();
-                checkPermission();
-
-                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.camera:
-                                final int imageWidth = 200;
-                                final int imageHeight = 150;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterMenu");
-                                mCamera.onStart(RegisterMenu.this);
-                                Log.d("UPLOAD", mCamera.toString());
-                                break;
-                            case R.id.gallery:
-                                Log.d("UPLOAD","GALLERY");
-                                Intent intent = new Intent(Intent.ACTION_PICK);
-                                intent.setType("image/*");
-                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
-                                break;
-                        }
-                        return true;
-                    }
-                });
+                showPermissionDialog(view);
             }
         });
 
@@ -474,31 +450,6 @@ public class RegisterMenu extends AppCompatActivity {
         return Bitmap.createBitmap(src, x, y, cw, ch);
     }
 
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
-                    (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))) {
-                new AlertDialog.Builder(this).setTitle("알림")
-                        .setMessage("저장소 권한이 거부되었습니다. \n앱을 재실행하여 뜨는 팝업을 통해 권한을 허용하거나, 앱 설정에서 권한을 허용해주세요.")
-                        .setNeutralButton("설정", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                intent.setData(Uri.parse("package: " + getPackageName()));
-                                startActivity(intent);
-                            }
-                        }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }).setCancelable(false).create().show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
-            }
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
@@ -512,5 +463,49 @@ public class RegisterMenu extends AppCompatActivity {
 
     public interface PhActivityRequest {
         int IMAGE_CAPTURE = 1001;
+    }
+
+    private void showPermissionDialog(View view){
+        final View view1=view;
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                PopupMenu pop = new PopupMenu(getApplicationContext(), view1);
+                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
+                pop.show();
+
+                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.camera:
+                                final int imageWidth = 200;
+                                final int imageHeight = 150;
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterMenu");
+                                mCamera.onStart(RegisterMenu.this);
+                                break;
+                            case R.id.gallery:
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(RegisterMenu.this, "권한 거부", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("[설정] > [권한] 에서 권한을 허용해 주세요.")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
 }
