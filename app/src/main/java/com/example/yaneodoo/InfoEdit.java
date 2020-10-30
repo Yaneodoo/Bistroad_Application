@@ -40,9 +40,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class InfoEdit extends AppCompatActivity {
@@ -87,32 +90,7 @@ public class InfoEdit extends AppCompatActivity {
         upload_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu pop = new PopupMenu(getApplicationContext(), view);
-                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
-
-                pop.show();
-                checkPermission();
-
-                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.camera:
-                                final int imageWidth = 200;
-                                final int imageHeight = 200;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight, "InfoEdit");
-                                mCamera.onStart(InfoEdit.this);
-                                break;
-                            case R.id.gallery:
-                                Intent intent = new Intent(Intent.ACTION_PICK);
-                                intent.setType("image/*");
-                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
-                                break;
-                        }
-                        return true;
-                    }
-                });
+                showPermissionDialog(view);
             }
         });
 
@@ -344,5 +322,50 @@ public class InfoEdit extends AppCompatActivity {
 
     public interface PhActivityRequest {
         int IMAGE_CAPTURE = 1001;
+    }
+
+
+    private void showPermissionDialog(View view){
+        final View view1=view;
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                PopupMenu pop = new PopupMenu(getApplicationContext(), view1);
+                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
+                pop.show();
+
+                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.camera:
+                                final int imageWidth = 200;
+                                final int imageHeight = 200;
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterBistro");
+                                mCamera.onStart(InfoEdit.this);
+                                break;
+                            case R.id.gallery:
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(InfoEdit.this, "권한 거부", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("[설정] > [권한] 에서 권한을 허용해 주세요.")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
 }
