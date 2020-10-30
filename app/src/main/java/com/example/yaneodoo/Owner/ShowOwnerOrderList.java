@@ -19,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Customer.MyPageCustomer;
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
+import com.example.yaneodoo.ListView.OrderListViewItem;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.RestGetUser;
 import com.example.yaneodoo.RetrofitService;
@@ -72,8 +74,11 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         final Store store = (Store) intent.getSerializableExtra("bistroInfo");
         token = tk.getString("bistrotk","");
 
-        getOrderList(token, store.getId(), "date,desc");//가게의 주문내역 불러오기
-        Log.d("GETORDERLIST", store.getId());
+        ArrayList<String> s=new ArrayList<>();
+        s.add("progress,asc");
+        s.add("timestamp,asc");
+        Call<List<Order>> callgetOrderList = service.getStoreOrders("Bearer " + token, store.getId(),"customer",s);//가게의 주문내역 불러오기
+        new getOrderList().execute(callgetOrderList);
 
         TextView titleTxtView = (TextView) findViewById(R.id.title_txtView);
         titleTxtView.setText(owner.getFullName()+" 점주님의\n"+store.getName()+" 주문내역입니다.");
@@ -120,11 +125,17 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
             orderState.setText("접수 완료");
             orderList.get(position).setProgress("ACCEPTED");
+
+            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted));
         } else if (orderState.getText().toString() == "접수 완료") {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
             orderState.setText("접수중");
             orderList.get(position).setProgress("REQUESTED");
+
+            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted));
         }
+
+        adapter.notifyDataSetChanged();
 
         Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
         try {
@@ -136,72 +147,67 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         }
     }
 
-    private void getOrderList(final String token, String storeId, String sort) {
-        service.getStoreOrders("Bearer " + token, storeId, sort).enqueue(new Callback<List<Order>>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                if (response.isSuccessful()) {
-                    List<Order> body = response.body();
-                    if (body != null) {
-                        Log.d("requests", body.toString());
-                        for (int i = body.size()-1; i >= 0; i--) {
-                            Order order = new Order();
-                            order.setId(body.get(i).getId());
-                            order.setProgress(body.get(i).getProgress());
-                            order.setTableNum(body.get(i).getTableNum());
-                            order.setTimestamp(body.get(i).getTimestamp());
-                            order.setUserId(body.get(i).getUserId());
-                            order.setRequest(body.get(i).getRequests());
-                            order.setHasReview(body.get(i).getHasReview());
-                            order.setStore(body.get(i).getStore());
-                            orderList.add(order);
+    private class getOrderList extends AsyncTask<Call, Void, String> {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<List<Order>> call = params[0];
+                Response<List<Order>> response = call.execute();
+                List<Order> body = response.body();
+                if (body != null) {
 
-                            RestGetUser restGetUser = new RestGetUser(order.getUserId(),token);
-                            String name = "";
-                            try {
-                                name = restGetUser.execute().get();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                    for (int i = body.size()-1; i >= 0; i--) {
+                        Order order = new Order();
+                        order.setId(body.get(i).getId());
+                        order.setProgress(body.get(i).getProgress());
+                        order.setTableNum(body.get(i).getTableNum());
+                        order.setTimestamp(body.get(i).getTimestamp());
+                        order.setUserId(body.get(i).getUserId());
+                        order.setRequest(body.get(i).getRequests());
+                        order.setHasReview(body.get(i).getHasReview());
+                        order.setStore(body.get(i).getStore());
+                        order.setUser(body.get(i).getUser());
+                        orderList.add(order);
 
-                            String requests = "";
-                            Integer amount;
-                            String menu = "";
-                            Integer price = 0;
-                            for( int j = 0 ; j < order.getRequests().size() ; j++ ){
-                                amount = order.getRequests().get(j).getAmount();
-                                menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
-                                price = order.getRequests().get(j).getMenu().getPrice() * amount;
-                                requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
-                                Log.d("requests", requests);
-                            }
-                            requests = requests.substring(0,requests.length()-1);
-
-                            if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
-                                        order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
-                            else
-                                adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
-                                        order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
-                            Log.d("menu data", "--------------------------------------");
+                        String requests = "";
+                        Integer amount;
+                        String menu = "";
+                        Integer price = 0;
+                        for( int j = 0 ; j < order.getRequests().size() ; j++ ){
+                            amount = order.getRequests().get(j).getAmount();
+                            menu = String.valueOf(order.getRequests().get(j).getMenu().getName());
+                            price = order.getRequests().get(j).getMenu().getPrice() * amount;
+                            requests += menu + " x " + amount.toString() + " = " + price.toString() + "\n";
+                            Log.d("requests", requests);
                         }
-                        Log.d("getMenuList end", "======================================");
-                        listview.setAdapter(adapter);
-                    }
-                    int statusCode  = response.code();
-                    Log.d("GET ORDER CODE",Integer.toString(statusCode));
-                }
-            }
+                        requests = requests.substring(0,requests.length()-1);
 
-            @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
-                t.printStackTrace();
-                Log.d("fail", "======================================");
+                        if(order.getProgress().equals("REQUESTED"))
+                            adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
+                                    order.getTimestamp(), order.getUser().getUsername(), requests, "접수중",order.getId(),order.getTableNum());
+                        else
+                            adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
+                                    order.getTimestamp(), order.getUser().getUsername(), requests, "접수 완료",order.getId(),order.getTableNum());
+
+                        Log.d("order",order.toString());
+                    }
+                    Log.d("getOrderList end", "======================================");
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+            listview.setAdapter(adapter);
+        }
     }
 
     private class patchOrder extends AsyncTask<Call, Void, String> {

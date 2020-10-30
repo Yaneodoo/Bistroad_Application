@@ -18,6 +18,7 @@ public class Order implements Serializable {
     private Boolean hasReview=false;
     private String storeId;
     private String timestamp;
+    private User user;
 
     public Order() {
     }
@@ -116,6 +117,14 @@ public class Order implements Serializable {
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

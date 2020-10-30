@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.R;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class OrderListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setBackgroundDrawable(listViewItem.getProgress());
-        dateTextView.setText(listViewItem.getDateStr().substring(0,10));
+        dateTextView.setText(listViewItem.getDateStr().substring(0,10)+"\n"+listViewItem.getDateStr().substring(11,16));
         customerTextView.setText(listViewItem.getNameStr());
         tableNumTextView.setText("테이블 번호 : "+listViewItem.getTableNum());
         orderTextView.setText(listViewItem.getOrderStr());
@@ -94,5 +95,9 @@ public class OrderListViewAdapter extends BaseAdapter {
         item.setTableNum(tableNum);
 
         listViewItemList.add(item);
+    }
+
+    public void setItem(int position, Drawable progress){
+        listViewItemList.get(position).setProgress(progress);
     }
 }

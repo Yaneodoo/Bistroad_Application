@@ -61,12 +61,12 @@ public interface RetrofitService {
 
     //---------------order----------------//
     //get user orders
-    @GET("orders") //Todo userid->userId
-    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userid") String userId);
+    @GET("orders")
+    Call<List<Order>> getUserOrders(@Header("Authorization") String token, @Query("userId") String userId);
 
     //get store orders
     @GET("orders")
-    Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("sort") String sort);
+    Call<List<Order>> getStoreOrders(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("fetch") String fetch, @Query("sort") ArrayList<String> sort);
 
     //get store orders
     @GET("orders")
@@ -92,7 +92,7 @@ public interface RetrofitService {
     //---------------store-items-------------//
     //Search items
     @GET("stores/{storeId}/items")
-    Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId, @Query("sort") String sort);
+    Call<List<Menu>> getMenuList(@Header("Authorization") String token, @Path("storeId") String storeId, @Query("sort") ArrayList<String> sort);
 
     //Create an item
     @POST("stores/{storeId}/items")
