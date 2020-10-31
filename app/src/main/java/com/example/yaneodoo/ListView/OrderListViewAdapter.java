@@ -115,7 +115,8 @@ public class OrderListViewAdapter extends BaseAdapter {
         listViewItemList.add(item);
     }
 
-    public void setItem(int position, Drawable progress){
+    public void setItem(int position, Drawable progress, String state){
         listViewItemList.get(position).setProgress(progress);
+        listViewItemList.get(position).setStateStr(state);
     }
 }
