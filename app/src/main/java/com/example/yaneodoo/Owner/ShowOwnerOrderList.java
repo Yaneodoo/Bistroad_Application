@@ -121,21 +121,15 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         ToggleButton tb2 = (ToggleButton) v.findViewById(R.id.btn_progress);
         Log.d("tag", orderState.getText().toString());
-        if (orderState.getText().toString() == "접수중") {
+        if (orderState.getText().toString().equals("접수중")) {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
-            orderState.setText("접수 완료");
-            orderList.get(position).setProgress("ACCEPTED");
-
-            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted));
-        } else if (orderState.getText().toString() == "접수 완료") {
+            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),"접수 완료");
+        } else if (orderState.getText().toString().equals("접수 완료")) {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
-            orderState.setText("접수중");
-            orderList.get(position).setProgress("REQUESTED");
-
-            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted));
+            adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),"접수중");
         }
 
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
 
         Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
         try {
@@ -233,6 +227,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
         }
     }
 }
