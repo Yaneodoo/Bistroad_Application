@@ -1,7 +1,10 @@
 package com.example.yaneodoo.ListView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +12,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.RequiresApi;
+
+import com.example.yaneodoo.Customer.MyPageCustomer;
+import com.example.yaneodoo.Customer.MyPageLeaveReview;
 import com.example.yaneodoo.Info.Menu;
+import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Request;
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
@@ -22,14 +34,6 @@ public class OrderListViewAdapter extends BaseAdapter {
     public OrderListViewAdapter() {
     }
 
-    // 버튼 클릭 이벤트를 위한 Listener 인터페이스 정의.
-    public interface ListBtnClickListener {
-        void onListBtnClick(int position);
-    }
-
-    // 생성자로부터 전달된 ListBtnClickListener  저장.
-    private ListBtnClickListener listBtnClickListener ;
-
     // Adapter에 사용되는 데이터의 개수를 리턴 : 필수 구현
     @Override
     public int getCount() {
@@ -37,6 +41,7 @@ public class OrderListViewAdapter extends BaseAdapter {
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴 : 필수 구현
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
@@ -61,11 +66,22 @@ public class OrderListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         iconImageView.setBackgroundDrawable(listViewItem.getProgress());
-        dateTextView.setText(listViewItem.getDateStr().substring(0,10)+"\n"+listViewItem.getDateStr().substring(11,16));
+        dateTextView.setText(listViewItem.getDateStr());
         customerTextView.setText(listViewItem.getNameStr());
-        tableNumTextView.setText("테이블 번호 : "+listViewItem.getTableNum());
+        if(listViewItem.getRole().equals("ROLE_STORE_OWNER"))
+            tableNumTextView.setText("테이블 번호 : "+listViewItem.getTableNum());
+        else
+            if(listViewItem.getOrder().getHasReview())
+                tableNumTextView.setText("리뷰 유무 : 유");
+            else
+                tableNumTextView.setText("리뷰 유무 : 무");
+
         orderTextView.setText(listViewItem.getOrderStr());
         stateTextView.setText(listViewItem.getStateStr());
+        if(listViewItem.getRole().equals("ROLE_STORE_OWNER"))
+            iconImageView.setFocusable(true);
+        else
+            iconImageView.setFocusable(false);
 
         return convertView;
     }
@@ -83,16 +99,18 @@ public class OrderListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable photo, String date, String customer, String order, String state, String orderId, Integer tableNum) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addItem(String role, Order order, Drawable photo, String date, String customer, String sorder, String state, String orderId, Integer tableNum) {
         OrderListViewItem item = new OrderListViewItem();
-
         item.setProgress(photo);
         item.setDateStr(date);
         item.setNameStr(customer);
-        item.setOrderStr(order);
+        item.setOrderStr(sorder);
         item.setStateStr(state);
         item.setOrderNum(orderId);
         item.setTableNum(tableNum);
+        item.setOrder(order);
+        item.setRole(role);
 
         listViewItemList.add(item);
     }

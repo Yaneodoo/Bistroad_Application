@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -25,16 +26,27 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yaneodoo.Info.Review4Leave;
+import com.example.yaneodoo.InfoEdit;
+import com.example.yaneodoo.ListView.LeaveReviewListAdapter;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Location;
+import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Request;
 import com.example.yaneodoo.Info.Review;
 import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
+import com.example.yaneodoo.ListView.OrderListViewItem;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.Owner.MyPageOwner;
 import com.example.yaneodoo.Owner.RegisterBistro;
@@ -43,7 +55,12 @@ import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.lang.ref.ReferenceQueue;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -52,8 +69,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MyPageLeaveReview extends AppCompatActivity {
-    private String token, id, name, itemId, orderId, storeId;
+    private String token, id, name, itemId, orderId, storeId, storeName, timestamp;
+    private Intent intent;
     private Retrofit mRetrofit;
     private RetrofitService service;
     private PhImageCapture mCamera;
@@ -62,10 +81,13 @@ public class MyPageLeaveReview extends AppCompatActivity {
     private ImageView upload_btn;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
-    private OrderListViewAdapter adapter = new OrderListViewAdapter();
+    private LeaveReviewListAdapter adapter = new LeaveReviewListAdapter();
     private ListView listview;
 
-    private List<Order> orderList = new ArrayList<>();
+    private User user = new User();
+    private Order order;
+    private Store store;
+    private List<Request> requests;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +98,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
         token = getSharedPreferences("sFile", MODE_PRIVATE).getString("bistrotk", "");
         name = getSharedPreferences("sFile", MODE_PRIVATE).getString("fullName", "");
         id = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
-        final TextView nameText = (TextView)findViewById(R.id.cutomer_name_textView);
+        final TextView nameText = (TextView)findViewById(R.id.customer_name_textView);
         nameText.setText(name+" 고객님");
 
         mRetrofit = new Retrofit.Builder()
@@ -84,6 +106,22 @@ public class MyPageLeaveReview extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = mRetrofit.create(RetrofitService.class);
+
+        intent = getIntent();
+        final Menu menu = (Menu) intent.getSerializableExtra("menuInfo");
+        user = (User) intent.getSerializableExtra("userInfo");
+        order = (Order) intent.getSerializableExtra("orderInfo");
+        store = order.getStore();
+        orderId = order.getId();
+        timestamp = order.getTimestamp();
+        requests = order.getRequests();
+
+        storeId = store.getId();
+        storeName = store.getName();
+        final TextView storeNameText = (TextView)findViewById(R.id.bistro_name_txtView);
+        storeNameText.setText(storeName);
+
+        getRequestsList(requests);
 
         // 홈 버튼 클릭 리스너
         TextView btnHome = (TextView) findViewById(R.id.homebtn);
@@ -105,83 +143,92 @@ public class MyPageLeaveReview extends AppCompatActivity {
             }
         });
 
-        // 이미지 업로드 버튼 클릭 리스너
-        upload_btn = findViewById(R.id.bistro_imagebtn);
-        upload_btn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu pop = new PopupMenu(getApplicationContext(), view);
-                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
-
-                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.camera:
-                                final int imageWidth = 150;
-                                final int imageHeight = 150;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight,"MyPageLeaveReview");
-                                mCamera.onStart(MyPageLeaveReview.this);
-                                break;
-                            case R.id.gallery:
-                                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                                Intent intent = new Intent(Intent.ACTION_PICK);
-                                intent.setType("image/*");
-                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
-                                break;
-                        }
-                        return true;
-                    }
-                });
-                pop.show();
-                checkPermission();
-            }
-        });
-
         // 등록 버튼 클릭 리스너
         Button addbtn = (Button) findViewById(R.id.btn_complete);
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageView imgBtn = findViewById(R.id.upload_btn);
+                List<Review4Leave> reviews = new ArrayList<>();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                LocalDateTime date = LocalDateTime.now();
+                int count = 0;
+                for (int i = 0; i < listview.getCount(); i++){
+                    Request request = (Request)listview.getItemAtPosition(i);
+                    itemId = request.getMenu().getId();
+                    View lView = listview.getChildAt(i);
+                    EditText editText = lView.findViewById(R.id.menu_review_editText);
+                    RatingBar ratingBar = lView.findViewById(R.id.menu_ratingBar);
+                    Integer stars = Math.round(ratingBar.getRating());
+                    String content = editText.getText().toString();
+                    if(content.equals(""))
+                        break;
+                    count++;
+                    Review4Leave review4Leave = new Review4Leave(content, itemId, orderId, stars, storeId, date.toString()+"+09:00", user.getId());
+                    reviews.add(review4Leave);
+                }
+                if(count < listview.getCount())
+                    Toast.makeText(getApplicationContext(), "리뷰를 모두 작성해 주십시오.", Toast.LENGTH_LONG);
+                else{
+                    for (int i = 0; i < reviews.size(); i++){
+                        Log.d("review",reviews.get(i).toString());
+                        Log.d("token", token);
+                        postReview(token, reviews.get(i));
+                    }
+                }
+//                //ImageView imgBtn = findViewById(R.id.upload_btn);
 //                RatingBar ratingBar = (RatingBar) findViewById(R.id.menu_ratingBar);
 //                EditText reviewText = (EditText) findViewById(R.id.menu_review_editText);
-
-                Drawable uploadedImg = imgBtn.getDrawable();
+//
+//                //Drawable uploadedImg = imgBtn.getDrawable();
 //                int stars = ratingBar.getNumStars();
 //                String reviewContent = reviewText.getText().toString();
-
-//                postReview(token, new Review(reviewContent, itemId, orderId, stars, storeId, id));//리뷰 남기기
-
-                Intent intent = new Intent(MyPageLeaveReview.this, MyPageCustomer.class);
-                MyPageLeaveReview.this.finish();
-                startActivity(intent);
+//
+//                postReview(token, new Review(reviewContent, itemId, orderId, stars, storeId, id, timestamp));//리뷰 남기기
+//
+//                Intent intent = new Intent(MyPageLeaveReview.this, MyPageCustomer.class);
+//                MyPageLeaveReview.this.finish();
+//                startActivity(intent);
             }
         });
     }
 
+    private void getRequestsList(List<Request> requests) {
+        for (int i = requests.size()-1; i >= 0; i--) {
+//            Request request = new Request();
+//            review.setContents(requests.get(i).getHasReview());
+//            review.setItemId(requests.get(i).getId());
+//            review.setOrderId(requests.get(i).getProgress());
+//            review.setStars(requests.get(i).getTableNum());
+//            review.setStoreId(requests.get(i).getTimestamp());
+//            review.setTimestamp(requests.get(i).getUserId());
+//            review.setWriterId(requests.get(i).getRequests());
+//            reviews.add(order);tId(),order.getTableNum());
+            adapter.addItem(requests.get(i));
+            Log.d("menu data", "--------------------------------------");
+        }
+        listview.setAdapter(adapter);
+    }
 
-    private void postReview(String token, Review review) {
-        service.postReview("Bearer " + token, review).enqueue(new Callback<Store>() {
+
+    private void postReview(String token, Review4Leave review) {
+        service.postReview("Bearer " + token, review).enqueue(new Callback<Review4Leave>() {
             @Override
-            public void onResponse(Call<Store> call, Response<Store> response) {
+            public void onResponse(Call<Review4Leave> call, Response<Review4Leave> response) {
+                Log.d("ReviewCode", String.valueOf(response.code()));
                 if (response.isSuccessful()) {
-                    Store body = response.body();
+                    Object body = response.body();
                     if (body != null) {
-                        Log.d("data.getId()", body.getId());
-                        Log.d("data.getOwnerId()", body.getOwnerId());
-                        Log.d("data.getName()", body.getName());
-                        Log.d("data.getPhone()", body.getPhone());
-                        Log.d("data.getDescription()", body.getDescription());
-                        Log.d("data.getLocation()", body.getLocation().getLat() + body.getLocation().getLng());
-                        Log.d("postStore end", "======================================");
+                        Log.d("resBody", body.toString());
+                        Log.d("postReview end", "======================================");
+                    }
+                    if(response.code() == 201){
+                        MyPageLeaveReview.this.finish();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Store> call, Throwable t) {
+            public void onFailure(Call<Review4Leave> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -223,6 +270,50 @@ public class MyPageLeaveReview extends AppCompatActivity {
 
     public interface PhActivityRequest {
         int IMAGE_CAPTURE = 1001;
+    }
+
+    private void showPermissionDialog(View view){
+        final View view1=view;
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                PopupMenu pop = new PopupMenu(getApplicationContext(), view1);
+                getMenuInflater().inflate(R.menu.main_menu, pop.getMenu());
+                pop.show();
+
+                pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.camera:
+                                final int imageWidth = 200;
+                                final int imageHeight = 200;
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterBistro");
+                                mCamera.onStart(MyPageLeaveReview.this);
+                                break;
+                            case R.id.gallery:
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                                startActivityForResult(intent, REQUEST_TAKE_ALBUM);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MyPageLeaveReview.this, "권한 거부", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("[설정] > [권한] 에서 권한을 허용해 주세요.")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
 
 }

@@ -2,11 +2,18 @@ package com.example.yaneodoo.ListView;
 
 import android.graphics.drawable.Drawable;
 
+import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Request;
+import com.example.yaneodoo.Info.Store;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderListViewItem {
     private Drawable progress;
-    private String dateStr, nameStr, orderStr, stateStr;
-    private String orderNum;
+    private String dateStr, nameStr, orderStr, stateStr, role, orderNum;
     private Integer tableNum;
+    private Order order;
 
     public Integer getTableNum() {
         return tableNum;
@@ -40,6 +47,14 @@ public class OrderListViewItem {
         return orderNum;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
     public void setProgress(Drawable progress) {
         this.progress = progress;
     }
@@ -62,5 +77,13 @@ public class OrderListViewItem {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

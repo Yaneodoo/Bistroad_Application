@@ -3,6 +3,7 @@ package com.example.yaneodoo;
 import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Order;
 import com.example.yaneodoo.Info.Review;
+import com.example.yaneodoo.Info.Review4Leave;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 
@@ -111,9 +112,11 @@ public interface RetrofitService {
     @GET("reviews")
     Call<List<Review>> getReviewList(@Header("Authorization") String token, @Query("storeId") String storeId, @Query("itemId") String itemId);
 
-    @FormUrlEncoded
-    @POST("stores/{storeId}/items")
-    Call<Store> postReview(@Header("Authorization") String token, @Field("review") Review review);
+    @GET("reviews")
+    Call<List<Review>> getOrderReviewList(@Header("Authorization") String token, @Query("orderId") String orderId);
+
+    @POST("reviews")
+    Call<Review4Leave> postReview(@Header("Authorization") String token,  @Body Review4Leave review);
 
     //--------------user-photo------------------//
     //Upload a store photo

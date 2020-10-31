@@ -103,6 +103,42 @@ public class InfoEdit extends AppCompatActivity {
                     Toast noIdToast = Toast.makeText(getApplicationContext(), "현재비밀번호가 틀렸습니다.", Toast.LENGTH_LONG);
                     noIdToast.show();
                 }
+                else if(pw.getText().toString().length() == 0 && confirmPw.getText().toString().length() == 0){
+                    try {
+                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), curPw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId);
+                        try {
+                            rc = restPostUser.execute().get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Login rc", String.valueOf(rc));
+                        if (rc == 200 || rc == 201) {
+                            String signupSuccess = "성공적으로 정보가 변경되었습니다.";
+                            Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
+                            successToast.show();
+                            Intent intent = new Intent(InfoEdit.this, Login.class);
+                            startActivity(intent);
+                            InfoEdit.this.finish();
+                        } else if (rc == 409) {
+                            Toast sameIdToast = Toast.makeText(getApplicationContext(), "동일한 아이디가 이미 존재합니다.", Toast.LENGTH_LONG);
+                            sameIdToast.show();
+                        } else if (rc == 403) {
+                            Toast errorToast = Toast.makeText(getApplicationContext(), "Sign Up 403 error", Toast.LENGTH_LONG);
+                            errorToast.show();
+                        } else if (rc == 404) {
+                            Toast errorToast = Toast.makeText(getApplicationContext(), "Sign Up 401 error.", Toast.LENGTH_LONG);
+                            errorToast.show();
+                        } else {
+                            Log.e("POST", "Failed.");
+                        }
+                    } catch (Exception e) {
+                        // Error calling the rest api
+                        Log.e("REST_API", "POST method failed: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
                 else if(pw.getText().toString().length() == 0){
                     Toast noIdToast = Toast.makeText(getApplicationContext(), "비밀번호를 입력해 주세요.", Toast.LENGTH_LONG);
                     noIdToast.show();

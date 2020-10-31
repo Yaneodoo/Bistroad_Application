@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,13 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Info.Order;
+import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.InfoEdit;
 import com.example.yaneodoo.ListView.OrderListViewAdapter;
+import com.example.yaneodoo.ListView.OrderListViewItem;
 import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,11 +80,21 @@ public class MyPageCustomer extends AppCompatActivity {
 
         getOrderList(token, id);//자신의 주문내역 불러오기
 
-        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // 주문 아이템 하나 선택해도 일단은 아무것도 안함.
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Orderclick","!");
+                OrderListViewItem order = (OrderListViewItem) parent.getItemAtPosition(position);
+                Intent intent;
+                if(order.getOrder().getHasReview())
+                    intent = new Intent(MyPageCustomer.this, MyPageCheckReview.class);
+                else
+                    intent = new Intent(MyPageCustomer.this, MyPageLeaveReview.class);
+
+                intent.putExtra("userInfo", user);
+                intent.putExtra("orderInfo", order.getOrder());
+                startActivity(intent);
             }
         });
 
@@ -141,7 +155,8 @@ public class MyPageCustomer extends AppCompatActivity {
                             order.setTimestamp(body.get(i).getTimestamp());
                             order.setUserId(body.get(i).getUserId());
                             order.setRequest(body.get(i).getRequests());
-                            orderList.add(order);
+                            order.setStore(body.get(i).getStore());
+                            order.setUser(body.get(i).getUser());
 
                             String requests = "";
                             Integer amount;
@@ -156,12 +171,15 @@ public class MyPageCustomer extends AppCompatActivity {
                             }
                             requests = requests.substring(0,requests.length()-1);
 
+                            String time = order.getTimestamp();
+                            time = time.substring(2,10)+"\n"+time.substring(11,16);
+                            Log.d("time", time);
                             if(order.getProgress().equals("REQUESTED"))
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested),
-                                        order.getTimestamp(), name, requests, "접수중",order.getId(),order.getTableNum());
+                                adapter.addItem(getSharedPreferences("sFile", MODE_PRIVATE).getString("role", ""), order, ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.requested),
+                                        time, body.get(i).getStore().getName(), requests, "접수중",order.getId(),order.getTableNum());
                             else
-                                adapter.addItem(ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted),
-                                        order.getTimestamp(), name, requests, "접수 완료",order.getId(),order.getTableNum());
+                                adapter.addItem(getSharedPreferences("sFile", MODE_PRIVATE).getString("role", ""), order, ContextCompat.getDrawable(MyPageCustomer.this, R.drawable.accepted),
+                                        time, body.get(i).getStore().getName(), requests, "접수 완료",order.getId(),order.getTableNum());
                             Log.d("menu data", "--------------------------------------");
                         }
                         Log.d("getmyOrderList end", "======================================");
@@ -174,17 +192,6 @@ public class MyPageCustomer extends AppCompatActivity {
             public void onFailure(Call<List<Order>> call, Throwable t) {
                 t.printStackTrace();
                 Log.d("fail", "======================================");
-            }
-        });
-
-        // 홈 버튼 클릭 리스너
-        TextView btnHome = (TextView) findViewById(R.id.homebtn);
-        btnHome.setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyPageCustomer.this, ShowCustomerBistroList.class);
-                MyPageCustomer.this.finish();
-                startActivity(intent);
             }
         });
     }

@@ -135,7 +135,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted));
         }
 
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
 
         Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
         try {
@@ -156,16 +156,15 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                 Response<List<Order>> response = call.execute();
                 List<Order> body = response.body();
                 if (body != null) {
-
                     for (int i = body.size()-1; i >= 0; i--) {
                         Order order = new Order();
+                        order.setHasReview(body.get(i).getHasReview());
                         order.setId(body.get(i).getId());
                         order.setProgress(body.get(i).getProgress());
                         order.setTableNum(body.get(i).getTableNum());
                         order.setTimestamp(body.get(i).getTimestamp());
                         order.setUserId(body.get(i).getUserId());
                         order.setRequest(body.get(i).getRequests());
-                        order.setHasReview(body.get(i).getHasReview());
                         order.setStore(body.get(i).getStore());
                         order.setUser(body.get(i).getUser());
                         orderList.add(order);
@@ -183,14 +182,16 @@ public class ShowOwnerOrderList extends AppCompatActivity {
                         }
                         requests = requests.substring(0,requests.length()-1);
 
+                        String time = order.getTimestamp();
+                        time = time.substring(2,10)+"\n"+time.substring(11,16);
+                        Log.d("time", time);
                         if(order.getProgress().equals("REQUESTED"))
-                            adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
-                                    order.getTimestamp(), order.getUser().getUsername(), requests, "접수중",order.getId(),order.getTableNum());
+                            adapter.addItem(getSharedPreferences("sFile", MODE_PRIVATE).getString("role", ""), order, ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),
+                                    time, body.get(i).getStore().getName(), requests, "접수중",order.getId(),order.getTableNum());
                         else
-                            adapter.addItem(ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
-                                    order.getTimestamp(), order.getUser().getUsername(), requests, "접수 완료",order.getId(),order.getTableNum());
-
-                        Log.d("order",order.toString());
+                            adapter.addItem(getSharedPreferences("sFile", MODE_PRIVATE).getString("role", ""), order, ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),
+                                    time, body.get(i).getStore().getName(), requests, "접수 완료",order.getId(),order.getTableNum());
+                        Log.d("menu data", "--------------------------------------");
                     }
                     Log.d("getOrderList end", "======================================");
                 }

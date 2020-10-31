@@ -67,6 +67,8 @@
         <activity android:name=".Customer.ShowCustomerOrderForm" />
         <activity android:name=".Customer.ShowCustomerShoppingBasket" />
         <activity android:name=".Customer.MyPageCustomer" />
+        <activity android:name=".Customer.MyPageLeaveReview" />
+        <activity android:name=".Customer.MyPageCheckReview" />
         <activity android:name=".Owner.RegisterBistro" />
         <activity android:name=".Owner.RegisterMenu" />
         <activity android:name=".Owner.ShowOwnerOrderList" />
