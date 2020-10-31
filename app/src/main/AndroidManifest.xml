@@ -61,25 +61,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Customer.ShowCustomerBistroList" />
-        <activity android:name=".Customer.ShowCustomerMenuList" />
-        <activity android:name=".Customer.ShowCustomerMenuInfo" />
-        <activity android:name=".Customer.ShowCustomerOrderForm" />
-        <activity android:name=".Customer.ShowCustomerShoppingBasket" />
-        <activity android:name=".Customer.MyPageCustomer" />
-        <activity android:name=".Owner.RegisterBistro" />
-        <activity android:name=".Owner.RegisterMenu" />
-        <activity android:name=".Owner.ShowOwnerOrderList" />
-        <activity android:name=".Owner.ShowOwnerBistroList" />
-        <activity android:name=".Owner.ShowOwnerMenuList" />
-        <activity android:name=".Owner.ShowOwnerMenuInfo" />
-        <activity android:name=".Owner.MyPageOwner" />
+        <activity android:name=".Customer.ShowCustomerBistroList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Customer.ShowCustomerMenuList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Customer.ShowCustomerMenuInfo"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Customer.ShowCustomerOrderForm"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Customer.ShowCustomerShoppingBasket"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Customer.MyPageCustomer"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.RegisterBistro"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.RegisterMenu"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.ShowOwnerOrderList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.ShowOwnerBistroList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.ShowOwnerMenuList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.ShowOwnerMenuInfo"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Owner.MyPageOwner"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ImageDialog"
-            android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".SignUp" />
-        <activity android:name=".Login" />
-        <activity android:name=".LoginConfirmed" />
-        <activity android:name=".InfoEdit" />
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignUp"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Login"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginConfirmed"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InfoEdit"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
