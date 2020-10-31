@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
-            android:text="Bistroad "
+            android:text=" Bistroad "
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
             android:paddingTop="10sp"

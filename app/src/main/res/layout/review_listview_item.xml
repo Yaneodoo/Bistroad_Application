@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,17 +21,19 @@
             android:orientation="horizontal"
             android:paddingBottom="10dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/review_writer_imageView"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
+                app:civ_border_color="#FF948B8B"
+                app:civ_border_width="1dp"
                 android:src="@drawable/mypage" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="20dp">
+                android:paddingLeft="10dp">
 
                 <TextView
                     android:id="@+id/review_writer_txtView"
@@ -51,27 +54,36 @@
                     android:textSize="13dp" />
             </LinearLayout>
         </LinearLayout>
-        // TODO : image slicing, show popup image
 
         <ImageView
             android:id="@+id/review_imgView"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/review_textview_border"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/no_image_box" />
-
-        <TextView
-            android:id="@+id/review_score_txtView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:text="★4.5"
-            android:textSize="16dp" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="★"
+                android:textColor="#FFC107"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/review_score_txtView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="4.5"
+                android:textSize="16dp" />
+        </LinearLayout>
 
         <TextView
             android:paddingLeft="2dp"
@@ -83,7 +95,7 @@
             android:id="@+id/review_text_txtView"
             android:paddingBottom="2dp"
             android:layout_weight="1"
-            android:textSize="15dp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
 </LinearLayout>

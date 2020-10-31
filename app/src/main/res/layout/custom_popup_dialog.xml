@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="22dp"
         android:text="앉아계신 테이블 번호를 입력해주세요!" />
 
     <EditText
         android:id="@+id/editTextDialogUserInput"
-        android:hint="숫자만 입력"
+        android:hint="테이블 번호"
         android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/buttonPrompt"
+        android:textSize="22dp"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="제출" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

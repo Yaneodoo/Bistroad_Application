@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Owner.ShowOwnerBistroList">
     <RelativeLayout
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
-            android:text="Bistroad "
+            android:text=" Bistroad "
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
             android:paddingTop="10sp"
@@ -28,6 +29,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="#C6D3FC"
+            app:civ_border_color="#FF948B8B"
+            app:civ_border_width="1dp"
             android:paddingRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -58,11 +61,13 @@
             android:layout_height="wrap_content"
             android:text="매장 리스트"
             android:paddingBottom="10dp"
-            android:textSize="20dp"/>
+            android:textSize="23dp"
+            android:textStyle="bold"/>
             <ListView
                 android:id="@+id/bistro_list_view_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:dividerHeight="10dp"
                 android:choiceMode="multipleChoice"
                 android:divider="#00000000" />

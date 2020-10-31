@@ -6,7 +6,7 @@
     android:background="@drawable/list_item_border">
 
     <LinearLayout
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="10dp"
@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/order_date_txtView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="민주짱"
+            android:text="writerId"
             android:textColor="#666666"
             android:textSize="16dp" />
 
@@ -38,6 +38,7 @@
             android:id="@+id/tableNum_txtView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="테이블 번호 : "
             android:textColor="#666666"/>
     </LinearLayout>
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:text=""
+            android:text="주문상태"
             android:textColor="#000000"
             android:textSize="15dp" />
 

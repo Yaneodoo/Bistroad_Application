@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Customer.ShowCustomerBistroList">
 
     <LinearLayout
@@ -25,7 +26,7 @@
                 android:fontFamily="@font/rage"
                 android:paddingTop="10sp"
                 android:scaleType="centerInside"
-                android:text="Bistroad "
+                android:text=" Bistroad "
                 android:textAllCaps="false"
                 android:textColorLink="#FFFFFF"
                 android:textSize="40sp" />
@@ -36,6 +37,8 @@
                 android:layout_height="60dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                app:civ_border_color="#FF948B8B"
+                app:civ_border_width="1dp"
                 android:background="#C6D3FC"
                 android:paddingRight="10dp"
                 android:scaleType="centerCrop"
@@ -73,7 +76,8 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="주변 가게 리스트"
-                android:textSize="20dp" />
+                android:textSize="23dp"
+                android:textStyle="bold"/>
 
             <ListView
                 android:id="@+id/bistro_list_view_customer"
@@ -97,7 +101,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#C6D3FC"
+        app:backgroundTint="#C6D3FC"
         android:src="@drawable/shopping_basket" />
 
 </RelativeLayout>

@@ -49,7 +49,7 @@ public class ShoppingBasketListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
         nameTextView.setText(listViewItem.getNameStr());
-        priceTextView.setText(listViewItem.getPriceStr());
+        priceTextView.setText(listViewItem.getPriceStr()+"원");
         quantityTextView.setText(listViewItem.getAmount().toString());
 
         return convertView;

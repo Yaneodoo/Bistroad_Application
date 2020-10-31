@@ -102,7 +102,7 @@ public class ShowCustomerMenuInfo extends AppCompatActivity {
         TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
-        menuStarsTxtView.setText("★"+menu.getStars());
+        menuStarsTxtView.setText(menu.getStars());
 
         GetImage getMenuImage = new GetImage();
         if(menu.getPhoto()!=null){

@@ -80,12 +80,12 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         TextView menuDescTxtView = (TextView) findViewById(R.id.menu_desc_txtView);
         menuDescTxtView.setText(menu.getDescription());
         TextView menuStarsTxtView = (TextView) findViewById(R.id.menu_stars_txtView);
-        menuStarsTxtView.setText("★"+menu.getStars());
+        menuStarsTxtView.setText(menu.getStars());
 
         GetImage getMenuImage = new GetImage();
         try {
             if(menu.getPhoto()!=null) {
-                Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getSourceUrl()).get();
+                Bitmap bitmap = getMenuImage.execute(menu.getPhoto().getThumbnailUrl()).get();
                 ImageView menuRepresentImgView = (ImageView) findViewById(R.id.menu_image);
                 menuRepresentImgView.setImageBitmap(bitmap);
             }
@@ -96,7 +96,7 @@ public class ShowCustomerOrderForm extends AppCompatActivity {
         }
 
         TextView menuPriceTxtView = (TextView) findViewById(R.id.menu_price_txtView);
-        menuPriceTxtView.setText(menu.getPrice().toString());
+        menuPriceTxtView.setText(menu.getPrice().toString()+"원");
         TextView menuQuantityTxtView = (TextView) findViewById(R.id.menu_quantity);
         if(menuQuantity!=null) menuQuantityTxtView.setText(menuQuantity);
         else menuQuantityTxtView.setText("1");

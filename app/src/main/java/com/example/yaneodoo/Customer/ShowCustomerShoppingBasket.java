@@ -112,7 +112,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
 
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
+                        .setPositiveButton("제출",
                                 new DialogInterface.OnClickListener() {
                                     @RequiresApi(api = Build.VERSION_CODES.O)
                                     public void onClick(DialogInterface dialog, int id) {
@@ -152,7 +152,7 @@ public class ShowCustomerShoppingBasket extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                 })
-                        .setNegativeButton("Cancel",
+                        .setNegativeButton("취소",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         dialog.cancel();

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Customer.ShowCustomerMenuList">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,7 +26,7 @@
                 android:fontFamily="@font/rage"
                 android:paddingTop="10sp"
                 android:scaleType="centerInside"
-                android:text="Bistroad "
+                android:text=" Bistroad "
                 android:textAllCaps="false"
                 android:textColorLink="#FFFFFF"
                 android:textSize="40sp" />
@@ -37,6 +38,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="#C6D3FC"
+                app:civ_border_color="#FF948B8B"
+                app:civ_border_width="1dp"
                 android:paddingRight="10dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/mypage" />
@@ -68,7 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp">
@@ -116,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_centerInParent="true"
-            android:background="#000000" />
+            android:background="#FF948B8B" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,13 +133,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="메뉴 리스트"
-                android:textColor="#000000"
-                android:textSize="25dp" />
+                android:textSize="23dp"
+                android:textStyle="bold"/>
 
             <ListView
                 android:id="@+id/menu_list_view_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:divider="#00000000"
                 android:dividerHeight="10dp"
                 android:layout_weight="1"
@@ -157,7 +161,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#C6D3FC"
+        app:backgroundTint="#C6D3FC"
         android:src="@drawable/shopping_basket" />
 
 </RelativeLayout>

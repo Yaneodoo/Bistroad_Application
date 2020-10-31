@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Owner.ShowOwnerMenuList">
     <RelativeLayout
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="#C6D3FC"
             android:fontFamily="@font/rage"
-            android:text="Bistroad "
+            android:text=" Bistroad "
             android:textAllCaps="false"
             android:textColorLink="#FFFFFF"
             android:paddingTop="10sp"
@@ -27,6 +28,8 @@
             android:id="@+id/mypagebtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            app:civ_border_color="#FF948B8B"
+            app:civ_border_width="1dp"
             android:background="#C6D3FC"
             android:paddingRight="10dp"
             android:layout_alignParentRight="true"
@@ -39,7 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
         android:textStyle="bold"
         android:textSize="25dp"/>
@@ -48,10 +50,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_margin="10dp">
         <ImageView
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -94,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
+                android:textColor="#FF948B8B"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/bistro_desc_txtView"
@@ -108,7 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_centerInParent="true"
-        android:background="#000000"/>
+        android:background="#FF948B8B"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,33 +118,35 @@
         android:paddingRight="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginBottom="10dp">
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="메뉴 리스트"
-                android:textSize="25dp"
-                android:textColor="#000000"
+                android:textSize="23dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
                 android:layout_weight="1" />
             <Button
                 android:id="@+id/btn_orderlist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 android:textSize="15dp"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="#C6D3FC"
+                android:backgroundTint="#C6D3FC"
                 android:text="주문 내역 보기"/>
-        </RelativeLayout>
+        </LinearLayout>
 
             <ListView
                 android:id="@+id/menu_list_view_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:dividerHeight="10dp"
                 android:divider="#00000000"
                 android:choiceMode="multipleChoice"

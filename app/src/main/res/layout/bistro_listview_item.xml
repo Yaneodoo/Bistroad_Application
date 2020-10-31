@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/bistro_imgView"
-        android:layout_width="150dp"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:scaleType="centerCrop"
@@ -29,6 +29,7 @@
             android:text="매장 이름"
             android:id="@+id/bistro_name_txtView"
             android:textSize="24dp"
+            android:layout_marginBottom="5dp"
             android:textColor="#000000"
             android:gravity="center_vertical" />
 
@@ -39,6 +40,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:id="@+id/bistro_location_txtView"
+            android:layout_marginBottom="5dp"
             android:textSize="16dp"
             android:textColor="#666666" />
 

@@ -44,7 +44,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView writerImageView = (ImageView) convertView.findViewById(R.id.review_writer_imageView);
+        de.hdodenhof.circleimageview.CircleImageView writerImageView = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.review_writer_imageView);
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.review_imgView);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.review_date_txtView);
         TextView writerTextView = (TextView) convertView.findViewById(R.id.review_writer_txtView);
@@ -83,7 +83,7 @@ public class ReviewListViewAdapter extends BaseAdapter {
         if(nbitmap!=null) writerImageView.setImageBitmap(nbitmap);
         dateTextView.setText(listViewItem.getTimestamp().substring(0,10));
         writerTextView.setText(listViewItem.getWriter().getUsername());
-        scoreTextView.setText("★"+listViewItem.getStars());
+        scoreTextView.setText(listViewItem.getStars());
         reviewTextView.setText(listViewItem.getContents());
 
         return convertView;
