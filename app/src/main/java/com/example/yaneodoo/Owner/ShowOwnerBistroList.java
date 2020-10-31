@@ -172,6 +172,7 @@ public class ShowOwnerBistroList extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         adapter.listViewItemList.clear();
+        adapter.notifyDataSetChanged();
         final Call<List<Store>> getStoreList = service.getStoreList("Bearer " + token, ownerId);
         new getStoreList().execute(getStoreList);
     }

@@ -185,6 +185,9 @@ public class RegisterBistro extends AppCompatActivity implements OnMapReadyCallb
                 if(addressEditTxt.getText().toString().equals("")||nameEditTxt.getText().toString().equals("")
                         || telEditTxt.getText().toString().equals("") || descEditTxt.getText().toString().equals(""))
                     Toast.makeText(getApplicationContext(), "주소, 상호명, 전화번호, 설명의 항목을 모두 채워주세요.", Toast.LENGTH_SHORT).show();
+                else if(mPlace==null && store==null){
+                    Toast.makeText(getApplicationContext(), "매장을 검색해주세요.", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     String address=addressEditTxt.getText().toString();
                     String name = nameEditTxt.getText().toString();
