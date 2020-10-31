@@ -124,21 +124,17 @@ public class ShowOwnerOrderList extends AppCompatActivity {
         if (orderState.getText().toString().equals("접수중")) {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.accepted));
             adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.accepted),"접수 완료");
+            orderList.get(position).setProgress("ACCEPTED");
         } else if (orderState.getText().toString().equals("접수 완료")) {
             tb2.setBackgroundDrawable(getResources().getDrawable(R.drawable.requested));
             adapter.setItem(position,ContextCompat.getDrawable(ShowOwnerOrderList.this, R.drawable.requested),"접수중");
+            orderList.get(position).setProgress("REQUESTED");
         }
 
-        //adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
         Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
-        try {
-            new patchOrder().execute(callPatchOrder).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new patchOrder().execute(callPatchOrder);
     }
 
     private class getOrderList extends AsyncTask<Call, Void, String> {
@@ -205,6 +201,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
     }
 
     private class patchOrder extends AsyncTask<Call, Void, String> {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Call[] params) {
             try {
@@ -227,7 +224,6 @@ public class ShowOwnerOrderList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            adapter.notifyDataSetChanged();
         }
     }
 }
