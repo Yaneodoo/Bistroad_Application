@@ -112,7 +112,7 @@ public class InfoEdit extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        // 회원가입 버튼 클릭 리스너
+        // 정보수정 버튼 클릭 리스너
         Button btnSignup = (Button) findViewById(R.id.info_edit_button);
         btnSignup.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -136,6 +136,9 @@ public class InfoEdit extends AppCompatActivity {
                             String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
+                            SharedPreferences.Editor editor = tk.edit();
+                            editor.putString("bistrotk", "");
+                            editor.commit();
                             Intent intent = new Intent(InfoEdit.this, Login.class);
                             startActivity(intent);
                             InfoEdit.this.finish();
@@ -188,6 +191,9 @@ public class InfoEdit extends AppCompatActivity {
                             String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
+                            SharedPreferences.Editor editor = tk.edit();
+                            editor.putString("bistrotk", "");
+                            editor.commit();
                             Intent intent = new Intent(InfoEdit.this, Login.class);
                             startActivity(intent);
                             InfoEdit.this.finish();
