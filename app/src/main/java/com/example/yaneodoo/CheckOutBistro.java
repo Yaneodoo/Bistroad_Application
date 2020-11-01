@@ -118,6 +118,10 @@ public class CheckOutBistro extends Service {
                 if(count > 30 && distance > 0.001) {
                     msg = new Message();
                     handler.sendEmptyMessage(0);
+
+                    SharedPreferences.Editor editor = tk.edit();
+                    editor.putString("checkPush", "0");
+                    editor.commit();
                     count = 0;
                     stopForever();
                     break;

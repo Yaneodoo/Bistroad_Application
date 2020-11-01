@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="64dp"
-        android:src="@drawable/login_confirmed"
+        android:src="@drawable/mypage"
         app:civ_border_color="#FF948B8B"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"

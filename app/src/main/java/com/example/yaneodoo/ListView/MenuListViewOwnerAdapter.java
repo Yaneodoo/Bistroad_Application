@@ -73,7 +73,10 @@ public class MenuListViewOwnerAdapter extends BaseAdapter {
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice().toString()+"원");
         descTextView.setText(listViewItem.getDescription());
-        scoreTextView.setText(String.format("%.1f", Double.valueOf(listViewItem.getStars())));
+        if(listViewItem.getStars().equals("NaN"))
+            scoreTextView.setText("0.0");
+        else
+            scoreTextView.setText(String.format("%.1f", Double.valueOf(listViewItem.getStars())));
         orderCountTextView.setText("주문 횟수 : "+listViewItem.getOrderCount().toString());
 
         if(!listViewItem.isChecked()) convertView.setBackgroundResource(R.drawable.list_item_border);

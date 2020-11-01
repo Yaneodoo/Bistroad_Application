@@ -37,6 +37,7 @@ public class GetCurrentGPSService extends Service {
     float lon;
     int count;
     SharedPreferences tk;
+    String pushCheck;
 
     public GetCurrentGPSService() {
     }
@@ -130,11 +131,17 @@ public class GetCurrentGPSService extends Service {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(!sName.equals("noStore") && count > 2) {
+
+                    pushCheck = tk.getString("checkPush","0");
+
+                    if(!sName.equals("noStore") && count > 2 && pushCheck.equals("0")) {
                         msg = new Message();
                         msg.obj = sName;
                         handler.sendMessage(msg);
                         count = 0;
+                        SharedPreferences.Editor editor = tk.edit();
+                        editor.putString("checkPush", "1");
+                        editor.commit();
                     }
                 }
                 else
@@ -146,7 +153,7 @@ public class GetCurrentGPSService extends Service {
                 editor.commit();
 
                 try {
-                    Thread.sleep( 30000 );
+                    Thread.sleep( 10000 );
                     //30초씩 쉰다.
                 } catch (Exception e) {
 

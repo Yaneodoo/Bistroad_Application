@@ -70,7 +70,10 @@ public class MenuListViewCustomerAdapter extends BaseAdapter {
         menuTextView.setText(listViewItem.getName());
         priceTextView.setText(listViewItem.getPrice().toString()+"원");
         descTextView.setText(listViewItem.getDescription());
-        scoreTextView.setText(String.format("%.1f", Double.valueOf(listViewItem.getStars())));
+        if(listViewItem.getStars().equals("NaN"))
+            scoreTextView.setText("0.0");
+        else
+            scoreTextView.setText(String.format("%.1f", Double.valueOf(listViewItem.getStars())));
         //scoreTextView.setText(listViewItem.getStars());
 
         convertView.setTag("" + position);

@@ -70,6 +70,7 @@ public class RestGetUserInfo extends AsyncTask<Integer, Void, String> {
                 editor.putString("fullName", name); //
                 editor.putString("role", role); //
                 editor.putString("id", id);
+                editor.putString("checkPush", "0");
                 editor.commit();
             }
             else{
