@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -190,6 +191,46 @@ public class MyPageLeaveReview extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void orderMenu(View v) {
+        showPermissionDialog(v);
+//        List<Menu> selectedMenu = ReadShoppingBasketData();
+//        if(selectedMenu.size()==0){
+//            Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+//            intent.putExtra("userInfo", user);
+//            intent.putExtra("menuInfo", menuList.get(position));
+//            intent.putExtra("bistroInfo",store);
+//            startActivity(intent);
+//        }else{
+//            if(!(selectedMenu.get(0).getStoreId().equals(menuList.get(position).getStoreId()))) { // 다른 가게의 메뉴
+//                Log.d("다른 가게의 메뉴 고름",selectedMenu.get(0).getStoreId().toString()+"      "+menuList.get(position).getStoreId().toString());
+//                showAlertDialog(menuList.get(position)); //장바구니 비우고 담기 확인 Alertdialog
+//            }else{
+//                boolean exist=false;
+//                for(Menu m: selectedMenu){
+//                    if(m.getId().equals(menuList.get(position).getId())){ //이미 담은 메뉴
+//                        exist=true;
+//                        Toast.makeText(getApplicationContext(), "이미 장바구니에 있는 메뉴입니다.", Toast.LENGTH_SHORT).show();
+//
+//                        Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+//                        intent.putExtra("userInfo", user);
+//                        intent.putExtra("menuInfo", menuList.get(position));
+//                        intent.putExtra("bistroInfo",store);
+//                        intent.putExtra("menuQuantity",m.getQuantity().toString());
+//                        startActivity(intent);
+//                        break;
+//                    }
+//                }
+//                if(exist==false){
+//                    Intent intent = new Intent(ShowCustomerMenuList.this, ShowCustomerOrderForm.class);
+//                    intent.putExtra("userInfo", user);
+//                    intent.putExtra("menuInfo", menuList.get(position));
+//                    intent.putExtra("bistroInfo",store);
+//                    startActivity(intent);
+//                }
+//            }
+//        }
     }
 
     private void getRequestsList(List<Request> requests) {

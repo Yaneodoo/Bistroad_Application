@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.yaneodoo.Owner.RegisterBistro;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.REST.RestPatchUser;
 import com.example.yaneodoo.REST.RestPostUser;
 import com.google.android.gms.common.api.Status;
@@ -56,6 +57,7 @@ public class InfoEdit extends AppCompatActivity {
     int rc;
     private de.hdodenhof.circleimageview.CircleImageView upload_btn;
     private PhImageCapture mCamera;
+    private String profileUrl;
 
     @Override
     public void onBackPressed() {
@@ -94,7 +96,22 @@ public class InfoEdit extends AppCompatActivity {
                 showPermissionDialog(view);
             }
         });
+        profileUrl = tk.getString("profileUrl","noProfile");
+        if(profileUrl.equals("noProfile")){
 
+        }
+        else {
+            GetImage getStoreImage = new GetImage();
+            try {
+                Bitmap sbitmap = getStoreImage.execute(profileUrl).get();
+                de.hdodenhof.circleimageview.CircleImageView bistroRepresentImage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
+                bistroRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         // 회원가입 버튼 클릭 리스너
         Button btnSignup = (Button) findViewById(R.id.info_edit_button);
         btnSignup.setOnClickListener(new TextView.OnClickListener() {
