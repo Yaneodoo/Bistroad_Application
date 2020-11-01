@@ -11,17 +11,18 @@ import java.net.URL;
 
 public class RestPatchUser extends AsyncTask<Integer, Void, Integer> {
     // Variable to store url
-    protected String mUsername, mRole, mPhone, mId, mPwd, mUserId;
+    protected String mUsername, mRole, mPhone, mId, mPwd, mUserId, mToken;
     int rc;
 
     // Constructor
-    public RestPatchUser(String id, String pwd, String username, String role, String phone, String userId) {
+    public RestPatchUser(String id, String pwd, String username, String role, String phone, String userId, String token) {
         mId = id;
         mPwd = pwd;
         mUsername = username;
         mRole = role;
         mPhone = phone;
         mUserId = userId;
+        mToken = token;
     }
 
     // Background work
@@ -43,6 +44,7 @@ public class RestPatchUser extends AsyncTask<Integer, Void, Integer> {
             String userInfo = jsonInfo.toString();
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + mToken);
 
             conn.setRequestMethod("PATCH");
             conn.setDefaultUseCaches(false);
@@ -51,11 +53,12 @@ public class RestPatchUser extends AsyncTask<Integer, Void, Integer> {
 
             OutputStream os = conn.getOutputStream();
 
-            os.write(userInfo.getBytes("euc-kr"));
+            os.write(userInfo.getBytes("UTF-8"));
 
             os.flush();
             rc = conn.getResponseCode();
-            Log.d("PatchUser",String.valueOf(rc));
+            Log.d("PatchCode",String.valueOf(rc));
+            Log.d("PatchBody",userInfo);
             if(rc == 200 || rc == 201 || rc == 409 || rc == 403 || rc == 404 || rc == 401 ){
 //                InputStream is = conn.getInputStream();
 //                Log.d("POST", convertStreamToString(is));

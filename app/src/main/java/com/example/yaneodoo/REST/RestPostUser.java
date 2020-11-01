@@ -55,7 +55,7 @@ public class RestPostUser extends AsyncTask<Integer, Void, Integer> {
 
             OutputStream os = conn.getOutputStream();
 
-            os.write(userInfo.getBytes("euc-kr"));
+            os.write(userInfo.getBytes("UTF-8"));
 
             os.flush();
             rc = conn.getResponseCode();

@@ -100,6 +100,7 @@ public class InfoEdit extends AppCompatActivity {
         phoneNum = getSharedPreferences("sFile", MODE_PRIVATE).getString("phone", "");
         userId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
         curPwd = getSharedPreferences("sFile", MODE_PRIVATE).getString("bPwd", "");
+        role = getSharedPreferences("sFile", MODE_PRIVATE).getString("role", "");
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -132,7 +133,7 @@ public class InfoEdit extends AppCompatActivity {
                 }
                 else if(pw.getText().toString().length() == 0 && confirmPw.getText().toString().length() == 0){
                     try {
-                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), curPw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId);
+                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), curPw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId, token);
                         try {
                             rc = restPostUser.execute().get();
                         } catch (ExecutionException e) {
@@ -184,7 +185,7 @@ public class InfoEdit extends AppCompatActivity {
                 }
                 else {
                     try {
-                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), pw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId);
+                        RestPatchUser restPostUser = new RestPatchUser(id.getText().toString(), pw.getText().toString(), name.getText().toString(), role, phone.getText().toString(), userId, token);
                         try {
                             rc = restPostUser.execute().get();
                         } catch (ExecutionException e) {
