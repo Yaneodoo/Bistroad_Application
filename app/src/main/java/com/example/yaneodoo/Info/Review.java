@@ -127,6 +127,6 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "[orderId = " + orderId + ", contents = " + contents + ", id = " + id + ", stars = " + stars + ", writerId = " + writer.toString() + "]";
+        return "[orderId = " + orderId + ", contents = " + contents + ", id = " + id + ", stars = " + stars + ", writerId = " + writerId + "]";
     }
 }

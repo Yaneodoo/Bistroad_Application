@@ -116,7 +116,7 @@ public interface RetrofitService {
     Call<List<Review>> getOrderReviewList(@Header("Authorization") String token, @Query("orderId") String orderId);
 
     @POST("reviews")
-    Call<Review4Leave> postReview(@Header("Authorization") String token,  @Body Review4Leave review);
+    Call<Review> postReview(@Header("Authorization") String token,  @Body Review review);
 
     //--------------user-photo------------------//
     //Upload a store photo
@@ -135,4 +135,10 @@ public interface RetrofitService {
     @Multipart
     @POST("stores/{storeId}/items/{id}/photo")
     Call<Menu> postMenuPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("storeId") String storeId, @Path("id") String id);
+
+    //--------------review-photo------------------//
+    //Upload a store item photo
+    @Multipart
+    @POST("review/{id}/photo")
+    Call<Review> postReviewPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
 }

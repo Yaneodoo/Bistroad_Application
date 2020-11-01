@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -55,7 +56,10 @@ import com.example.yaneodoo.PhImageCapture;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.RetrofitService;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.ReferenceQueue;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -63,6 +67,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,6 +91,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
     private LeaveReviewListAdapter adapter = new LeaveReviewListAdapter();
     private ListView listview;
 
+    private File nFile =null;
     private User user = new User();
     private Order order;
     private Store store;
@@ -148,7 +156,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
         addbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Review4Leave> reviews = new ArrayList<>();
+                List<Review> reviews = new ArrayList<>();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 LocalDateTime date = LocalDateTime.now();
                 int count = 0;
@@ -163,75 +171,116 @@ public class MyPageLeaveReview extends AppCompatActivity {
                     if(content.equals(""))
                         break;
                     count++;
-                    Review4Leave review4Leave = new Review4Leave(content, itemId, orderId, stars, storeId, date.toString()+"+09:00", user.getId());
+                    Review review4Leave = new Review(content, itemId, orderId, stars, storeId, date.toString()+"+09:00", user.getId());
                     reviews.add(review4Leave);
                 }
                 if(count < listview.getCount())
                     Toast.makeText(getApplicationContext(), "리뷰를 모두 작성해 주십시오.", Toast.LENGTH_LONG);
                 else{
+                    Toast.makeText(getApplicationContext(), "등록중 입니다. 창이 닫힐 때까지 기다려 주십시오.", Toast.LENGTH_LONG);
                     for (int i = 0; i < reviews.size(); i++){
                         Log.d("review",reviews.get(i).toString());
                         Log.d("token", token);
-                        postReview(token, reviews.get(i));
+//                        postReview(token, reviews.get(i));
+                        Call<Review> callpostReview = service.postReview("Bearer " + token, reviews.get(i));
+                        new callpostReview().execute(callpostReview);
                     }
+                    Toast.makeText(getApplicationContext(), "리뷰가 등록 되었습니다.", Toast.LENGTH_LONG);
+                    MyPageLeaveReview.this.finish();
                 }
-//                //ImageView imgBtn = findViewById(R.id.upload_btn);
-//                RatingBar ratingBar = (RatingBar) findViewById(R.id.menu_ratingBar);
-//                EditText reviewText = (EditText) findViewById(R.id.menu_review_editText);
-//
-//                //Drawable uploadedImg = imgBtn.getDrawable();
-//                int stars = ratingBar.getNumStars();
-//                String reviewContent = reviewText.getText().toString();
-//
-//                postReview(token, new Review(reviewContent, itemId, orderId, stars, storeId, id, timestamp));//리뷰 남기기
-//
-//                Intent intent = new Intent(MyPageLeaveReview.this, MyPageCustomer.class);
-//                MyPageLeaveReview.this.finish();
-//                startActivity(intent);
             }
         });
     }
 
     private void getRequestsList(List<Request> requests) {
         for (int i = requests.size()-1; i >= 0; i--) {
-//            Request request = new Request();
-//            review.setContents(requests.get(i).getHasReview());
-//            review.setItemId(requests.get(i).getId());
-//            review.setOrderId(requests.get(i).getProgress());
-//            review.setStars(requests.get(i).getTableNum());
-//            review.setStoreId(requests.get(i).getTimestamp());
-//            review.setTimestamp(requests.get(i).getUserId());
-//            review.setWriterId(requests.get(i).getRequests());
-//            reviews.add(order);tId(),order.getTableNum());
             adapter.addItem(requests.get(i));
             Log.d("menu data", "--------------------------------------");
         }
         listview.setAdapter(adapter);
     }
 
+    private class callpostReview extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Review> call = params[0];
+                Response<Review> response = call.execute();
+                Review body = response.body();
+                String storeId=body.getId();
 
-    private void postReview(String token, Review4Leave review) {
-        service.postReview("Bearer " + token, review).enqueue(new Callback<Review4Leave>() {
-            @Override
-            public void onResponse(Call<Review4Leave> call, Response<Review4Leave> response) {
-                Log.d("ReviewCode", String.valueOf(response.code()));
-                if (response.isSuccessful()) {
-                    Object body = response.body();
-                    if (body != null) {
-                        Log.d("resBody", body.toString());
-                        Log.d("postReview end", "======================================");
-                    }
-                    if(response.code() == 201){
-                        MyPageLeaveReview.this.finish();
-                    }
+                if (body != null) {
+                    Review review = new Review();
+                    review.setContents(body.getContents());
+                    review.setId(body.getId());
+                    review.setItem(body.getItem());
+                    review.setStars(body.getStars());
+                    review.setWriter(body.getWriter());
+                    review.setTimestamp(body.getTimestamp());
+
+                    Log.d("postReview end", "======================================");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("CODE",Integer.toString(statusCode));
+                }
+                return storeId;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected void onPostExecute(String reviewId) {
+            MultipartBody.Part file = null;
+            if(nFile!=null){
+                try {
+                    String mime= Files.probeContentType(nFile.toPath());
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse(mime), nFile);
+                    file =
+                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(file!=null){
+                    Call<Review> postReviewPhoto = service.postReviewPhoto("Bearer " + token, file, reviewId);
+                    new postReviewPhoto().execute(postReviewPhoto);
                 }
             }
+        }
+    }
 
-            @Override
-            public void onFailure(Call<Review4Leave> call, Throwable t) {
-                t.printStackTrace();
+    private class postReviewPhoto extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<Review> call = params[0];
+                Response<Review> response = call.execute();
+                Review body = response.body();
+
+                if (body != null) {
+                    Log.d("POSTPHOTO", "success");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("POSTPHOTO CODE",Integer.toString(statusCode));
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                Log.d("POSTPHOTO", "fail");
+                e.printStackTrace();
             }
-        });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 
     private void checkPermission() {

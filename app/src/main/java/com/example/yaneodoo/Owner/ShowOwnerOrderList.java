@@ -131,7 +131,7 @@ public class ShowOwnerOrderList extends AppCompatActivity {
             orderList.get(position).setProgress("REQUESTED");
         }
 
-        //adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
         Call<Order> callPatchOrder = service.patchOrder("Bearer " + token, orderList.get(position), orderList.get(position).getId());
         new patchOrder().execute(callPatchOrder);

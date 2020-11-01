@@ -78,7 +78,7 @@ public class OrderListViewAdapter extends BaseAdapter {
 
         orderTextView.setText(listViewItem.getOrderStr());
         stateTextView.setText(listViewItem.getStateStr());
-        if(listViewItem.getRole().equals("ROLE_STORE_OWNER"))
+        if(listViewItem.getRole().equals("ROLE_STORE_OWNER") || listViewItem.getStateStr().equals("접수중"))
             iconImageView.setFocusable(true);
         else
             iconImageView.setFocusable(false);

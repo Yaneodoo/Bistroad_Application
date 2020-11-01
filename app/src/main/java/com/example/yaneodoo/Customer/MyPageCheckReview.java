@@ -102,7 +102,7 @@ public class MyPageCheckReview extends AppCompatActivity {
         btnHome.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPageCheckReview.this, ShowOwnerBistroList.class);
+                Intent intent = new Intent(MyPageCheckReview.this, ShowCustomerBistroList.class);
                 MyPageCheckReview.this.finish();
                 startActivity(intent);
             }
@@ -112,7 +112,7 @@ public class MyPageCheckReview extends AppCompatActivity {
         btnMyPage.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPageCheckReview.this, MyPageOwner.class);
+                Intent intent = new Intent(MyPageCheckReview.this, MyPageCustomer.class);
                 intent.putExtra("ownerInfo", owner);
                 startActivity(intent);
             }

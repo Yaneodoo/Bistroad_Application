@@ -146,8 +146,8 @@ public class GetCurrentGPSService extends Service {
                 editor.commit();
 
                 try {
-                    Thread.sleep( 10000 );
-                    //10초씩 쉰다.
+                    Thread.sleep( 30000 );
+                    //30초씩 쉰다.
                 } catch (Exception e) {
 
                 }
