@@ -2,6 +2,7 @@ package com.example.yaneodoo.Owner;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,9 +21,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yaneodoo.BackPressedForFinish;
+import com.example.yaneodoo.Customer.ShowCustomerBistroList;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
+import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -183,18 +186,29 @@ public class ShowOwnerBistroList extends AppCompatActivity {
             try {
                 Call<User> call = params[0];
                 Response<User> response = call.execute();
-                User body = response.body();
-                Log.d("USER", body.toString());
 
-                owner.setId(body.getId());
-                owner.setUsername(body.getUsername());
-                owner.setRole(body.getRole());
-                owner.setPhone(body.getPhone());
-                owner.setFullName(body.getFullName());
-                owner.setPhoto(body.getPhoto());
+                if(response.code() >= 400) {
+                    SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+                    editor.putString("bistrotk", ""); //
+                    editor.commit();
+                    Intent intent = new Intent(ShowOwnerBistroList.this, Login.class);
+                    startActivity(intent);
+                    ShowOwnerBistroList.this.finish();
+                }
+                else {
+                    User body = response.body();
+                    Log.d("USER", body.toString());
 
-                TextView textView = (TextView) findViewById(R.id.owner_name_textView);
-                textView.setText(owner.getFullName() + " 점주님");
+                    owner.setId(body.getId());
+                    owner.setUsername(body.getUsername());
+                    owner.setRole(body.getRole());
+                    owner.setPhone(body.getPhone());
+                    owner.setFullName(body.getFullName());
+                    owner.setPhoto(body.getPhoto());
+
+                    TextView textView = (TextView) findViewById(R.id.owner_name_textView);
+                    textView.setText(owner.getFullName() + " 점주님");
+                }
                 return null;
 
             } catch (IOException e) {

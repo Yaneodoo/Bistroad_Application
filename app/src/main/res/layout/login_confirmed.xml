@@ -50,12 +50,11 @@
         android:id="@+id/login_confirmed_profile_image"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:layout_marginTop="200dp"
-        android:src="@drawable/login_confirmed"
+        android:layout_marginTop="196dp"
+        android:src="@drawable/mypage"
         app:civ_border_color="#FF948B8B"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

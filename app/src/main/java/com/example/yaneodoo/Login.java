@@ -119,12 +119,14 @@ public class Login extends AppCompatActivity {
             if(role.equals("ROLE_STORE_OWNER")){
                 Intent intent = new Intent(Login.this, ShowOwnerBistroList.class);
                 startActivity(intent);
+                Login.this.finish();
             }
             else{
                 Intent sIntent = new Intent(getApplicationContext(), GetCurrentGPSService.class);
                 startService(sIntent);
                 Intent intent = new Intent(Login.this, ShowCustomerBistroList.class);
                 startActivity(intent);
+                Login.this.finish();
             }
         }
 

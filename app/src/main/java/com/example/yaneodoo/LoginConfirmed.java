@@ -34,8 +34,6 @@ public class LoginConfirmed extends AppCompatActivity {
 
         SharedPreferences tk = getSharedPreferences("sFile", MODE_PRIVATE);
         token = tk.getString("bistrotk","");
-        profileUrl = tk.getString("profileUrl","");
-        Log.d("TOKEN", token);
         final TextView loginText = (TextView)findViewById(R.id.login_profile_text);
         RestGetUserInfo restGetUserInfo = new RestGetUserInfo(url, token, tk);
         try {
@@ -46,15 +44,21 @@ public class LoginConfirmed extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        GetImage getStoreImage = new GetImage();
-        try {
-            Bitmap sbitmap = getStoreImage.execute(profileUrl).get();
-            de.hdodenhof.circleimageview.CircleImageView bistroRepresentImage=(de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.login_confirmed_profile_image);
-            bistroRepresentImage.setImageBitmap(sbitmap);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        profileUrl = tk.getString("profileUrl","noProfile");
+        if(profileUrl.equals("noProfile")){
+
+        }
+        else {
+            GetImage getStoreImage = new GetImage();
+            try {
+                Bitmap sbitmap = getStoreImage.execute(profileUrl).get();
+                de.hdodenhof.circleimageview.CircleImageView bistroRepresentImage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.login_confirmed_profile_image);
+                bistroRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         name = tk.getString("fullName","");
