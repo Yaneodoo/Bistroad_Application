@@ -13,6 +13,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -29,10 +31,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.yaneodoo.Info.Store;
+import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.Owner.RegisterBistro;
 import com.example.yaneodoo.REST.RestPatchUser;
 import com.example.yaneodoo.REST.RestPostUser;
@@ -43,10 +48,20 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InfoEdit extends AppCompatActivity {
     private static final int MY_PERMISSION_CAMERA = 1111;
@@ -56,6 +71,11 @@ public class InfoEdit extends AppCompatActivity {
     int rc;
     private de.hdodenhof.circleimageview.CircleImageView upload_btn;
     private PhImageCapture mCamera;
+    private File nFile =null;
+
+    private Retrofit mRetrofit;
+    private RetrofitService service;
+    private String baseUrl = "https://api.bistroad.kr/v1/";
 
     @Override
     public void onBackPressed() {
@@ -81,6 +101,12 @@ public class InfoEdit extends AppCompatActivity {
         userId = getSharedPreferences("sFile", MODE_PRIVATE).getString("id", "");
         curPwd = getSharedPreferences("sFile", MODE_PRIVATE).getString("bPwd", "");
 
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = mRetrofit.create(RetrofitService.class);
+
         id.setText(idName);
         name.setText(realname);
         phone.setText(phoneNum);
@@ -97,6 +123,7 @@ public class InfoEdit extends AppCompatActivity {
         // 회원가입 버튼 클릭 리스너
         Button btnSignup = (Button) findViewById(R.id.info_edit_button);
         btnSignup.setOnClickListener(new TextView.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 if(!curPw.getText().toString().equals(curPwd)){
@@ -167,6 +194,25 @@ public class InfoEdit extends AppCompatActivity {
                         }
                         Log.d("Login rc", String.valueOf(rc));
                         if (rc == 200 || rc == 201) {
+
+                            MultipartBody.Part file = null;
+                            if(nFile!=null){
+                                try {
+                                    String mime= Files.probeContentType(nFile.toPath());
+                                    RequestBody requestFile =
+                                            RequestBody.create(MediaType.parse(mime), nFile);
+                                    file =
+                                            MultipartBody.Part.createFormData("file", nFile.getName(), requestFile);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(file!=null){
+                                    Call<User> postUserPhoto = service.postUserPhoto("Bearer " + token, file, userId);
+                                    new postUserPhoto().execute(postUserPhoto);
+                                }
+                            }
+
                             String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
@@ -217,6 +263,7 @@ public class InfoEdit extends AppCompatActivity {
 
                             Log.d("BITMAP",img.toString());
                             String imagePath = getRealPathFromURI(data.getData());
+                            nFile = new File(imagePath);
                             // path 경로
                             ExifInterface exif = null;
                             try { exif = new ExifInterface(imagePath);
@@ -225,9 +272,6 @@ public class InfoEdit extends AppCompatActivity {
                             int exifDegree = exifOrientationToDegrees(exifOrientation);
 
                             img=rotate(img, exifDegree);//원본 이미지
-
-                            if(img.getWidth()>img.getHeight()) img=cropCenterBitmap(img, img.getHeight(),img.getHeight());//4:3 이미지
-                            else img=cropCenterBitmap(img, img.getWidth(),img.getWidth());//4:3 이미지
 
                             upload_btn.setImageBitmap(img);
                         } catch (Exception e) {
@@ -238,23 +282,10 @@ public class InfoEdit extends AppCompatActivity {
                 }
                 break;
 
-            case AUTOCOMPLETE_REQUEST_CODE:
-                if (resultCode == RESULT_OK) {
-                    Place place = Autocomplete.getPlaceFromIntent(data);
-
-                    Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
-                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                    // Handle the error.
-                    Status status = Autocomplete.getStatusFromIntent(data);
-                    Log.i("TAG", status.getStatusMessage());
-                } else if (resultCode == RESULT_CANCELED) {
-                    // The user canceled the operation.
-                }
-                break;
-
             case 1001: // 카메라
                 if (resultCode == Activity.RESULT_OK) {
                     // Camera action pick 결과 전달
+                    nFile =mCamera.getPhotoFile();
                     mCamera.onResult(upload_btn);
                 }
                 break;
@@ -289,35 +320,33 @@ public class InfoEdit extends AppCompatActivity {
         return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 
-    public static Bitmap cropCenterBitmap(Bitmap src, int w, int h) {
-        if(src == null)
+    private class postUserPhoto extends AsyncTask<Call, Void, String> {
+        @Override
+        protected String doInBackground(Call[] params) {
+            try {
+                Call<User> call = params[0];
+                Response<User> response = call.execute();
+                User body = response.body();
+
+                if (body != null) {
+                    Log.d("POSTPHOTO", "success");
+                } else {
+                    int statusCode  = response.code();
+                    Log.d("POSTPHOTO CODE",Integer.toString(statusCode));
+                }
+
+                return null;
+
+            } catch (IOException e) {
+                Log.d("POSTPHOTO", "fail");
+                e.printStackTrace();
+            }
             return null;
+        }
 
-        int width = src.getWidth();
-        int height = src.getHeight();
-
-        if(width < w && height < h)
-            return src;
-
-        int x = 0;
-        int y = 0;
-
-        if(width > w)
-            x = (width - w)/2;
-
-        if(height > h)
-            y = (height - h)/2;
-
-        int cw = w; // crop width
-        int ch = h; // crop height
-
-        if(w > width)
-            cw = width;
-
-        if(h > height)
-            ch = height;
-
-        return Bitmap.createBitmap(src, x, y, cw, ch);
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 
     private void checkPermission() {

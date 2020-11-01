@@ -122,7 +122,7 @@ public interface RetrofitService {
     //Upload a store photo
     @Multipart
     @POST("users/{id}/photo")
-    Call<Void> postUserPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
+    Call<User> postUserPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
 
     //--------------store-photo------------------//
     //Upload a store photo
