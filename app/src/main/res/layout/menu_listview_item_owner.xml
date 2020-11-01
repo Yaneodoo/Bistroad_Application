@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/menu_imgView"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:src="@drawable/no_image_box"

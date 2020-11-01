@@ -113,6 +113,8 @@
                 android:textSize="20dp"
                 android:textCursorDrawable="@drawable/cursor"
                 android:backgroundTint="#FF6181E8"
+                android:inputType="textMultiLine"
+                android:maxLines="1"
                 android:hint="20자 이내" />
         </LinearLayout>
         <LinearLayout
@@ -157,6 +159,8 @@
                 android:textSize="20dp"
                 android:textCursorDrawable="@drawable/cursor"
                 android:backgroundTint="#FF6181E8"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
                 android:hint="100자 이내" />
         </LinearLayout>
     </LinearLayout>

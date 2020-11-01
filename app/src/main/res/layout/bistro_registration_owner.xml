@@ -121,7 +121,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="매장 검색시 자동 입력"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        android:maxLines="3"
                         android:maxLength="50"/>
                 </LinearLayout>
 
@@ -151,6 +153,7 @@
                             android:backgroundTint="#FF6181E8"
                             android:hint="10자 이내"
                             android:inputType="text"
+                            android:maxLines="1"
                             android:maxLength="10"
                             android:textCursorDrawable="@drawable/cursor" />
                     </TableRow>
@@ -191,7 +194,8 @@
                             android:layout_weight="1"
                             android:backgroundTint="#FF6181E8"
                             android:hint="30자 이내"
-                            android:inputType="text"
+                            android:inputType="textMultiLine"
+                            android:maxLines="2"
                             android:maxLength="30"
                             android:textCursorDrawable="@drawable/cursor" />
                     </TableRow>
