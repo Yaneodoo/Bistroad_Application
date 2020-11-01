@@ -48,7 +48,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/login_confirmed_profile_image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="196dp"
         android:src="@drawable/mypage"

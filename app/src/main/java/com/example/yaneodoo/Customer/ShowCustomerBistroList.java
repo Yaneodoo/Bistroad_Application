@@ -222,8 +222,6 @@ public class ShowCustomerBistroList extends AppCompatActivity {
                     user.setPhoto(body.getPhoto());
                 }
                 return null;
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

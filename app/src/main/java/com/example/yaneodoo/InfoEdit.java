@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.Owner.RegisterBistro;
+import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.REST.RestPatchUser;
 import com.example.yaneodoo.REST.RestPostUser;
 import com.google.android.gms.common.api.Status;
@@ -71,6 +72,7 @@ public class InfoEdit extends AppCompatActivity {
     int rc;
     private de.hdodenhof.circleimageview.CircleImageView upload_btn;
     private PhImageCapture mCamera;
+    private String profileUrl;
     private File nFile =null;
 
     private Retrofit mRetrofit;
@@ -102,6 +104,8 @@ public class InfoEdit extends AppCompatActivity {
         curPwd = getSharedPreferences("sFile", MODE_PRIVATE).getString("bPwd", "");
         role = getSharedPreferences("sFile", MODE_PRIVATE).getString("role", "");
 
+        id.setText(realname);
+        name.setText(idName);
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -120,8 +124,23 @@ public class InfoEdit extends AppCompatActivity {
                 showPermissionDialog(view);
             }
         });
+        profileUrl = tk.getString("profileUrl","noProfile");
+        if(profileUrl.equals("noProfile")){
 
-        // 회원가입 버튼 클릭 리스너
+        }
+        else {
+            GetImage getStoreImage = new GetImage();
+            try {
+                Bitmap sbitmap = getStoreImage.execute(profileUrl).get();
+                de.hdodenhof.circleimageview.CircleImageView bistroRepresentImage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
+                bistroRepresentImage.setImageBitmap(sbitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        // 정보수정 버튼 클릭 리스너
         Button btnSignup = (Button) findViewById(R.id.info_edit_button);
         btnSignup.setOnClickListener(new TextView.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -146,6 +165,9 @@ public class InfoEdit extends AppCompatActivity {
                             String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
+                            SharedPreferences.Editor editor = tk.edit();
+                            editor.putString("bistrotk", "");
+                            editor.commit();
                             Intent intent = new Intent(InfoEdit.this, Login.class);
                             startActivity(intent);
                             InfoEdit.this.finish();
@@ -217,6 +239,9 @@ public class InfoEdit extends AppCompatActivity {
                             String signupSuccess = "성공적으로 정보가 변경되었습니다.";
                             Toast successToast = Toast.makeText(getApplicationContext(), signupSuccess, Toast.LENGTH_LONG);
                             successToast.show();
+                            SharedPreferences.Editor editor = tk.edit();
+                            editor.putString("bistrotk", "");
+                            editor.commit();
                             Intent intent = new Intent(InfoEdit.this, Login.class);
                             startActivity(intent);
                             InfoEdit.this.finish();

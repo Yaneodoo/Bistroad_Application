@@ -111,7 +111,6 @@ public class Login extends AppCompatActivity {
                     Log.e("REST_API", "POST method failed: " + e.getMessage());
                     e.printStackTrace();
                 }
-
             }
         });
 
@@ -221,8 +220,6 @@ public class Login extends AppCompatActivity {
                 // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
                 ActivityCompat.requestPermissions(Login.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
-
-
             } else {
                 // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
                 // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
