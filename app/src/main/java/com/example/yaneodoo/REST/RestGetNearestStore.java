@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.yaneodoo.Info.Store;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,8 +18,7 @@ import java.net.URL;
 
 public class RestGetNearestStore extends AsyncTask<Integer, Void, String> {
     // Variable to store url
-    protected String mToken, sName, sUrl, sLat, sLon, storeInfo;
-    //protected float sLat, sLon;
+    protected String  sName, sUrl, sLat, sLon, storeInfo;
     int rc;
 
     // Constructor
@@ -43,6 +44,7 @@ public class RestGetNearestStore extends AsyncTask<Integer, Void, String> {
             if(rc == 200){
                 InputStream is = conn.getInputStream();
                 storeInfo = convertStreamToString(is);
+
                 Log.d("storeInfo", storeInfo);
                 int reqLength = storeInfo.length();
                 if(reqLength == 3)

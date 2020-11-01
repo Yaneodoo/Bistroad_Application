@@ -84,8 +84,8 @@ public class InfoEdit extends AppCompatActivity {
         curPwd = getSharedPreferences("sFile", MODE_PRIVATE).getString("bPwd", "");
         role = getSharedPreferences("sFile", MODE_PRIVATE).getString("role", "");
 
-        id.setText(idName);
-        name.setText(realname);
+        id.setText(realname);
+        name.setText(idName);
         phone.setText(phoneNum);
 
         // 이미지 업로드 버튼 클릭 리스너
