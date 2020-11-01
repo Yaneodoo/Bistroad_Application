@@ -377,7 +377,7 @@ public class InfoEdit extends AppCompatActivity {
                             case R.id.camera:
                                 final int imageWidth = 200;
                                 final int imageHeight = 200;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterBistro");
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "InfoEdit");
                                 mCamera.onStart(InfoEdit.this);
                                 break;
                             case R.id.gallery:

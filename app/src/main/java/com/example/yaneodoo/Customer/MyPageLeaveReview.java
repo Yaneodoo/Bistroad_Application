@@ -337,7 +337,7 @@ public class MyPageLeaveReview extends AppCompatActivity {
                             case R.id.camera:
                                 final int imageWidth = 200;
                                 final int imageHeight = 200;
-                                mCamera = new PhImageCapture(imageWidth, imageHeight, "RegisterBistro");
+                                mCamera = new PhImageCapture(imageWidth, imageHeight, "MyPageLeaveReview");
                                 mCamera.onStart(MyPageLeaveReview.this);
                                 break;
                             case R.id.gallery:

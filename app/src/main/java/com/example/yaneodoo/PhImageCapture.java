@@ -98,8 +98,10 @@ public class PhImageCapture extends AppCompatActivity {
             a_activity.startActivityForResult(pickIntent, RegisterMenu.PhActivityRequest.IMAGE_CAPTURE);
         else if(usedActivity.equals("RegisterBistro"))
             a_activity.startActivityForResult(pickIntent, RegisterBistro.PhActivityRequest.IMAGE_CAPTURE);
-        else
+        else if(usedActivity.equals("MyPageLeaveReview"))
             a_activity.startActivityForResult(pickIntent, MyPageLeaveReview.PhActivityRequest.IMAGE_CAPTURE);
+        else if(usedActivity.equals("InfoEdit"))
+            a_activity.startActivityForResult(pickIntent, InfoEdit.PhActivityRequest.IMAGE_CAPTURE);
     }
 
     /**
