@@ -30,14 +30,13 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="떡볶이"
                 android:layout_weight="1"
+                android:text="떡볶이"
                 android:id="@+id/menu_name_txtView"
                 android:textSize="24dp"
                 android:textColor="#000000"
                 android:ellipsize="end"
-                android:singleLine="true"
-                android:layout_gravity="center" />
+                android:singleLine="true"/>
 
             <Button
                 android:id="@+id/btn_order"
@@ -45,10 +44,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:layout_alignParentRight="true"
                 android:backgroundTint="#C6D3FC"
                 android:layout_centerVertical="true"
-                android:layout_gravity="right"
+                android:focusable="false"
                 android:onClick="orderMenu" />
         </LinearLayout>
 
@@ -56,7 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="5000원"
-            android:layout_marginBottom="5dp"
             android:id="@+id/menu_price_txtView"
             android:textSize="16dp"
             android:textColor="#666666" />
@@ -73,12 +70,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="right">
 
             <TextView
+                android:id="@+id/star"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/menu_score_txtView"
                 android:text="★"
                 android:textColor="#FFC107"
                 android:textSize="16dp" />
@@ -88,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:text="4.5"
                 android:id="@+id/menu_score_txtView"
-                android:layout_alignParentRight="true"
-                android:textSize="16dp" />
+                android:layout_toRightOf="@id/star"
+                android:textSize="16dp"/>
 
         </RelativeLayout>
 
