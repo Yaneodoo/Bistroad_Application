@@ -1,6 +1,7 @@
 package com.example.yaneodoo.Customer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +24,7 @@ import com.example.yaneodoo.Info.Menu;
 import com.example.yaneodoo.Info.Store;
 import com.example.yaneodoo.Info.User;
 import com.example.yaneodoo.ListView.BistroListViewAdapter;
+import com.example.yaneodoo.Login;
 import com.example.yaneodoo.R;
 import com.example.yaneodoo.REST.GetImage;
 import com.example.yaneodoo.RetrofitService;
@@ -200,16 +202,27 @@ public class ShowCustomerBistroList extends AppCompatActivity {
             try {
                 Call<User> call = params[0];
                 Response<User> response = call.execute();
-                User body = response.body();
-                Log.d("USER", body.toString());
+                if(response.code() >= 400) {
+                    SharedPreferences.Editor editor = getSharedPreferences("sFile", MODE_PRIVATE).edit();
+                    editor.putString("bistrotk", ""); //
+                    editor.commit();
+                    Intent intent = new Intent(ShowCustomerBistroList.this, Login.class);
+                    startActivity(intent);
+                    ShowCustomerBistroList.this.finish();
+                }
+                else {
+                    User body = response.body();
+                    Log.d("USER", body.toString());
 
-                user.setId(body.getId());
-                user.setUsername(body.getUsername());
-                user.setRole(body.getRole());
-                user.setPhone(body.getPhone());
-                user.setFullName(body.getFullName());
-                user.setPhoto(body.getPhoto());
+                    user.setId(body.getId());
+                    user.setUsername(body.getUsername());
+                    user.setRole(body.getRole());
+                    user.setPhone(body.getPhone());
+                    user.setFullName(body.getFullName());
+                    user.setPhoto(body.getPhoto());
+                }
                 return null;
+
 
             } catch (IOException e) {
                 e.printStackTrace();

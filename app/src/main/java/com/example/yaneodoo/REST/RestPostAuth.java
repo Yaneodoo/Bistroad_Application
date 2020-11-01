@@ -63,7 +63,7 @@ public class RestPostAuth extends AsyncTask<Integer, Void, Integer> {
                 JSONObject jsonLogin = new JSONObject(loginInfo);
                 String token = jsonLogin.getString("access_token");
                 SharedPreferences.Editor editor = tk.edit();
-                editor.putString("bistrotk", token); //
+                editor.putString("bistrotk", token);
                 editor.putString("bId",mId);
                 editor.putString("bPwd",mPwd);
                 editor.commit();
