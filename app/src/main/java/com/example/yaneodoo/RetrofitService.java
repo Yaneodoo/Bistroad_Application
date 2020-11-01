@@ -139,6 +139,6 @@ public interface RetrofitService {
     //--------------review-photo------------------//
     //Upload a store item photo
     @Multipart
-    @POST("review/{id}/photo")
+    @POST("reviews/{id}/photo")
     Call<Review> postReviewPhoto(@Header("Authorization") String token, @Part MultipartBody.Part file, @Path("id") String id);
 }

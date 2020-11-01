@@ -1,12 +1,18 @@
 package com.example.yaneodoo.Customer;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -34,6 +41,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -58,6 +66,7 @@ import com.example.yaneodoo.RetrofitService;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.ReferenceQueue;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -66,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -85,11 +95,13 @@ public class MyPageLeaveReview extends AppCompatActivity {
     private PhImageCapture mCamera;
     private static final int MY_PERMISSION_CAMERA = 1111;
     private static final int REQUEST_TAKE_ALBUM = 2222;
-    private ImageView upload_btn;
+    private ImageButton upload_btn;
     private String baseUrl = "https://api.bistroad.kr/v1/";
 
     private LeaveReviewListAdapter adapter = new LeaveReviewListAdapter();
     private ListView listview;
+
+    private String aaaa=null;
 
     private File nFile =null;
     private User user = new User();
@@ -166,12 +178,17 @@ public class MyPageLeaveReview extends AppCompatActivity {
                     View lView = listview.getChildAt(i);
                     EditText editText = lView.findViewById(R.id.menu_review_editText);
                     RatingBar ratingBar = lView.findViewById(R.id.menu_ratingBar);
+                    ImageButton foodImage = lView.findViewById(R.id.upload_btn);
+
                     Integer stars = Math.round(ratingBar.getRating());
                     String content = editText.getText().toString();
                     if(content.equals(""))
                         break;
                     count++;
                     Review review4Leave = new Review(content, itemId, orderId, stars, storeId, date.toString()+"+09:00", user.getId());
+
+                    String imgPath = (String) foodImage.getTooltipText();
+                    review4Leave.setImgPath(imgPath);
                     reviews.add(review4Leave);
                 }
                 if(count < listview.getCount())
@@ -181,15 +198,31 @@ public class MyPageLeaveReview extends AppCompatActivity {
                     for (int i = 0; i < reviews.size(); i++){
                         Log.d("review",reviews.get(i).toString());
                         Log.d("token", token);
-//                        postReview(token, reviews.get(i));
+                        aaaa=reviews.get(i).getImgPath();
+                        nFile= new File(aaaa);
                         Call<Review> callpostReview = service.postReview("Bearer " + token, reviews.get(i));
-                        new callpostReview().execute(callpostReview);
+                        try {
+                            new callpostReview().execute(callpostReview).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                     Toast.makeText(getApplicationContext(), "리뷰가 등록 되었습니다.", Toast.LENGTH_LONG);
                     MyPageLeaveReview.this.finish();
                 }
             }
         });
+    }
+
+    //주문하기 버튼 클릭 리스너
+    public void uploadFoodImage(View v) {
+        LinearLayout parentRow = (LinearLayout) v.getParent();
+        Integer position = Integer.parseInt((String) parentRow.getTag());
+
+        upload_btn=(ImageButton) v;
+        showPermissionDialog(v);
     }
 
     private void getRequestsList(List<Request> requests) {
@@ -248,8 +281,15 @@ public class MyPageLeaveReview extends AppCompatActivity {
 
                 if(file!=null){
                     Call<Review> postReviewPhoto = service.postReviewPhoto("Bearer " + token, file, reviewId);
-                    new postReviewPhoto().execute(postReviewPhoto);
+                    try {
+                        new postReviewPhoto().execute(postReviewPhoto).get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         }
     }
@@ -280,29 +320,6 @@ public class MyPageLeaveReview extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-        }
-    }
-
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if ((ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) ||
-                    (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))) {
-                new AlertDialog.Builder(this).setTitle("알림").setMessage("저장소 권한이 거부되었습니다. \n앱을 재실행하여 뜨는 팝업을 통해 권한을 허용하거나, 앱 설정에서 권한을 허용해주세요.").setNeutralButton("설정", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.parse("package: " + getPackageName()));
-                        startActivity(intent);
-                    }
-                }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                }).setCancelable(false).create().show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, MY_PERMISSION_CAMERA);
-            }
         }
     }
 
@@ -363,6 +380,82 @@ public class MyPageLeaveReview extends AppCompatActivity {
                 .setDeniedMessage("[설정] > [권한] 에서 권한을 허용해 주세요.")
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_TAKE_ALBUM:
+                if (resultCode == Activity.RESULT_OK) {
+
+                    if (data.getData() != null) {
+                        try {
+                            InputStream in = getContentResolver().openInputStream(data.getData());
+                            Bitmap img = BitmapFactory.decodeStream(in);
+                            in.close();
+
+                            Log.d("BITMAP",img.toString());
+                            String imagePath = getRealPathFromURI(data.getData());
+                            nFile = new File(imagePath);
+
+                            upload_btn.setTooltipText(imagePath);
+
+                            Log.d("nFile",nFile.toString());
+                            // path 경로
+                            ExifInterface exif = null;
+                            try { exif = new ExifInterface(imagePath);
+                            } catch (IOException e) { e.printStackTrace(); }
+                            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                            int exifDegree = exifOrientationToDegrees(exifOrientation);
+
+                            img=rotate(img, exifDegree);//원본 이미지
+
+                            upload_btn.setImageBitmap(img);
+                        } catch (Exception e) {
+                        }
+                    } else if (resultCode == RESULT_CANCELED) {
+                        Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            default:
+                if (resultCode == Activity.RESULT_OK) {
+                    // Camera action pick 결과 전달
+                    nFile =mCamera.getPhotoFile();
+                    mCamera.onResult(upload_btn);
+                }
+        }
+    }
+
+
+    private String getRealPathFromURI(Uri contentUri) {
+        int column_index=0; String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        }
+        return cursor.getString(column_index);
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap src, float degree) { // Matrix 객체 생성
+        Matrix matrix = new Matrix();
+        // 회전 각도 셋팅 m
+        matrix.postRotate(degree);
+        // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
+        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 
 }

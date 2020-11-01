@@ -15,6 +15,8 @@ public class Review implements Serializable {
     private Photo photo;
     private String timestamp;
 
+    private String imgPath;
+
     public Review(String reviewContent, String itemId, String orderId, Integer stars, String storeId, String timestamp, String writerId) {
         contents = reviewContent;
         this.itemId = itemId;
@@ -123,6 +125,14 @@ public class Review implements Serializable {
 
     public void setUser(User writer) {
         this.writer = writer;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     @Override
